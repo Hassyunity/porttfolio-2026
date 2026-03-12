@@ -27,6 +27,13 @@ const Projects: React.FC = () => {
       link: "https://altea-flow.netlify.app/"
     },
     {
+      title: "Auto | DECISIONS",
+      description: "Agence d'automatisation intelligente spécialisée sur n8n. Solutions sur mesure pour RH, Finance et Marketing visant à transformer des processus critiques en workflows fluides.",
+      tags: ["n8n", "Workflow Automation", "API Integration", "AI Agents"],
+      status: "production",
+      link: "https://auto-decisions.netlify.app"
+    },
+    {
       title: "Babel Goods",
       description: "Solution e-commerce pour boutiques Facebook. Gestion centralisée des commandes, clients et statistiques de ventes.",
       tags: ["React", "Vite.js", "Tailwind CSS"],
