@@ -60,6 +60,7 @@ body {
 #projects .path { color: #44cc44; margin-right: 0.5rem; }
 #contact .path { color: #4488ff; margin-right: 0.5rem; }
 #blog-page .path { color: #a370f7; margin-right: 0.5rem; }
+#album .path { color: #ff4d6d; margin-right: 0.5rem; }
 
 @media (max-width: 1200px) {
   .section-container::before {
@@ -87,6 +88,6 @@ body {
   background-color: #4488ff;
 }
 
-#blog::before {
+#blog-page::before {
   background-color: #a370f7;
 }

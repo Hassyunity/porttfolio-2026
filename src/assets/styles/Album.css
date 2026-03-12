@@ -1,0 +1,101 @@
+/* --- ALBUM FULL WIDTH ADAPTATIF (MAJ) --- */
+
+.album-container {
+  padding: 8rem 4rem 4rem;
+  max-width: 1100px; /* Aligné sur tes sections Skills/Projects */
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.album-header {
+  margin-bottom: 4rem;
+  text-align: left;
+}
+
+.album-subtitle {
+  color: #666;
+  font-family: var(--font-mono);
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.photo-grid {
+  display: flex;
+  flex-direction: column; 
+  gap: 60px; /* Plus d'espace entre les grandes captures */
+  width: 100%;
+}
+
+.photo-card {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #0a0a0a;
+  border: 1px solid #222;
+  width: 100%;
+  /* Suppression de l'aspect-ratio fixe pour laisser l'image respirer */
+  display: flex;
+  flex-direction: column;
+}
+
+.photo-card img {
+  width: 100%;
+  height: auto; /* L'image garde ses proportions réelles */
+  display: block;
+  /* 'contain' pour ne rien couper, ou 'cover' si tu veux un bloc uniforme */
+  object-fit: contain; 
+  transition: transform 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+}
+
+.photo-card:hover img {
+  transform: scale(1.02); /* Zoom très léger pour garder la clarté de l'UI */
+}
+
+.photo-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 2rem;
+  /* Dégradé plus sombre pour assurer la lisibilité sur les interfaces claires */
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.4s ease;
+}
+
+.photo-card:hover .photo-overlay {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --- RESPONSIVE --- */
+
+@media (max-width: 768px) {
+  .album-container {
+    padding: 6rem 1.5rem;
+  }
+  
+  .album-header {
+    margin-bottom: 2.5rem;
+  }
+
+  .photo-card {
+    border-radius: 8px;
+  }
+  
+  .photo-grid {
+    gap: 40px;
+  }
+
+  .photo-overlay {
+    opacity: 1; /* Toujours visible sur mobile car pas de hover */
+    padding: 1.2rem;
+    font-size: 0.9rem;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+    transform: translateY(0);
+  }
+}

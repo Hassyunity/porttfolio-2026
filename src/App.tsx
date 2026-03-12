@@ -6,7 +6,8 @@ import Skills from './components/Skills';
 import Projects from './components/Projects';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
-import BlogPage from './pages/BlogPage'; // On va le créer
+import BlogPage from './pages/BlogPage';
+import Album from './pages/Album';
 import './assets/styles/global.css';
 
 // On crée un composant qui regroupe toutes les sections du portfolio
@@ -28,6 +29,7 @@ function App() {
         <Routes>
           <Route path="/" element={<MainPortfolio />} />
           <Route path="/blogs" element={<BlogPage />} />
+          <Route path="/album" element={<Album />} />
         </Routes>
         <Footer />
       </div>

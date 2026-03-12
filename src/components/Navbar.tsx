@@ -32,6 +32,7 @@ const Navbar: React.FC = () => {
         <a href="/#projects" className="nav-link link-projects" onClick={closeMenu}>./projects</a>
         <a href="/#contact" className="nav-link link-contact" onClick={closeMenu}>./contact</a>
         <Link to="/blogs" className="nav-link link-blog" onClick={closeMenu}>./blogs</Link>
+        <Link to="/album" className="nav-link link-album" onClick={closeMenu}>./album</Link>
       </div>
     </nav>
   );

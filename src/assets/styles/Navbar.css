@@ -78,12 +78,14 @@
 .link-projects:hover { color: #44cc44; }
 .link-contact:hover { color: #4488ff; }
 .link-blog:hover { color: #a370f7; }
+.link-album:hover { color: #ff4d6d; }
 
 .link-about::after { background-color: #ff7b54; }
 .link-skills::after { background-color: #ffcc33; }
 .link-projects::after { background-color: #44cc44; }
 .link-contact::after { background-color: #4488ff; }
 .link-blog::after { background-color: #a370f7; }
+.link-album::after { background-color: #ff4d6d; }
 
 .burger {
   display: none;
