@@ -1,0 +1,110 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 2rem 4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+  background: rgba(10, 10, 10, 0.5);
+  backdrop-filter: blur(5px);
+  transition: padding 0.3s ease;
+  padding-bottom: 10px;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.logo-wrapper {
+  width: 45px;
+  height: 45px;
+  background-color: transparent;
+  border-radius: 50%; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #333;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+}
+
+.logo-img {
+  height: 75%;
+  width: auto;
+  object-fit: contain;
+}
+
+.logo-wrapper:hover {
+  transform: scale(1.1) rotate(15deg);
+  box-shadow: 0 0 8px #DF4409;
+}
+
+.nav-links { 
+  display: flex; 
+  gap: 2.5rem; 
+}
+
+.nav-link {
+  text-decoration: none;
+  color: var(--text-white);
+  font-size: 0.9rem;
+  position: relative;
+  font-family: var(--font-mono);
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 15px;
+  height: 3px;
+  transition: width 0.3s;
+}
+
+.nav-link:hover::after { 
+  width: 100%; 
+}
+
+/* Couleurs au survol */
+.link-about:hover { color: #ff7b54; }
+.link-skills:hover { color: #ffcc33; }
+.link-projects:hover { color: #44cc44; }
+.link-contact:hover { color: #4488ff; }
+.link-blog:hover { color: #a370f7; }
+
+.link-about::after { background-color: #ff7b54; }
+.link-skills::after { background-color: #ffcc33; }
+.link-projects::after { background-color: #44cc44; }
+.link-contact::after { background-color: #4488ff; }
+.link-blog::after { background-color: #a370f7; }
+
+/* --- MEDIA QUERIES --- */
+
+@media (max-width: 1024px) {
+  .navbar { padding: 1.5rem 2.5rem; }
+  .nav-links { gap: 1.5rem; }
+}
+
+@media (max-width: 768px) {
+  .navbar { padding: 1rem 1.5rem; }
+  .nav-links { gap: 1rem; }
+  .nav-link { font-size: 0.8rem; }
+  
+  .logo-wrapper {
+    width: 38px;
+    height: 38px;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar { padding: 0.8rem 1rem; }
+  .nav-link { font-size: 0.75rem; }
+  .nav-links { gap: 0.8rem; }
+  .nav-link::after { width: 0; }
+}

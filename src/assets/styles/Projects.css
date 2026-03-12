@@ -1,0 +1,105 @@
+/* Grille de projets (2 colonnes) */
+.projects-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 2rem;
+}
+
+/* Style de la carte */
+.project-card {
+  background: #111; /* Fond très sombre */
+  border: 1px solid #222; /* Bordure discrète */
+  border-radius: 8px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.3s ease;
+}
+
+.project-card:hover {
+  border-color: #333;
+}
+
+/* Header de la carte : Titre + Badge */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.project-title {
+  color: #fff;
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+/* Badges de statut */
+.status-badge {
+  font-size: 0.7rem;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  text-transform: lowercase;
+}
+
+.status-badge.production {
+  background: rgba(68, 204, 68, 0.1);
+  color: #44cc44; /* Vert pour production */
+  border: 1px solid rgba(68, 204, 68, 0.2);
+}
+
+.status-badge.development {
+  background: rgba(136, 136, 136, 0.1);
+  color: #888; /* Gris pour development */
+  border: 1px solid rgba(136, 136, 136, 0.2);
+}
+
+/* Description */
+.project-desc {
+  color: #aaa;
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 2rem;
+  flex-grow: 1;
+}
+
+/* Tags technos */
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.tag {
+  background: #1a1a1a;
+  color: #888;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  border: 1px solid #222;
+}
+
+/* Lien "view website" */
+.view-link {
+  color: #44cc44; /* Vert fluo style terminal */
+  text-decoration: none;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.view-link:hover .arrow {
+  transform: translateX(5px);
+  transition: transform 0.2s;
+}
+
+/* Responsive mobile */
+@media (max-width: 900px) {
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+}

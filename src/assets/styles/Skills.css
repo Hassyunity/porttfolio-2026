@@ -1,0 +1,155 @@
+/* Container principal */
+.section-container {
+  position: relative;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 8rem 4rem;
+  box-sizing: border-box;
+}
+
+/* La ligne verticale adaptative */
+.section-container::before {
+  content: "";
+  position: absolute;
+  left: 20px; /* Position par défaut pour mobile */
+  top: 10%;
+  height: 85%;
+  width: 4px;
+  background-color: #ffcc33; 
+  border-radius: 2px;
+  z-index: 1;
+}
+
+/* Positionnement de la ligne pour les grands écrans */
+@media (min-width: 1200px) {
+  .section-container::before {
+    /* Calcul pour coller au bord gauche de l'écran par rapport au centre */
+    left: calc(-1 * (100vw - 1100px) / 2 + 30px); 
+  }
+}
+
+/* Grille des compétences */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 6rem;
+  row-gap: 4rem;
+  margin-top: 2rem;
+  width: 100%;
+}
+
+.skill-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-family: var(--font-mono);
+}
+
+.cat-title {
+  color: #888;
+  font-size: 1.4rem;
+  margin-bottom: 1.5rem;
+  font-weight: normal;
+}
+
+.arrow {
+  color: #ffcc33;
+  font-size: 0.7rem;
+  margin-right: 12px;
+}
+
+.line {
+  flex: 1;
+  border-bottom: 1px solid #333;
+  margin-left: 15px;
+  height: 12px;
+}
+
+/* Bloc Focus */
+.focus-container {
+  margin-top: 5rem;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.focus-box {
+  border: 1px solid #222;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 2rem;
+  width: 100%;
+  max-width: 800px;
+  border-radius: 4px;
+}
+
+.focus-title {
+  color: #666;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+.focus-text {
+  color: #aaa;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.focus-highlight {
+  color: #ffcc33;
+  font-weight: bold;
+}
+
+/* --- MEDIA QUERIES --- */
+
+/* Tablettes et Laptops moyens */
+@media (max-width: 1024px) {
+  .section-container {
+    padding: 6rem 3rem;
+  }
+  
+  .skills-grid {
+    column-gap: 3rem;
+  }
+}
+
+/* Mobiles larges (Tablettes portrait) */
+@media (max-width: 768px) {
+  .section-container {
+    padding: 5rem 2.5rem;
+  }
+
+  /* La grille passe sur une seule colonne */
+  .skills-grid {
+    grid-template-columns: 1fr;
+    row-gap: 3rem;
+  }
+
+  .cat-title {
+    font-size: 1.2rem;
+  }
+}
+
+/* Petits Mobiles */
+@media (max-width: 480px) {
+  .section-container {
+    padding: 4rem 1.5rem;
+    padding-left: 3rem; /* Laisse de la place pour la ligne à gauche */
+  }
+
+  .section-container::before {
+    left: 15px; /* On rapproche la ligne du bord sur petit écran */
+  }
+
+  .focus-box {
+    padding: 1.5rem;
+  }
+
+  .focus-text {
+    font-size: 1rem;
+  }
+
+  .line {
+    display: none; /* On cache les lignes décoratives sur mobile pour épurer */
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "id": 2,
+  "title": "Sécuriser une API : L'implémentation du JWT",
+  "date": "08 Mars 2026",
+  "excerpt": "Guide technique sur la sécurisation des échanges de données entre vos services.",
+  "content": "La sécurité est au cœur de tout projet SaaS comme Altea Flow. Pour sécuriser une API, l'utilisation de JSON Web Tokens (JWT) est un standard incontournable. Dans cet article, j'explique comment mettre en place une stratégie d'authentification robuste : génération de tokens, gestion de l'expiration, protection des routes sensibles et bonnes pratiques pour stocker les secrets côté serveur avec Ruby on Rails ou Node.js.",
+  "tags": ["Sécurité", "JWT", "API", "Backend"]
+}

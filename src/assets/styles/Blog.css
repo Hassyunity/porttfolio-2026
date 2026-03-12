@@ -1,0 +1,138 @@
+/* Couleur de la ligne verticale spécifique au blog */
+#blog-page::before {
+  content: "";
+  position: absolute;
+  left: 20px;
+  top: 10%;
+  height: 85%;
+  width: 4px;
+  background-color: #a370f7; /* Violet */
+  border-radius: 2px;
+}
+
+@media (min-width: 1200px) {
+  #blog-page::before {
+    left: calc(-1 * (100vw - 1100px) / 2 + 30px);
+  }
+}
+
+/* Grille et Cartes */
+.blog-card {
+  cursor: pointer;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid #222;
+  padding: 2rem;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+}
+
+.blog-card:hover {
+  border-color: #a370f7;
+  transform: translateY(-5px);
+  background: rgba(163, 112, 247, 0.02);
+}
+
+.post-date {
+  color: #666;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.read-more {
+  color: #a370f7;
+  font-size: 0.9rem;
+  margin-top: auto; /* Pousse le bouton vers le bas */
+  padding-top: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Styles pour la vue détaillée */
+.detail-view {
+  animation: fadeIn 0.4s ease-out;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: color 0.2s;
+}
+
+.back-btn:hover {
+  color: #a370f7;
+}
+
+.post-title-detail {
+  font-size: clamp(1.8rem, 6vw, 3rem); /* Taille adaptative */
+  color: #fff;
+  margin: 1rem 0;
+  line-height: 1.2;
+}
+
+.post-content {
+  margin-top: 3rem;
+  color: #ccc;
+  line-height: 1.8;
+  font-size: 1.1rem;
+}
+
+#blog .path { color: #a370f7; margin-right: 0.5rem; }
+
+/* --- MEDIA QUERIES --- */
+
+@media (max-width: 1024px) {
+  .projects-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .projects-grid {
+    grid-template-columns: 1fr; /* Une seule colonne sur mobile */
+  }
+
+  .post-title-detail {
+    margin-top: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  #blog-page {
+    padding-left: 3rem; /* Place pour la ligne violette */
+  }
+
+  #blog-page::before {
+    left: 15px;
+  }
+
+  .blog-card {
+    padding: 1.5rem;
+  }
+
+  .post-content {
+    font-size: 1rem;
+    margin-top: 2rem;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

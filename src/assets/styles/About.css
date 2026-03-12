@@ -1,0 +1,112 @@
+.about-content {
+  max-width: 900px;
+  margin-top: 2rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.about-section {
+  margin-bottom: 2.5rem;
+}
+
+.about-section p {
+  color: #ccc;
+  font-size: clamp(1rem, 2.5vw, 1.1rem); /* Texte fluide */
+  line-height: 1.6;
+}
+
+.comment {
+  color: #888;
+  font-weight: bold;
+  margin-bottom: 0.8rem;
+  font-size: clamp(1.1rem, 3vw, 1.2rem); /* Titre de section fluide */
+}
+
+.comment .hashtag {
+  color: var(--accent-orange);
+  margin-right: 5px;
+}
+
+/* Grille de tags style terminal */
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  margin-top: 3rem;
+  width: 100%;
+}
+
+.skill-tag {
+  border: 1px solid #333;
+  background: transparent;
+  color: #eee;
+  padding: 1.2rem 0.5rem; /* Réduit légèrement pour un look plus compact */
+  text-align: center;
+  font-size: 0.95rem;
+  font-family: var(--font-mono); /* Très important pour le style terminal */
+  transition: all 0.3s ease;
+  cursor: default;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.skill-tag:hover {
+  border-color: var(--accent-orange);
+  background: rgba(255, 123, 84, 0.05); /* Utilise ta variable orange avec opacité */
+  color: white;
+  transform: translateY(-2px);
+}
+
+.desc-text strong {
+  color: var(--accent-orange);
+  font-weight: 600;
+}
+
+/* --- MEDIA QUERIES --- */
+
+/* Tablettes et Laptops moyens */
+@media (max-width: 1024px) {
+  .about-grid {
+    grid-template-columns: repeat(3, 1fr); /* Passe à 3 colonnes */
+    gap: 12px;
+  }
+}
+
+/* Mobiles larges / Tablettes portrait */
+@media (max-width: 768px) {
+  .about-content {
+    margin-top: 1.5rem;
+  }
+
+  .about-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 colonnes */
+    margin-top: 2rem;
+  }
+  
+  .skill-tag {
+    padding: 1rem 0.4rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Petits Mobiles */
+@media (max-width: 480px) {
+  .about-content {
+    padding-right: 1rem; /* Évite que le texte ne colle à la droite */
+  }
+
+  .about-grid {
+    grid-template-columns: repeat(2, 1fr); /* Garde 2 colonnes mais réduit la taille */
+    gap: 10px;
+  }
+
+  .skill-tag {
+    padding: 0.8rem 0.3rem;
+    font-size: 0.8rem;
+  }
+
+  .comment {
+    margin-bottom: 0.5rem;
+  }
+}

@@ -1,0 +1,92 @@
+/* Ligne verticale spécifique au contact */
+#contact::before {
+  background-color: #4488ff; /* Bleu */
+}
+
+.contact-intro {
+  color: #ccc;
+  font-size: 1.1rem;
+  margin-bottom: 3rem;
+  font-family: var(--font-mono);
+}
+
+.arrow-prompt {
+  color: #4488ff;
+  margin-right: 10px;
+}
+
+/* Grille 2x2 */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.contact-card {
+  background: #111;
+  border: 1px solid #222;
+  border-radius: 8px;
+  padding: 1.5rem 2rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: block;
+}
+
+.contact-card:hover {
+  border-color: #4488ff;
+  background: rgba(68, 136, 255, 0.05);
+  transform: translateY(-2px);
+}
+
+.contact-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #888;
+  margin-bottom: 0.8rem;
+}
+
+.contact-label {
+  font-size: 0.9rem;
+  font-family: var(--font-mono);
+}
+
+.contact-value {
+  color: #eee;
+  font-size: 1.1rem;
+  word-break: break-all;
+}
+
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.contact-extra {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: #4488ff;
+  border: 1px solid #4488ff;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: rgba(68, 136, 255, 0.1);
+}
+
+.contact-card:hover .contact-extra {
+  background: rgba(68, 136, 255, 0.2);
+  box-shadow: 0 0 10px rgba(68, 136, 255, 0.3);
+}
+
+.contact-value {
+  color: #ccc;
+  word-break: break-all;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+}
