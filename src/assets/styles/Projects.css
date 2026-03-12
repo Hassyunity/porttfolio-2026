@@ -98,8 +98,74 @@
 }
 
 /* Responsive mobile */
-@media (max-width: 900px) {
+/* Grille de projets (2 colonnes par défaut sur desktop) */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+  margin-top: 2rem;
+}
+
+/* Style de la carte */
+.project-card {
+  background: #111;
+  border: 1px solid #222;
+  border-radius: 8px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Effet au survol (désactivé sur mobile pour éviter les bugs de clic) */
+@media ( some-pointer: fine ) {
+  .project-card:hover {
+    border-color: #333;
+    transform: translateY(-2px);
+  }
+}
+
+/* --- RESPONSIVE MOBILE --- */
+@media (max-width: 768px) {
   .projects-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* Force une seule colonne */
+    gap: 15px;
+  }
+
+  .project-card {
+    padding: 1.5rem; /* Réduit l'espace interne sur mobile */
+  }
+
+  .project-title {
+    font-size: 1.2rem; /* Texte un peu plus petit */
+  }
+
+  .project-desc {
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .tag {
+    font-size: 0.75rem;
+    padding: 3px 10px;
+  }
+
+  /* On s'assure que le lien est facile à cliquer avec le pouce */
+  .view-link {
+    padding: 10px 0;
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
+/* Pour les très petits écrans (iPhone SE, etc.) */
+@media (max-width: 380px) {
+  .projects-grid {
+    min-width: 100%;
+  }
+  
+  .card-header {
+    flex-direction: column; /* Titre au dessus du badge si pas assez de place */
+    gap: 10px;
   }
 }

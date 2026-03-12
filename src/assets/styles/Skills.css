@@ -103,53 +103,51 @@
 /* --- MEDIA QUERIES --- */
 
 /* Tablettes et Laptops moyens */
-@media (max-width: 1024px) {
-  .section-container {
-    padding: 6rem 3rem;
-  }
-  
-  .skills-grid {
-    column-gap: 3rem;
-  }
-}
-
-/* Mobiles larges (Tablettes portrait) */
 @media (max-width: 768px) {
   .section-container {
-    padding: 5rem 2.5rem;
+    padding: 5rem 1.5rem 5rem 3.5rem; /* Augmente le padding gauche pour la ligne */
   }
 
-  /* La grille passe sur une seule colonne */
   .skills-grid {
     grid-template-columns: 1fr;
-    row-gap: 3rem;
+    row-gap: 2.5rem;
   }
 
-  .cat-title {
-    font-size: 1.2rem;
+  /* Ajustement de la ligne jaune pour mobile */
+  .section-container::before {
+    left: 20px;
+    height: 90%;
+    top: 5%;
   }
 }
 
-/* Petits Mobiles */
 @media (max-width: 480px) {
   .section-container {
-    padding: 4rem 1.5rem;
-    padding-left: 3rem; /* Laisse de la place pour la ligne à gauche */
+    padding: 4rem 1rem 4rem 2.5rem; /* On réduit encore pour les petits écrans */
   }
 
   .section-container::before {
-    left: 15px; /* On rapproche la ligne du bord sur petit écran */
+    left: 12px; /* Rapproche la ligne du bord */
   }
 
   .focus-box {
-    padding: 1.5rem;
+    padding: 1.2rem;
+    width: calc(100% - 10px); /* S'assure que la box ne touche pas le bord droit */
   }
 
   .focus-text {
     font-size: 1rem;
+    line-height: 1.4;
+    word-wrap: break-word; /* Force les mots longs (fonctionnalités) à se couper */
+    overflow-wrap: break-word;
   }
 
-  .line {
-    display: none; /* On cache les lignes décoratives sur mobile pour épurer */
+  .focus-title {
+    font-size: 0.9rem;
+  }
+
+  .cat-title {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
   }
 }
