@@ -92,6 +92,42 @@
   font-size: 1.1rem;
 }
 
+.post-content {
+  max-width: 700px;
+  margin: 3rem auto;
+  text-align: left;
+}
+
+.content-h2 {
+  color: #a370f7;
+  margin: 2.5rem 0 1rem 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.content-p {
+  margin-bottom: 1.5rem;
+  opacity: 0.9;
+}
+
+.content-list {
+  margin: 1.5rem 0;
+  padding-left: 1.5rem;
+  list-style: none;
+}
+
+.content-list li {
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.content-list li::before {
+  content: "→";
+  color: #a370f7;
+  position: absolute;
+  left: -25px;
+}
+
 #blog .path { color: #a370f7; margin-right: 0.5rem; }
 
 /* --- MEDIA QUERIES --- */
