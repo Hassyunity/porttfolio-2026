@@ -6,12 +6,12 @@ const Skills: React.FC = () => {
     { name: "Frontend", list: ["TypeScript", "React", "Styles"] },
     { name: "Backend", list: ["Ruby on Rails", "Node.js", "PostgreSQL"] },
     { name: "DevOps", list: ["Git", "Docker", "Nginx", "CI/CD", "Cloud"] },
-    { name: "Tools", list: ["VS Code", "Figma", "GitHub", "Jira", "ClickUp"] }
+    { name: "Environnement de travail", list: ["VS Code", "Postman", "PostgreSQL", "Figma", "GitHub", "Jira", "ClickUp"] }
   ];
 
   return (
     <section id="skills" className="section-container">
-      <h2 className="section-title"><span className="path">~/</span>skills</h2>
+      <h2 className="section-title"><span className="path">~/</span>Expertises</h2>
       
       <div className="skills-grid">
         {categories.map(cat => (

@@ -27,12 +27,12 @@ const Navbar: React.FC = () => {
 
       {/* Liens de navigation */}
       <div className={`nav-links ${isOpen ? 'nav-active' : ''}`}>
-        <a href="/#about" className="nav-link link-about" onClick={closeMenu}>./about</a>
-        <a href="/#skills" className="nav-link link-skills" onClick={closeMenu}>./skills</a>
+        <a href="/#about" className="nav-link link-about" onClick={closeMenu}>./A propos</a>
+        <a href="/#skills" className="nav-link link-skills" onClick={closeMenu}>./Expertises</a>
         <a href="/#projects" className="nav-link link-projects" onClick={closeMenu}>./projects</a>
-        <a href="/#contact" className="nav-link link-contact" onClick={closeMenu}>./contact</a>
+        <a href="/#contact" className="nav-link link-contact" onClick={closeMenu}>./contacts</a>
         <Link to="/blogs" className="nav-link link-blog" onClick={closeMenu}>./blogs</Link>
-        <Link to="/album" className="nav-link link-album" onClick={closeMenu}>./album</Link>
+        <Link to="/album" className="nav-link link-album" onClick={closeMenu}>./albums</Link>
       </div>
     </nav>
   );

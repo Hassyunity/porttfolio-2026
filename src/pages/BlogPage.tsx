@@ -172,7 +172,7 @@ const BlogPage: React.FC = () => {
             <div className="project-tags">
               {post.tags.map(tag => <span key={tag} className="tag">{tag}</span>)}
             </div>
-            <span className="read-more">read article <span className="arrow">→</span></span>
+            <span className="read-more">Lire l'article <span className="arrow">→</span></span>
           </div>
         ))}
       </div>

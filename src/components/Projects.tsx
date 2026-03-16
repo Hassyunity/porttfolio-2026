@@ -8,6 +8,7 @@ interface Project {
   status: 'production' | 'development';
   link: string;
   repo?: string;
+  isPrivate?: boolean; // Optionnel : pour plus de clarté dans la logique
 }
 
 const Projects: React.FC = () => {
@@ -17,10 +18,11 @@ const Projects: React.FC = () => {
       description: "Plateforme RH & Gestion de projets d'entreprise. Développement de microservices (Recrutement, Talent, Candidat ...) et tests automatisés.",
       tags: ["Ruby on Rails", "PostgreSQL", "AppScript", "RSpec", "Cypress", "Docker"],
       status: "production",
-      link: "#"
+      link: "#",
+      isPrivate: true
     },
     {
-      title: "Altea Flow",
+      title: "Altea Flow (2026)",
       description: "SaaS d'automatisation de workflows métier et réconciliation de données via agents IA (n8n).",
       tags: ["n8n", "Ruby on Rails", "React", "PostgreSQL", "Supabase", "render/netlify"],
       status: "production",
@@ -86,9 +88,15 @@ const Projects: React.FC = () => {
             </div>
             
             <div className="project-footer">
-              <a href={project.link} target="_blank" rel="noopener noreferrer" className="view-link">
-                voir le site <span className="arrow">→</span>
-              </a>
+              {project.link === "#" || project.isPrivate ? (
+                <span className="private-label">
+                  <span className="lock-icon">🔒</span> projet d'entreprise
+                </span>
+              ) : (
+                <a href={project.link} target="_blank" rel="noopener noreferrer" className="view-link">
+                  voir le site <span className="arrow">→</span>
+                </a>
+              )}
             </div>
           </div>
         ))}
