@@ -1,5 +1,6 @@
 import React from 'react';
 import '../assets/styles/Footer.css';
+import cvPath from '../assets/fichier/cv_fr.pdf'; 
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
@@ -17,6 +18,19 @@ const Footer: React.FC = () => {
       
       <div className="footer-container">
         <div className="footer-left">
+          {/* Bloc CV */}
+          <div className="contact-item cv-download">
+            <a 
+              href={cvPath} 
+              download="CV_Hassy_Tsihoarana.pdf" 
+              className="footer-link highlight cv-link-container"
+            >
+              <span className="pointing-hand">👉</span>
+              <span className="download-text">Download_CV</span>
+            </a>
+          </div>
+          
+          {/* Le copyright passe automatiquement à la ligne grâce au flex-direction: column */}
           <p className="copyright">
             © {currentYear} // Hassy Tsihoarana.
           </p>

@@ -41,13 +41,13 @@
 .light-blue { background-color: #4488ff; }
 .purple { background-color: #a370f7; }
 
-/* --- Structure Interne (Gaucher/Droite) --- */
+/* --- Structure Interne (Gauche/Droite) --- */
 .footer-container {
   width: 100%;
   max-width: 1200px;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start; /* Aligné en haut pour mieux gérer le multi-ligne à gauche */
   padding: 0 4rem;
   box-sizing: border-box;
 }
@@ -55,14 +55,49 @@
 .footer-left {
   flex: 1;
   display: flex;
-  justify-content: center;
+  flex-direction: column; /* Empile CV et Copyright */
+  align-items: flex-start;
+  gap: 0.75rem; /* Espace entre le bloc CV et le copyright */
 }
 
 .footer-right {
   flex: 1;
   display: flex;
   flex-direction: column;
+  align-items: flex-end; /* Aligne les contacts à droite sur desktop */
+}
+
+/* --- Bloc Téléchargement CV --- */
+.cv-download {
+  display: flex;
   align-items: center;
+}
+
+.cv-link-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.pointing-hand {
+  font-size: 1.2rem;
+  display: inline-block;
+  animation: point-wiggle 1s ease-in-out infinite;
+}
+
+.download-text {
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  border-bottom: 1px dashed #444;
+  padding-bottom: 2px;
+  transition: all 0.2s ease;
+}
+
+.cv-link-container:hover .download-text {
+  border-bottom-color: #ff7b54;
+  color: #ff7b54;
 }
 
 /* --- Alignement des Contacts --- */
@@ -77,7 +112,6 @@
 .footer-label {
   color: #444;
   font-weight: bold;
-  /* Cette largeur fixe aligne les ":" et les valeurs */
   display: inline-block;
   min-width: 45px; 
   text-align: left;
@@ -97,8 +131,14 @@
 .copyright {
   color: #555;
   font-family: var(--font-mono);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   margin: 0;
+}
+
+/* --- Animations --- */
+@keyframes point-wiggle {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(-6px); } /* Pointe vers le texte */
 }
 
 /* --- Media Queries (Responsive) --- */
@@ -116,16 +156,18 @@
   
   .footer-container {
     flex-direction: column;
-    gap: 2rem;
+    gap: 2.5rem;
+    text-align: center;
+    align-items: center;
+  }
+
+  .footer-left, .footer-right {
+    align-items: center; /* Centre tout sur mobile */
     text-align: center;
   }
 
-  .footer-right {
-    align-items: center; /* Centre le bloc sur mobile */
-  }
-
   .footer-left {
-    order: 2; /* Met le copyright en dessous sur mobile */
+    order: 2; /* Met le bloc gauche (CV + Copyright) en bas sur mobile */
   }
 }
 
@@ -133,7 +175,7 @@
   .color-bar {
     max-width: 200px;
   }
-  .copyright, .contact-item {
+  .copyright, .contact-item, .download-text {
     font-size: 0.8rem;
   }
 }

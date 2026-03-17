@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../assets/styles/Navbar.css';
+import cvPath from '../assets/fichier/cv_fr.pdf'; 
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,7 +18,16 @@ const Navbar: React.FC = () => {
           </div>
         </Link>
       </div>
-
+<div className="contact-item cv-download">
+            <a 
+              href={cvPath} 
+              download="CV_Hassy_Tsihoarana.pdf" 
+              className="footer-link highlight cv-link-container"
+            >
+              <span className="pointing-hand">👉</span>
+              <span className="download-text">Download_CV</span>
+            </a>
+          </div>
       {/* Bouton Burger */}
       <div className={`burger ${isOpen ? 'active' : ''}`} onClick={toggleMenu}>
         <div className="line1"></div>
