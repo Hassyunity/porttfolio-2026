@@ -39,7 +39,7 @@ const Footer: React.FC = () => {
         <div className="footer-right">
           <div className="contact-item">
             <span className="footer-label">tel:</span>
-            <a href="tel:+261348123281" className="footer-link">+261 34 81 232 81</a>
+            <a href="tel:+261348123281" className="footer-link">+261 34 16 020 73</a>
           </div>
           <div className="contact-item">
             <span className="footer-label">mail:</span>
