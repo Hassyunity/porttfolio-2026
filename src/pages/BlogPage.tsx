@@ -23,11 +23,11 @@ interface BlogPost {
 }
 
 interface Comment {
-  id: string;
-  postId: number;
-  author: string;
-  text: string;
-  date: string;
+  id: number;
+  post_id: number; // correspond à l'id de l'article JSON
+  name: string;
+  content: string;
+  created_at: string;
 }
 
 // Initialisation des articles
@@ -35,41 +35,56 @@ const blogPosts: BlogPost[] = [visionIA as BlogPost, securiteAPI as BlogPost];
 
 const BlogPage: React.FC = () => {
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
-  
-  // États pour les commentaires
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState({ author: '', text: '' });
 
-  // Charger les commentaires au montage du composant
-  useEffect(() => {
-    const savedComments = localStorage.getItem('blog_comments');
-    if (savedComments) {
-      setComments(JSON.parse(savedComments));
+  // --- Charger les commentaires depuis l'API ---
+  const fetchComments = async (postId: number) => {
+    try {
+      const res = await fetch(`http://localhost:3000/comments?post_id=${postId}`);
+      const data: Comment[] = await res.json();
+      // Trier les plus récents en premier
+      setComments(data.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()));
+    } catch (err) {
+      console.error('Erreur fetch commentaires:', err);
     }
-  }, []);
+  };
 
-  // Fonction pour ajouter un commentaire
-  const handleAddComment = (e: React.FormEvent) => {
+  useEffect(() => {
+    if (selectedPost) {
+      fetchComments(selectedPost.id);
+    }
+  }, [selectedPost]);
+
+  // --- Ajouter un commentaire via l'API ---
+  const handleAddComment = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedPost || !newComment.author || !newComment.text) return;
 
-    const comment: Comment = {
-      id: Date.now().toString(),
-      postId: selectedPost.id,
-      author: newComment.author,
-      text: newComment.text,
-      date: new Date().toLocaleDateString('fr-FR')
+    const payload = {
+      comment: {
+        name: newComment.author,
+        content: newComment.text,
+        post_id: selectedPost.id
+      }
     };
 
-    const updatedComments = [...comments, comment];
-    setComments(updatedComments);
-    localStorage.setItem('blog_comments', JSON.stringify(updatedComments));
-    setNewComment({ author: '', text: '' });
+    try {
+      await fetch('http://localhost:3000/comments', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      setNewComment({ author: '', text: '' });
+      fetchComments(selectedPost.id); // Recharge les commentaires
+    } catch (err) {
+      console.error('Erreur POST commentaire:', err);
+    }
   };
 
   // --- VUE DÉTAILLÉE ---
   if (selectedPost) {
-    const postComments = comments.filter(c => c.postId === selectedPost.id);
+    const postComments = comments;
 
     return (
       <section id="blog-page" className="section-container detail-view">
@@ -121,10 +136,10 @@ const BlogPage: React.FC = () => {
               postComments.map(c => (
                 <div key={c.id} className="comment-item">
                   <div className="comment-meta">
-                    <span className="comment-author">{c.author}</span>
-                    <span className="comment-date">{c.date}</span>
+                    <span className="comment-author">{c.name}</span>
+                    <span className="comment-date">{new Date(c.created_at).toLocaleDateString('fr-FR')}</span>
                   </div>
-                  <p className="comment-text">{c.text}</p>
+                  <p className="comment-text">{c.content}</p>
                 </div>
               ))
             ) : (
