@@ -1,6 +1,6 @@
 import React from 'react';
 import '../assets/styles/Home.css';
-import myPhoto from '../assets/images/pdp.jpeg';
+import myPhoto from '../assets/images/pdps.png';
 
 const Home: React.FC = () => {
   return (

@@ -28,7 +28,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 2px solid #333;
+  border: 2px solid rgba(255,255,255,0.06);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   overflow: hidden;
 }
@@ -51,7 +51,7 @@
 
 .nav-link {
   text-decoration: none;
-  color: #fff;
+  color: var(--text);
   font-size: 0.9rem;
   position: relative;
   font-family: var(--font-mono);
@@ -96,7 +96,7 @@
 .burger div {
   width: 25px;
   height: 2px;
-  background-color: #fff;
+  background-color: var(--text);
   margin: 5px;
   transition: all 0.3s ease;
 }

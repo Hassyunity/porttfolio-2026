@@ -1,10 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../assets/styles/Navbar.css';
 import cvPath from '../assets/fichier/cv_fr.pdf'; 
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [theme, setTheme] = useState<string>(() => {
+    try {
+      return localStorage.getItem('theme') || 'dark';
+    } catch {
+      return 'dark';
+    }
+  });
+
+  useEffect(() => {
+    try {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+    } catch {
+      // ignore
+    }
+  }, [theme]);
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const closeMenu = () => setIsOpen(false);
@@ -43,6 +59,13 @@ const Navbar: React.FC = () => {
         <a href="/#contact" className="nav-link link-contact" onClick={closeMenu}>./contacts</a>
         <Link to="/blogs" className="nav-link link-blog" onClick={closeMenu}>./blogs</Link>
         <Link to="/album" className="nav-link link-album" onClick={closeMenu}>./albums</Link>
+        <button
+          className="nav-link theme-toggle"
+          onClick={() => setTheme(prev => prev === 'dark' ? 'light' : 'dark')}
+          aria-label="Toggle theme"
+        >
+          {theme === 'dark' ? '🌙' : '☀️'}
+        </button>
       </div>
     </nav>
   );

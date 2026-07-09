@@ -1,11 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
 
 :root {
-  --bg-dark: #0a0a0a;
-  --text-white: #ffffff;
+  --bg: #0a0a0a;
+  --text: #ffffff;
   --text-gray: #888888;
   --accent-orange: #ff7b54;
   --font-mono: 'JetBrains Mono', monospace;
+}
+
+/* Light theme overrides */
+[data-theme="light"] {
+  --bg: #ffffff;
+  --text: #0a0a0a;
+  --text-gray: #666666;
+  --accent-orange: #ff7b54;
 }
 html, body {
   margin: 0;
@@ -21,8 +29,8 @@ a, button, .nav-link, .contact-card {
 }
 
 body {
-  background-color: var(--bg-dark);
-  color: var(--text-white);
+  background-color: var(--bg);
+  color: var(--text);
   font-family: var(--font-mono);
   scroll-behavior: smooth;
 }
