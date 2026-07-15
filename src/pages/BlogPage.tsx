@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../assets/styles/Blog.css';
+import { supabase } from '../lib/supabaseClient';
 
 // Importation des fichiers JSON
 import visionIA from './articles/vision_ia.json';
@@ -29,8 +30,7 @@ interface Comment {
   created_at: string;
 }
 
-// --- URL API dynamique ---
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+const COMMENTS_TABLE = 'comments_blogs_portfolio';
 
 // Initialisation des articles
 const blogPosts: BlogPost[] = [visionIA as BlogPost, securiteAPI as BlogPost];
@@ -39,21 +39,28 @@ const BlogPage: React.FC = () => {
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState({ author: '', text: '' });
+  const [commentsLoading, setCommentsLoading] = useState(false);
+  const [commentsError, setCommentsError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
 
-  // --- Charger les commentaires depuis l'API ---
+  // --- Charger les commentaires depuis Supabase ---
   const fetchComments = async (postId: number) => {
+    setCommentsLoading(true);
+    setCommentsError(null);
     try {
-      const res = await fetch(`${API_URL}/comments?post_id=${postId}`);
-      const data: Comment[] = await res.json();
-      // Trier les plus récents en premier
-      setComments(
-        data.sort(
-          (a, b) =>
-            new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-        )
-      );
+      const { data, error } = await supabase
+        .from(COMMENTS_TABLE)
+        .select('id, post_id, name, content, created_at')
+        .eq('post_id', postId)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setComments(data ?? []);
     } catch (err) {
       console.error('Erreur fetch commentaires:', err);
+      setCommentsError("Impossible de charger les commentaires pour le moment.");
+    } finally {
+      setCommentsLoading(false);
     }
   };
 
@@ -63,29 +70,27 @@ const BlogPage: React.FC = () => {
     }
   }, [selectedPost]);
 
-  // --- Ajouter un commentaire via l'API ---
+  // --- Ajouter un commentaire via Supabase ---
   const handleAddComment = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedPost || !newComment.author || !newComment.text) return;
 
-    const payload = {
-      comment: {
+    setSubmitting(true);
+    try {
+      const { error } = await supabase.from(COMMENTS_TABLE).insert({
         name: newComment.author,
         content: newComment.text,
         post_id: selectedPost.id
-      }
-    };
-
-    try {
-      await fetch(`${API_URL}/comments`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
       });
+
+      if (error) throw error;
       setNewComment({ author: '', text: '' });
-      fetchComments(selectedPost.id); // Recharge les commentaires
+      await fetchComments(selectedPost.id); // Recharge les commentaires
     } catch (err) {
-      console.error('Erreur POST commentaire:', err);
+      console.error('Erreur insertion commentaire:', err);
+      setCommentsError("Le commentaire n'a pas pu être envoyé. Réessayez plus tard.");
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -151,7 +156,11 @@ const BlogPage: React.FC = () => {
           </h3>
 
           <div className="comments-list">
-            {postComments.length > 0 ? (
+            {commentsLoading ? (
+              <p className="comment-empty">Chargement des commentaires...</p>
+            ) : commentsError ? (
+              <p className="comment-empty comment-error">{commentsError}</p>
+            ) : postComments.length > 0 ? (
               postComments.map((c) => (
                 <div key={c.id} className="comment-item">
                   <div className="comment-meta">
@@ -188,8 +197,8 @@ const BlogPage: React.FC = () => {
               rows={4}
               required
             ></textarea>
-            <button type="submit" className="submit-btn">
-              Poster le commentaire
+            <button type="submit" className="submit-btn" disabled={submitting}>
+              {submitting ? 'Envoi...' : 'Poster le commentaire'}
             </button>
           </form>
         </section>

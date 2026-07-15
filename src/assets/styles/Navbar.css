@@ -87,6 +87,86 @@
 .link-blog::after { background-color: #a370f7; }
 .link-album::after { background-color: #ff4d6d; }
 
+/* THEME TOGGLE */
+.theme-toggle {
+  --toggle-w: 50px;
+  --toggle-h: 26px;
+  --toggle-pad: 3px;
+  appearance: none;
+  -webkit-appearance: none;
+  width: var(--toggle-w);
+  height: var(--toggle-h);
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.toggle-track {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 999px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #10101c, #1b1b32);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+  transition: background 0.45s ease, border-color 0.45s ease;
+}
+
+.theme-toggle.is-light .toggle-track {
+  background: linear-gradient(135deg, #6ec6ff, #ffd580);
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.toggle-star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: #fff;
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+
+.toggle-star-1 { top: 6px; left: 8px; }
+.toggle-star-2 { top: 14px; left: 14px; width: 1.5px; height: 1.5px; }
+.toggle-star-3 { top: 8px; left: 20px; }
+
+.theme-toggle.is-light .toggle-star {
+  opacity: 0;
+}
+
+.toggle-thumb {
+  position: absolute;
+  top: var(--toggle-pad);
+  left: var(--toggle-pad);
+  width: calc(var(--toggle-h) - var(--toggle-pad) * 2);
+  height: calc(var(--toggle-h) - var(--toggle-pad) * 2);
+  border-radius: 50%;
+  background: #e8ecf1;
+  color: #1b1b32;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateX(0);
+  transition: transform 0.4s cubic-bezier(0.65, 0, 0.35, 1), background 0.4s ease, color 0.4s ease;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+.theme-toggle.is-light .toggle-thumb {
+  transform: translateX(calc(var(--toggle-w) - var(--toggle-h)));
+  background: #ffb340;
+  color: #7a4400;
+}
+
+.theme-toggle:hover .toggle-track {
+  border-color: rgba(255, 123, 84, 0.5);
+}
+
 .burger {
   display: none;
   cursor: pointer;

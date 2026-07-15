@@ -24,6 +24,13 @@ html, body {
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+.route-loading {
+  padding: 4rem 1rem;
+  text-align: center;
+  color: var(--text-gray);
+  font-family: var(--font-mono);
+}
+
 a, button, .nav-link, .contact-card {
   cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='2.5' fill='red'/%3E%3Cpath d='M16 2v6M16 24v6M2 16h6M24 16h6' stroke='white' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E") 16 16, pointer !important;
 }

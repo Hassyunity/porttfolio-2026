@@ -142,6 +142,10 @@
   margin: 2rem 0;
 }
 
+.comment-error {
+  color: #ff5c5c;
+}
+
 .comment-item {
   background: rgba(255, 255, 255, 0.03);
   padding: 1.5rem;

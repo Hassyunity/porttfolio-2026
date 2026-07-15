@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Sun, Moon } from 'lucide-react';
 import '../assets/styles/Navbar.css';
-import cvPath from '../assets/fichier/cv_fr.pdf'; 
+import cvPath from '../assets/fichier/cv_fr.pdf';
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -60,11 +61,19 @@ const Navbar: React.FC = () => {
         <Link to="/blogs" className="nav-link link-blog" onClick={closeMenu}>./blogs</Link>
         <Link to="/album" className="nav-link link-album" onClick={closeMenu}>./albums</Link>
         <button
-          className="nav-link theme-toggle"
+          className={`theme-toggle ${theme === 'light' ? 'is-light' : ''}`}
           onClick={() => setTheme(prev => prev === 'dark' ? 'light' : 'dark')}
-          aria-label="Toggle theme"
+          aria-label="Basculer le thème clair/sombre"
+          aria-pressed={theme === 'light'}
         >
-          {theme === 'dark' ? '🌙' : '☀️'}
+          <span className="toggle-track">
+            <span className="toggle-star toggle-star-1" />
+            <span className="toggle-star toggle-star-2" />
+            <span className="toggle-star toggle-star-3" />
+            <span className="toggle-thumb">
+              {theme === 'dark' ? <Moon size={13} /> : <Sun size={13} />}
+            </span>
+          </span>
         </button>
       </div>
     </nav>
