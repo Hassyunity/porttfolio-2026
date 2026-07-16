@@ -1,24 +1,60 @@
-/* Grille de projets (2 colonnes) */
+/* Grille de projets */
 .projects-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 20px;
   margin-top: 2rem;
 }
 
 /* Style de la carte */
 .project-card {
+  --rx: 0deg;
+  --ry: 0deg;
+  --mx: 50%;
+  --my: 50%;
+  --lift: 0px;
+  position: relative;
   background: #111; /* Fond très sombre */
   border: 1px solid #222; /* Bordure discrète */
   border-radius: 8px;
   padding: 2rem;
   display: flex;
   flex-direction: column;
-  transition: border-color 0.3s ease;
+  overflow: hidden;
+  transform: perspective(900px) translateY(var(--lift)) rotateX(var(--rx)) rotateY(var(--ry));
+  transition: border-color 0.3s ease, transform 0.15s ease, box-shadow 0.3s ease;
+  will-change: transform;
 }
 
-.project-card:hover {
-  border-color: #333;
+/* Halo lumineux qui suit le curseur */
+.project-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--mx) var(--my), rgba(255, 123, 84, 0.16), transparent 55%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.project-card:hover::before {
+  opacity: 1;
+}
+
+/* Effet au survol (souris uniquement, pas de sticky-hover sur mobile) */
+@media (hover: hover) and (pointer: fine) {
+  .project-card:hover {
+    --lift: -4px;
+    border-color: #333;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-card {
+    transform: none !important;
+    transition: border-color 0.3s ease;
+  }
 }
 
 /* Header de la carte : Titre + Badge */
@@ -97,34 +133,6 @@
   transition: transform 0.2s;
 }
 
-/* Responsive mobile */
-/* Grille de projets (2 colonnes par défaut sur desktop) */
-.projects-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 20px;
-  margin-top: 2rem;
-}
-
-/* Style de la carte */
-.project-card {
-  background: #111;
-  border: 1px solid #222;
-  border-radius: 8px;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  transition: border-color 0.3s ease, transform 0.2s ease;
-}
-
-/* Effet au survol (désactivé sur mobile pour éviter les bugs de clic) */
-@media ( some-pointer: fine ) {
-  .project-card:hover {
-    border-color: #333;
-    transform: translateY(-2px);
-  }
-}
-
 /* --- RESPONSIVE MOBILE --- */
 @media (max-width: 768px) {
   .projects-grid {
@@ -163,7 +171,7 @@
   .projects-grid {
     min-width: 100%;
   }
-  
+
   .card-header {
     flex-direction: column; /* Titre au dessus du badge si pas assez de place */
     gap: 10px;

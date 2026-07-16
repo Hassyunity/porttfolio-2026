@@ -63,6 +63,21 @@
   border-bottom: 1px solid #333;
   margin-left: 15px;
   height: 12px;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.6s ease;
+  transition-delay: var(--reveal-delay, 0s);
+}
+
+.reveal-section.is-visible .line {
+  transform: scaleX(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .line {
+    transition: none;
+    transform: none;
+  }
 }
 
 /* Bloc Focus */

@@ -1,8 +1,10 @@
 import React from 'react';
 import { Mail, Github, Linkedin, Monitor } from 'lucide-react';
 import '../assets/styles/Contact.css';
+import { useReveal } from '../hooks/useReveal';
 
 const Contact: React.FC = () => {
+  const { ref, isVisible } = useReveal<HTMLElement>();
   const contactMethods = [
     {
       label: "email",
@@ -32,16 +34,27 @@ const Contact: React.FC = () => {
   ];
 
   return (
-    <section id="contact" className="section-container">
+    <section
+      id="contact"
+      ref={ref}
+      className={`section-container reveal-section ${isVisible ? 'is-visible' : ''}`}
+    >
       <h2 className="section-title"><span className="path">~/</span>contact</h2>
-      
+
       <p className="contact-intro">
         <span className="arrow-prompt">&gt;</span> N'hésitez pas à me contacter :
       </p>
 
       <div className="contact-grid">
         {contactMethods.map((method, index) => (
-          <a key={index} href={method.link} target="_blank" rel="noopener noreferrer" className="contact-card">
+          <a
+            key={index}
+            href={method.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="contact-card reveal-item"
+            style={{ '--reveal-delay': `${index * 0.08}s` } as React.CSSProperties}
+          >
             <div className="contact-header">
               {method.icon}
               <span className="contact-label">{method.label}</span>

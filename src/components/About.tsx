@@ -1,18 +1,24 @@
 import React from 'react';
 import '../assets/styles/About.css';
+import { useReveal } from '../hooks/useReveal';
 
 const About: React.FC = () => {
+  const { ref, isVisible } = useReveal<HTMLElement>();
   const skills = [
-    "Ruby on Rails", "TypeScript", "React", "Node.js", 
+    "Ruby on Rails", "TypeScript", "React", "Node.js",
     "n8n", "Docker", "PostgreSQL", "deploiement"
   ];
 
   return (
-    <section id="about" className="section-container">
+    <section
+      id="about"
+      ref={ref}
+      className={`section-container reveal-section ${isVisible ? 'is-visible' : ''}`}
+    >
       <h2 className="section-title"><span className="path">~/</span>A propos</h2>
-      
+
       <div className="about-content">
-        <div className="about-section">
+        <div className="about-section reveal-item" style={{ '--reveal-delay': '0s' } as React.CSSProperties}>
           <p className="comment">
             <span className="hashtag">#</span> Qui je suis ?</p>
           <p>
@@ -24,7 +30,7 @@ const About: React.FC = () => {
           </p>
         </div>
 
-        <div className="about-section">
+        <div className="about-section reveal-item" style={{ '--reveal-delay': '0.12s' } as React.CSSProperties}>
           <p className="comment">
             <span className="hashtag">#</span> Ce que je fais
           </p>
@@ -36,12 +42,12 @@ const About: React.FC = () => {
             du développement aux déploiements <strong>Cloud</strong>, afin de construire des plateformes robustes,
             évolutives et performantes.
             Au-delà du développement, j’intègre des systèmes d’automatisation avec <strong>n8n</strong> et
-            j’explore les <strong>fonctionnalités IA</strong> pour optimiser les processus métiers et maximiser 
+            j’explore les <strong>fonctionnalités IA</strong> pour optimiser les processus métiers et maximiser
             la valeur délivrée.
           </p>
         </div>
 
-        <div className="about-section">
+        <div className="about-section reveal-item" style={{ '--reveal-delay': '0.24s' } as React.CSSProperties}>
           <p className="comment">
             <span className="hashtag">#</span> Mon approche
           </p>
@@ -50,8 +56,12 @@ const About: React.FC = () => {
 
         {/* Grille de tags identique à l'image */}
         <div className="about-grid">
-          {skills.map((skill) => (
-            <div key={skill} className="skill-tag">
+          {skills.map((skill, i) => (
+            <div
+              key={skill}
+              className="skill-tag reveal-item"
+              style={{ '--reveal-delay': `${0.3 + i * 0.05}s` } as React.CSSProperties}
+            >
               {skill}
             </div>
           ))}

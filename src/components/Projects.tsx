@@ -1,5 +1,6 @@
 import React from 'react';
 import '../assets/styles/Projects.css';
+import { useReveal } from '../hooks/useReveal';
 
 interface Project {
   title: string;
@@ -12,6 +13,27 @@ interface Project {
 }
 
 const Projects: React.FC = () => {
+  const { ref, isVisible } = useReveal<HTMLElement>();
+
+  const handleTiltMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const rotateX = ((y - rect.height / 2) / (rect.height / 2)) * -6;
+    const rotateY = ((x - rect.width / 2) / (rect.width / 2)) * 6;
+    card.style.setProperty('--rx', `${rotateX}deg`);
+    card.style.setProperty('--ry', `${rotateY}deg`);
+    card.style.setProperty('--mx', `${(x / rect.width) * 100}%`);
+    card.style.setProperty('--my', `${(y / rect.height) * 100}%`);
+  };
+
+  const handleTiltLeave = (e: React.MouseEvent<HTMLDivElement>) => {
+    const card = e.currentTarget;
+    card.style.setProperty('--rx', '0deg');
+    card.style.setProperty('--ry', '0deg');
+  };
+
   const projectList: Project[] = [
     {
       title: "Pulse by Ingedata",
@@ -66,12 +88,22 @@ const Projects: React.FC = () => {
   ];
 
   return (
-    <section id="projects" className="section-container">
+    <section
+      id="projects"
+      ref={ref}
+      className={`section-container reveal-section ${isVisible ? 'is-visible' : ''}`}
+    >
       <h2 className="section-title"><span className="path">~/</span>projets</h2>
-      
+
       <div className="projects-grid">
         {projectList.map((project, index) => (
-          <div key={index} className="project-card">
+          <div
+            key={index}
+            className="project-card reveal-item"
+            style={{ '--reveal-delay': `${index * 0.08}s` } as React.CSSProperties}
+            onMouseMove={handleTiltMove}
+            onMouseLeave={handleTiltLeave}
+          >
             <div className="card-header">
               <h3 className="project-title">{project.title}</h3>
               <span className={`status-badge ${project.status}`}>

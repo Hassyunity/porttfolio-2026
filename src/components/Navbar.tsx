@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Sun, Moon } from 'lucide-react';
 import '../assets/styles/Navbar.css';
 import cvPath from '../assets/fichier/cv_fr.pdf';
 
+const SECTION_IDS = ['about', 'skills', 'projects', 'contact'];
+
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('');
+  const location = useLocation();
   const [theme, setTheme] = useState<string>(() => {
     try {
       return localStorage.getItem('theme') || 'dark';
@@ -22,6 +26,33 @@ const Navbar: React.FC = () => {
       // ignore
     }
   }, [theme]);
+
+  const isHome = location.pathname === '/';
+
+  // Nav "spy" : surligne le lien de la section actuellement visible à l'écran
+  useEffect(() => {
+    if (!isHome) return;
+
+    const sections = SECTION_IDS
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => el !== null);
+
+    if (sections.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: '-40% 0px -55% 0px', threshold: 0 }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, [isHome]);
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const closeMenu = () => setIsOpen(false);
@@ -54,10 +85,10 @@ const Navbar: React.FC = () => {
 
       {/* Liens de navigation */}
       <div className={`nav-links ${isOpen ? 'nav-active' : ''}`}>
-        <a href="/#about" className="nav-link link-about" onClick={closeMenu}>./A propos</a>
-        <a href="/#skills" className="nav-link link-skills" onClick={closeMenu}>./Expertises</a>
-        <a href="/#projects" className="nav-link link-projects" onClick={closeMenu}>./projects</a>
-        <a href="/#contact" className="nav-link link-contact" onClick={closeMenu}>./contacts</a>
+        <a href="/#about" className={`nav-link link-about ${isHome && activeSection === 'about' ? 'active' : ''}`} onClick={closeMenu}>./A propos</a>
+        <a href="/#skills" className={`nav-link link-skills ${isHome && activeSection === 'skills' ? 'active' : ''}`} onClick={closeMenu}>./Expertises</a>
+        <a href="/#projects" className={`nav-link link-projects ${isHome && activeSection === 'projects' ? 'active' : ''}`} onClick={closeMenu}>./projects</a>
+        <a href="/#contact" className={`nav-link link-contact ${isHome && activeSection === 'contact' ? 'active' : ''}`} onClick={closeMenu}>./contacts</a>
         <Link to="/blogs" className="nav-link link-blog" onClick={closeMenu}>./blogs</Link>
         <Link to="/album" className="nav-link link-album" onClick={closeMenu}>./albums</Link>
         <button

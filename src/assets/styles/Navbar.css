@@ -87,6 +87,19 @@
 .link-blog::after { background-color: #a370f7; }
 .link-album::after { background-color: #ff4d6d; }
 
+/* Nav "spy" : lien de la section active au scroll */
+.link-about.active { color: #ff7b54; }
+.link-skills.active { color: #ffcc33; }
+.link-projects.active { color: #44cc44; }
+.link-contact.active { color: #4488ff; }
+
+.link-about.active::after,
+.link-skills.active::after,
+.link-projects.active::after,
+.link-contact.active::after {
+  width: 100%;
+}
+
 /* THEME TOGGLE */
 .theme-toggle {
   --toggle-w: 50px;

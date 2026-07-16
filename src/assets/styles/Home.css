@@ -148,22 +148,53 @@
   width: 320px;
   height: 320px;
   border-radius: 50%;
-  overflow: hidden;
   position: relative;
-  transition: border-color 0.3s ease, transform 0.3s ease;
+  perspective: 1200px;
+  transition: transform 0.3s ease;
   background: #111;
 }
 
 .photo-circle:hover {
-  border-color: var(--accent-orange); /* Rappel de ta couleur accent */
   transform: scale(1.02);
 }
 
-.photo-circle img {
+.photo-flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+
+.photo-circle:hover .photo-flip-inner {
+  transform: rotateY(180deg);
+}
+
+.photo-face {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.photo-face-back {
+  transform: rotateY(180deg);
+}
+
+.photo-face img {
   width: 100%;
   height: 100%;
   object-fit: cover; /* Important pour que la photo ne soit pas déformée */
   filter: grayscale(20%); /* Optionnel : petit effet gris pour le style */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photo-flip-inner {
+    transition: none;
+  }
 }
 
 @media (max-width: 1024px) {

@@ -1,6 +1,7 @@
 import React from 'react';
 import '../assets/styles/Home.css';
 import myPhoto from '../assets/images/pdps.png';
+import myOffice from '../assets/images/bureau.jpeg';
 
 const Home: React.FC = () => {
   return (
@@ -35,7 +36,14 @@ const Home: React.FC = () => {
         {/* Section Photo */}
         <div className="hero-image-container">
           <div className="photo-circle">
-            <img src={myPhoto} alt="Hassy Tsihoarana" />
+            <div className="photo-flip-inner">
+              <div className="photo-face photo-face-front">
+                <img src={myPhoto} alt="Hassy Tsihoarana" />
+              </div>
+              <div className="photo-face photo-face-back">
+                <img src={myOffice} alt="Espace de travail de Hassy Tsihoarana" />
+              </div>
+            </div>
           </div>
         </div>
       </div>
