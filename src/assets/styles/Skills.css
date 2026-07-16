@@ -45,6 +45,10 @@
   font-family: var(--font-mono);
 }
 
+.skill-cat:last-child {
+  grid-column: 1 / -1;
+}
+
 .cat-title {
   color: #888;
   font-size: 1.4rem;

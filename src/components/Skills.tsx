@@ -8,7 +8,8 @@ const Skills: React.FC = () => {
     { name: "Frontend", list: ["TypeScript", "React", "Styles"] },
     { name: "Backend", list: ["Ruby on Rails", "Node.js", "PostgreSQL"] },
     { name: "DevOps", list: ["Git", "Docker", "Nginx", "CI/CD", "Cloud"] },
-    { name: "Environnement de travail", list: ["VS Code", "Postman", "PostgreSQL", "Figma", "GitHub", "Jira", "ClickUp"] }
+    { name: "Environnement de travail", list: ["VS Code", "Postman", "PostgreSQL", "Figma", "GitHub", "Jira", "ClickUp", "Trello"] },
+    { name: "SaaS & CRM sur mesure", list: ["n8n", "Make (Integromat)", "API Stripe", "Signature électronique (API)", "CRM personnalisé"] }
   ];
 
   let itemIndex = 0;
