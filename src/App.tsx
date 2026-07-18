@@ -8,6 +8,7 @@ import Projects from './components/Projects';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import WhatsAppButton from './components/WhatsAppButton';
+import ChatWidget from './components/ChatWidget';
 import './assets/styles/global.css';
 
 const BlogPage = lazy(() => import('./pages/BlogPage'));
@@ -38,6 +39,7 @@ function App() {
         </Suspense>
         <Footer />
         <WhatsAppButton />
+        <ChatWidget />
       </div>
     </Router>
   );
