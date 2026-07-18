@@ -1,6 +1,7 @@
 import React from 'react';
 import '../assets/styles/Projects.css';
 import { useReveal } from '../hooks/useReveal';
+import SectionBackdrop from './SectionBackdrop';
 
 interface Project {
   title: string;
@@ -93,6 +94,7 @@ const Projects: React.FC = () => {
       ref={ref}
       className={`section-container reveal-section ${isVisible ? 'is-visible' : ''}`}
     >
+      <SectionBackdrop variant="projects" />
       <h2 className="section-title"><span className="path">~/</span>projets</h2>
 
       <div className="projects-grid">
@@ -110,15 +112,15 @@ const Projects: React.FC = () => {
                 {project.status}
               </span>
             </div>
-            
+
             <p className="project-desc">{project.description}</p>
-            
+
             <div className="project-tags">
               {project.tags.map(tag => (
                 <span key={tag} className="tag">{tag}</span>
               ))}
             </div>
-            
+
             <div className="project-footer">
               {project.link === "#" || project.isPrivate ? (
                 <span className="private-label">

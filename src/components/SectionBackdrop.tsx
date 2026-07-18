@@ -1,0 +1,45 @@
+import React from 'react';
+import '../assets/styles/SectionBackdrop.css';
+
+type BackdropVariant = 'about' | 'skills' | 'projects' | 'contact';
+
+interface SectionBackdropProps {
+  variant: BackdropVariant;
+}
+
+const SNIPPETS: Record<BackdropVariant, string> = {
+  about: `class Developer {
+  name = "Hassy Tsihoarana";
+  stack = ["Rails", "React", "TS"];
+
+  mission() {
+    return "build useful things";
+  }
+}`,
+  skills: `$ whoami
+> fullstack_developer
+
+$ skills --list
+> [rails, react, docker, n8n, ...]`,
+  projects: `$ git log --oneline
+> feat: ship altea-flow
+> feat: launch auto-decisions
+> fix: optimize db queries
+
+$ git push origin main`,
+  contact: `POST /contact HTTP/1.1
+Host: hassy.dev
+
+{
+  "status": "available",
+  "response_time": "< 24h"
+}`,
+};
+
+const SectionBackdrop: React.FC<SectionBackdropProps> = ({ variant }) => (
+  <pre className={`section-backdrop section-backdrop-${variant}`} aria-hidden="true">
+    {SNIPPETS[variant]}
+  </pre>
+);
+
+export default SectionBackdrop;

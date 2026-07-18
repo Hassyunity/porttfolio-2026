@@ -1,6 +1,7 @@
 import { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import AnimatedBackground from './components/AnimatedBackground';
 import Home from './components/Home';
 import About from './components/About';
 import Skills from './components/Skills';
@@ -29,6 +30,7 @@ function App() {
   return (
     <Router>
       <div className="App">
+        <AnimatedBackground />
         <Navbar />
         <Suspense fallback={<div className="route-loading">Chargement...</div>}>
           <Routes>

@@ -11,21 +11,21 @@ const Home: React.FC = () => {
           <h1>Bienvenue sur mon portfolio</h1>
           <h1><span className="chevron">{">"}</span> Hassy Tsihoarana -</h1>
           <h1 className="highlight">Développeur Full-stack<span className="cursor"></span></h1>
-          
+
           <div className="hero-sub">
             <p><span className="dollar">$</span> Code, Build, Deploy</p>
             <p className="desc">J'aime explorer de nouvelles idées et technos directement dans mes projets.</p>
           </div>
 
           <div className="hero-btns">
-            <button 
-              className="btn-light" 
+            <button
+              className="btn-light"
               onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
             >
               Voir les projets
             </button>
-            <button 
-              className="btn-dark" 
+            <button
+              className="btn-dark"
               onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
             >
               Me contacter

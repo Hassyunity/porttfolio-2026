@@ -1,8 +1,8 @@
 /* Grille de projets */
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
   margin-top: 2rem;
 }
 
@@ -14,10 +14,10 @@
   --my: 50%;
   --lift: 0px;
   position: relative;
-  background: #111; /* Fond très sombre */
+  background: #111; /* Fond opaque, uni */
   border: 1px solid #222; /* Bordure discrète */
   border-radius: 8px;
-  padding: 2rem;
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -31,7 +31,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at var(--mx) var(--my), rgba(255, 123, 84, 0.16), transparent 55%);
+  background: radial-gradient(circle at var(--mx) var(--my), rgba(255, 123, 84, 0.12), transparent 55%);
   opacity: 0;
   transition: opacity 0.3s ease;
   pointer-events: none;
@@ -62,12 +62,12 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .project-title {
   color: #fff;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   font-weight: bold;
 }
 
@@ -95,18 +95,22 @@
 /* Description */
 .project-desc {
   color: #aaa;
-  font-size: 1rem;
-  line-height: 1.5;
-  margin-bottom: 2rem;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  margin-bottom: 1.25rem;
   flex-grow: 1;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
 }
 
 /* Tags technos */
 .project-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 1.5rem;
+  gap: 6px;
+  margin-bottom: 1rem;
 }
 
 .tag {
@@ -141,16 +145,11 @@
   }
 
   .project-card {
-    padding: 1.5rem; /* Réduit l'espace interne sur mobile */
+    padding: 1.25rem; /* Réduit l'espace interne sur mobile */
   }
 
   .project-title {
-    font-size: 1.2rem; /* Texte un peu plus petit */
-  }
-
-  .project-desc {
-    font-size: 0.9rem;
-    margin-bottom: 1.5rem;
+    font-size: 1.1rem; /* Texte un peu plus petit */
   }
 
   .tag {

@@ -1,6 +1,7 @@
 import React from 'react';
 import '../assets/styles/Skills.css';
 import { useReveal } from '../hooks/useReveal';
+import SectionBackdrop from './SectionBackdrop';
 
 const Skills: React.FC = () => {
   const { ref, isVisible } = useReveal<HTMLElement>();
@@ -20,6 +21,7 @@ const Skills: React.FC = () => {
       ref={ref}
       className={`section-container reveal-section ${isVisible ? 'is-visible' : ''}`}
     >
+      <SectionBackdrop variant="skills" />
       <h2 className="section-title"><span className="path">~/</span>Expertises</h2>
 
       <div className="skills-grid">

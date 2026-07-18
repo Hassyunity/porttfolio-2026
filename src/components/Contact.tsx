@@ -2,6 +2,7 @@ import React from 'react';
 import { Mail, Github, Linkedin, Monitor } from 'lucide-react';
 import '../assets/styles/Contact.css';
 import { useReveal } from '../hooks/useReveal';
+import SectionBackdrop from './SectionBackdrop';
 
 const Contact: React.FC = () => {
   const { ref, isVisible } = useReveal<HTMLElement>();
@@ -39,6 +40,7 @@ const Contact: React.FC = () => {
       ref={ref}
       className={`section-container reveal-section ${isVisible ? 'is-visible' : ''}`}
     >
+      <SectionBackdrop variant="contact" />
       <h2 className="section-title"><span className="path">~/</span>contact</h2>
 
       <p className="contact-intro">

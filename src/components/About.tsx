@@ -1,6 +1,7 @@
 import React from 'react';
 import '../assets/styles/About.css';
 import { useReveal } from '../hooks/useReveal';
+import SectionBackdrop from './SectionBackdrop';
 
 const About: React.FC = () => {
   const { ref, isVisible } = useReveal<HTMLElement>();
@@ -15,6 +16,7 @@ const About: React.FC = () => {
       ref={ref}
       className={`section-container reveal-section ${isVisible ? 'is-visible' : ''}`}
     >
+      <SectionBackdrop variant="about" />
       <h2 className="section-title"><span className="path">~/</span>A propos</h2>
 
       <div className="about-content">
