@@ -96,7 +96,6 @@ const About: React.FC = () => {
 
           <div className="side-location reveal-item" style={{ '--reveal-delay': '0.3s' } as React.CSSProperties}>
             <span>BASE : MADAGASCAR</span>
-            <span className="side-location-tag">DISPONIBLE</span>
           </div>
         </div>
       </div>

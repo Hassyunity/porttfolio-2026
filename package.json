@@ -10,7 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@flaticon/flaticon-uicons": "^3.3.1",
     "@supabase/supabase-js": "^2.110.6",
     "lucide-react": "^0.577.0",
     "react": "^19.2.0",

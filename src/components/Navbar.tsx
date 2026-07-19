@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Sun, Moon } from 'lucide-react';
 import '../assets/styles/Navbar.css';
 import cvPath from '../assets/fichier/cv_fr.pdf';
 
@@ -10,22 +9,6 @@ const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('');
   const location = useLocation();
-  const [theme, setTheme] = useState<string>(() => {
-    try {
-      return localStorage.getItem('theme') || 'dark';
-    } catch {
-      return 'dark';
-    }
-  });
-
-  useEffect(() => {
-    try {
-      document.documentElement.setAttribute('data-theme', theme);
-      localStorage.setItem('theme', theme);
-    } catch {
-      // ignore
-    }
-  }, [theme]);
 
   const isHome = location.pathname === '/';
 
@@ -93,21 +76,6 @@ const Navbar: React.FC = () => {
         <a href="/#contact" className={`nav-link link-contact ${isHome && activeSection === 'contact' ? 'active' : ''}`} onClick={closeMenu}>CONTACT</a>
         <Link to="/blogs" className="nav-link link-blog" onClick={closeMenu}>BLOGS</Link>
         <Link to="/album" className="nav-link link-album" onClick={closeMenu}>ALBUMS</Link>
-        <button
-          className={`theme-toggle ${theme === 'light' ? 'is-light' : ''}`}
-          onClick={() => setTheme(prev => prev === 'dark' ? 'light' : 'dark')}
-          aria-label="Basculer le thème clair/sombre"
-          aria-pressed={theme === 'light'}
-        >
-          <span className="toggle-track">
-            <span className="toggle-star toggle-star-1" />
-            <span className="toggle-star toggle-star-2" />
-            <span className="toggle-star toggle-star-3" />
-            <span className="toggle-thumb">
-              {theme === 'dark' ? <Moon size={13} /> : <Sun size={13} />}
-            </span>
-          </span>
-        </button>
       </div>
     </nav>
   );

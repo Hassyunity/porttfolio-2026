@@ -1,7 +1,7 @@
 import React from 'react';
 import '../assets/styles/Home.css';
-import myPhoto from '../assets/images/pdps.png';
-import myOffice from '../assets/images/bureau.jpeg';
+import myPhoto from '../assets/images/pdps.jpg';
+import myOffice from '../assets/images/bureau.jpg';
 
 const Home: React.FC = () => {
   return (
@@ -10,11 +10,8 @@ const Home: React.FC = () => {
         <div className="hero-content">
           <div className="hero-status">
             <span className="status-dot" />
-            SYSTÈME EN LIGNE // PRÊT POUR NOUVELLES MISSIONS
+            DÉVELOPPEUR FULL-STACK &amp; CTO
           </div>
-
-          <p className="hero-role">DÉVELOPPEUR FULL-STACK &amp; CTO</p>
-
           <h1 className="hero-name">
             <span>HASSY</span>
             <span className="hero-name-accent">TSIHOARANA</span>

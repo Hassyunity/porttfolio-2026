@@ -1,33 +1,3 @@
-/* Container principal */
-.section-container {
-  position: relative;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 8rem 4rem;
-  box-sizing: border-box;
-}
-
-/* La ligne verticale adaptative */
-.section-container::before {
-  content: "";
-  position: absolute;
-  left: 20px; /* Position par défaut pour mobile */
-  top: 10%;
-  height: 85%;
-  width: 4px;
-  background-color: var(--accent-cyan); 
-  border-radius: 2px;
-  z-index: 1;
-}
-
-/* Positionnement de la ligne pour les grands écrans */
-@media (min-width: 1200px) {
-  .section-container::before {
-    /* Calcul pour coller au bord gauche de l'écran par rapport au centre */
-    left: calc(-1 * (100vw - 1100px) / 2 + 30px); 
-  }
-}
-
 /* Grille des compétences */
 .skills-grid {
   display: grid;
@@ -94,7 +64,7 @@
 
 .focus-box {
   border: 1px solid #222;
-  background: rgba(255, 255, 255, 0.02);
+  background: #111;
   padding: 2rem;
   width: 100%;
   max-width: 800px;
@@ -123,32 +93,13 @@
 
 /* Tablettes et Laptops moyens */
 @media (max-width: 768px) {
-  .section-container {
-    padding: 5rem 1.5rem 5rem 3.5rem; /* Augmente le padding gauche pour la ligne */
-  }
-
   .skills-grid {
     grid-template-columns: 1fr;
     row-gap: 2.5rem;
   }
-
-  /* Ajustement de la ligne jaune pour mobile */
-  .section-container::before {
-    left: 20px;
-    height: 90%;
-    top: 5%;
-  }
 }
 
 @media (max-width: 480px) {
-  .section-container {
-    padding: 4rem 1rem 4rem 2.5rem; /* On réduit encore pour les petits écrans */
-  }
-
-  .section-container::before {
-    left: 12px; /* Rapproche la ligne du bord */
-  }
-
   .focus-box {
     padding: 1.2rem;
     width: calc(100% - 10px); /* S'assure que la box ne touche pas le bord droit */

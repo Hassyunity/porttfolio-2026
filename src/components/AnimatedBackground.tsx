@@ -73,16 +73,6 @@ const AnimatedBackground: React.FC = () => {
 
   return (
     <div className="animated-bg" ref={bgRef} aria-hidden="true">
-      <div className="bg-orb-wrap bg-orb-wrap-orange">
-        <div className="bg-orb bg-orb-orange" />
-      </div>
-      <div className="bg-orb-wrap bg-orb-wrap-blue">
-        <div className="bg-orb bg-orb-blue" />
-      </div>
-      <div className="bg-orb-wrap bg-orb-wrap-purple">
-        <div className="bg-orb bg-orb-purple" />
-      </div>
-
       {CODE_SYMBOLS.map((s, i) => (
         <div
           key={`sym-${i}`}

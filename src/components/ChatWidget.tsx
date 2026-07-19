@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { X, Send } from 'lucide-react';
-import '@flaticon/flaticon-uicons/css/thin/rounded.css';
+import { X, Send, Bot } from 'lucide-react';
 import '../assets/styles/ChatWidget.css';
 import { knowledgeBase, findTopic, FALLBACK_ANSWER, type KnowledgeTopic } from '../data/hassyKnowledge';
 
@@ -11,8 +10,9 @@ interface ChatMessage {
 
 const ChatWidget: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [showGreeting, setShowGreeting] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
-    { role: 'assistant', content: "Salut 👋 Envie d'en savoir plus sur Hassy ? Posez votre question, ou choisissez un sujet ci-dessous." }
+    { role: 'assistant', content: "Bonjour 👋 Je suis Altea, l'assistant de Hassy. Envie d'en savoir plus sur son parcours ? Posez votre question, ou choisissez un sujet ci-dessous." }
   ]);
   const [askedTopicIds, setAskedTopicIds] = useState<Set<string>>(new Set());
   const [input, setInput] = useState('');
@@ -21,6 +21,21 @@ const ChatWidget: React.FC = () => {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isOpen]);
+
+  // Bulle de salutation qui apparaît automatiquement, puis se referme si ignorée
+  useEffect(() => {
+    const showTimer = window.setTimeout(() => setShowGreeting(true), 1500);
+    const hideTimer = window.setTimeout(() => setShowGreeting(false), 10000);
+    return () => {
+      window.clearTimeout(showTimer);
+      window.clearTimeout(hideTimer);
+    };
+  }, []);
+
+  const toggleChat = () => {
+    setIsOpen((prev) => !prev);
+    setShowGreeting(false);
+  };
 
   const remainingTopics = knowledgeBase.filter((topic) => !askedTopicIds.has(topic.id));
 
@@ -51,7 +66,7 @@ const ChatWidget: React.FC = () => {
       {isOpen && (
         <div className="chat-panel">
           <div className="chat-header">
-            <span className="chat-title">// interview_bot</span>
+            <span className="chat-title">// altea_chat</span>
             <button className="chat-close" onClick={() => setIsOpen(false)} aria-label="Fermer le chat">
               <X size={18} />
             </button>
@@ -91,12 +106,28 @@ const ChatWidget: React.FC = () => {
         </div>
       )}
 
+      {!isOpen && showGreeting && (
+        <div className="chat-greeting" onClick={toggleChat} role="button" tabIndex={0}>
+          <button
+            className="chat-greeting-close"
+            onClick={(e) => { e.stopPropagation(); setShowGreeting(false); }}
+            aria-label="Ignorer"
+          >
+            <X size={12} />
+          </button>
+          <div className="chat-greeting-body">
+            <span className="chat-greeting-avatar"><Bot size={16} /></span>
+            <p>👋 Salut, je suis <strong>Altea</strong> ! Une question sur le parcours de Hassy ?</p>
+          </div>
+        </div>
+      )}
+
       <button
         className="chat-toggle"
-        onClick={() => setIsOpen((prev) => !prev)}
-        aria-label={isOpen ? 'Fermer le chat' : 'Ouvrir le chat'}
+        onClick={toggleChat}
+        aria-label={isOpen ? 'Fermer le chat' : 'Ouvrir le chat avec Altea'}
       >
-        {isOpen ? <X size={24} /> : <i className="fi fi-tr-user-robot chat-toggle-icon" aria-hidden="true" />}
+        {isOpen ? <X size={24} /> : <Bot size={26} aria-hidden="true" />}
       </button>
     </div>
   );

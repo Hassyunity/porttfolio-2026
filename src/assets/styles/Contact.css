@@ -59,7 +59,6 @@
 
 .contact-card:hover {
   border-color: var(--accent-cyan);
-  background: rgba(61, 219, 217, 0.05);
   transform: translateY(-2px);
 }
 

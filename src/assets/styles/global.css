@@ -10,15 +10,6 @@
   --font-mono: 'JetBrains Mono', monospace;
 }
 
-/* Light theme overrides */
-[data-theme="light"] {
-  --bg: #ffffff;
-  --text: #0a0a0a;
-  --text-gray: #666666;
-  --accent-lime: #7fae1f;
-  --accent-magenta: #d6127a;
-  --accent-cyan: #0d9c9a;
-}
 html, body {
   margin: 0;
   padding: 0;
@@ -80,19 +71,19 @@ body {
 }
 
 .section-container {
+  position: relative;
   padding: 8rem 4rem;
   max-width: 1200px;
   margin-left: 10%;
   margin-right: 10%;
-
   min-height: 100vh;
 }
 
 .section-container::before {
   content: "";
   position: absolute;
-  top: 0; 
-  bottom: 100px; 
+  top: 0;
+  bottom: 100px;
   width: 4px;
   border-radius: 2px;
   left: calc(-1 * (100vw - 1100px) / 2 + 20px);
@@ -112,10 +103,6 @@ body {
   flex: 1;
   height: 1px;
   background: linear-gradient(90deg, rgba(255, 255, 255, 0.18), transparent);
-}
-
-[data-theme="light"] .title-rule {
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0.15), transparent);
 }
 
 .title-index {
@@ -138,6 +125,24 @@ body {
   .section-container::before {
     left: 15px;
     bottom: 50px;
+  }
+}
+
+@media (max-width: 900px) {
+  .section-container {
+    margin-left: 0;
+    margin-right: 0;
+    padding: 6rem 1.75rem 6rem 3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-container {
+    padding: 5rem 1rem 5rem 2.25rem;
+  }
+
+  .section-container::before {
+    left: 8px;
   }
 }
 

@@ -1,20 +1,20 @@
 import React from 'react';
-import '../assets/styles/Album.css'; // Crée ce fichier pour le style
-import alteaImg from '../assets/images/altea.png';
-import leader from '../assets/images/leader.png';
+import '../assets/styles/Album.css';
+import alteaImg from '../assets/images/altea.jpg';
+import leader from '../assets/images/leader.jpg';
 import hmax from '../assets/images/h-max.png';
-import auto from '../assets/images/auto.png';
+import auto from '../assets/images/auto.jpg';
 import n8n from '../assets/images/n8n.png';
-import Bmray from '../assets/images/b-mray.png';
+import Bmray from '../assets/images/b-mray.jpg';
 
 const Album: React.FC = () => {
   const photos = [
-    { id: 1, url: alteaImg, title: 'altea flow' },
+    { id: 1, url: alteaImg, title: 'Altea Flow' },
     { id: 2, url: auto, title: 'Auto | DECISIONS' },
-    { id: 3, url: leader, title: 'Leader' },
+    { id: 3, url: leader, title: 'Bazar Naka' },
     { id: 4, url: hmax, title: 'H-Max' },
     { id: 5, url: n8n, title: 'n8n' },
-    { id: 6, url: Bmray, title: 'B-Mray' }
+    { id: 6, url: Bmray, title: 'Bazar Naka' }
   ];
 
   return (

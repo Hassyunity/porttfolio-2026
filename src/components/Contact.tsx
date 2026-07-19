@@ -48,7 +48,6 @@ const Contact: React.FC = () => {
       </h2>
 
       <div className="contact-cta">
-        <span className="contact-cta-label">DISPONIBLE POUR DE NOUVEAUX PROJETS</span>
         <h3 className="contact-cta-heading">
           <span>CONSTRUISONS</span>
           <span className="contact-cta-accent">ENSEMBLE</span>
@@ -80,7 +79,7 @@ const Contact: React.FC = () => {
 
       <div className="contact-status">
         <span className="status-dot" />
-        STATUT : DISPONIBLE // LOCALISATION : MADAGASCAR
+         LOCALISATION : MADAGASCAR
       </div>
     </section>
   );
