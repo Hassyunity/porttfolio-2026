@@ -41,11 +41,22 @@ const Contact: React.FC = () => {
       className={`section-container reveal-section ${isVisible ? 'is-visible' : ''}`}
     >
       <SectionBackdrop variant="contact" />
-      <h2 className="section-title"><span className="path">~/</span>contact</h2>
+      <h2 className="section-title">
+        <span className="path">~/</span>contact
+        <span className="title-rule" />
+        <span className="title-index">[06]</span>
+      </h2>
 
-      <p className="contact-intro">
-        <span className="arrow-prompt">&gt;</span> N'hésitez pas à me contacter :
-      </p>
+      <div className="contact-cta">
+        <span className="contact-cta-label">DISPONIBLE POUR DE NOUVEAUX PROJETS</span>
+        <h3 className="contact-cta-heading">
+          <span>CONSTRUISONS</span>
+          <span className="contact-cta-accent">ENSEMBLE</span>
+        </h3>
+        <p className="contact-intro">
+          <span className="arrow-prompt">&gt;</span> N'hésitez pas à me contacter :
+        </p>
+      </div>
 
       <div className="contact-grid">
         {contactMethods.map((method, index) => (
@@ -65,6 +76,11 @@ const Contact: React.FC = () => {
             <p className="contact-value">{method.value}</p>
           </a>
         ))}
+      </div>
+
+      <div className="contact-status">
+        <span className="status-dot" />
+        STATUT : DISPONIBLE // LOCALISATION : MADAGASCAR
       </div>
     </section>
   );

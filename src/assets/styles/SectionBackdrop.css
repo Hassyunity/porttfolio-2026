@@ -14,10 +14,12 @@
   max-width: 480px;
 }
 
-.section-backdrop-about { color: #ff7b54; }
-.section-backdrop-skills { color: #ffcc33; }
-.section-backdrop-projects { color: #44cc44; }
-.section-backdrop-contact { color: #4488ff; }
+.section-backdrop-about { color: var(--accent-lime); }
+.section-backdrop-skills { color: var(--accent-cyan); }
+.section-backdrop-experience { color: var(--accent-magenta); }
+.section-backdrop-projects { color: var(--accent-magenta); }
+.section-backdrop-results { color: var(--accent-lime); }
+.section-backdrop-contact { color: var(--accent-cyan); }
 
 @media (max-width: 1200px) {
   .section-backdrop {

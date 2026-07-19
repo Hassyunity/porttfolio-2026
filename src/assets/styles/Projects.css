@@ -31,7 +31,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at var(--mx) var(--my), rgba(255, 123, 84, 0.12), transparent 55%);
+  background: radial-gradient(circle at var(--mx) var(--my), rgba(255, 46, 147, 0.12), transparent 55%);
   opacity: 0;
   transition: opacity 0.3s ease;
   pointer-events: none;
@@ -81,9 +81,9 @@
 }
 
 .status-badge.production {
-  background: rgba(68, 204, 68, 0.1);
-  color: #44cc44; /* Vert pour production */
-  border: 1px solid rgba(68, 204, 68, 0.2);
+  background: rgba(200, 245, 96, 0.1);
+  color: var(--accent-lime);
+  border: 1px solid rgba(200, 245, 96, 0.2);
 }
 
 .status-badge.development {
@@ -124,7 +124,7 @@
 
 /* Lien "view website" */
 .view-link {
-  color: #44cc44; /* Vert fluo style terminal */
+  color: var(--accent-lime);
   text-decoration: none;
   font-size: 0.9rem;
   display: inline-flex;

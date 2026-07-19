@@ -18,7 +18,15 @@
 .nav-logo {
   display: flex;
   align-items: center;
+  gap: 0.7rem;
   cursor: pointer;
+}
+
+.logo-sys {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--accent-lime);
 }
 
 .logo-wrapper {
@@ -41,7 +49,7 @@
 
 .logo-wrapper:hover {
   transform: scale(1.1) rotate(15deg);
-  box-shadow: 0 0 8px #DF4409;
+  box-shadow: 0 0 8px var(--accent-lime);
 }
 
 .nav-links { 
@@ -52,7 +60,9 @@
 .nav-link {
   text-decoration: none;
   color: var(--text);
-  font-size: 0.9rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
   position: relative;
   font-family: var(--font-mono);
   transition: color 0.3s ease;
@@ -69,32 +79,36 @@
   transition: width 0.3s;
 }
 
-.nav-link:hover::after { 
+.nav-link:hover::after {
   width: 100%;
 }
 
-.link-about:hover { color: #ff7b54; }
-.link-skills:hover { color: #ffcc33; }
-.link-projects:hover { color: #44cc44; }
-.link-contact:hover { color: #4488ff; }
-.link-blog:hover { color: #a370f7; }
-.link-album:hover { color: #ff4d6d; }
+.link-about:hover { color: var(--accent-lime); }
+.link-skills:hover { color: var(--accent-cyan); }
+.link-experience:hover { color: var(--accent-magenta); }
+.link-projects:hover { color: var(--accent-lime); }
+.link-contact:hover { color: var(--accent-cyan); }
+.link-blog:hover { color: var(--accent-magenta); }
+.link-album:hover { color: var(--accent-lime); }
 
-.link-about::after { background-color: #ff7b54; }
-.link-skills::after { background-color: #ffcc33; }
-.link-projects::after { background-color: #44cc44; }
-.link-contact::after { background-color: #4488ff; }
-.link-blog::after { background-color: #a370f7; }
-.link-album::after { background-color: #ff4d6d; }
+.link-about::after { background-color: var(--accent-lime); }
+.link-skills::after { background-color: var(--accent-cyan); }
+.link-experience::after { background-color: var(--accent-magenta); }
+.link-projects::after { background-color: var(--accent-lime); }
+.link-contact::after { background-color: var(--accent-cyan); }
+.link-blog::after { background-color: var(--accent-magenta); }
+.link-album::after { background-color: var(--accent-lime); }
 
 /* Nav "spy" : lien de la section active au scroll */
-.link-about.active { color: #ff7b54; }
-.link-skills.active { color: #ffcc33; }
-.link-projects.active { color: #44cc44; }
-.link-contact.active { color: #4488ff; }
+.link-about.active { color: var(--accent-lime); }
+.link-skills.active { color: var(--accent-cyan); }
+.link-experience.active { color: var(--accent-magenta); }
+.link-projects.active { color: var(--accent-lime); }
+.link-contact.active { color: var(--accent-cyan); }
 
 .link-about.active::after,
 .link-skills.active::after,
+.link-experience.active::after,
 .link-projects.active::after,
 .link-contact.active::after {
   width: 100%;
@@ -177,7 +191,7 @@
 }
 
 .theme-toggle:hover .toggle-track {
-  border-color: rgba(255, 123, 84, 0.5);
+  border-color: rgba(200, 245, 96, 0.5);
 }
 
 .burger {

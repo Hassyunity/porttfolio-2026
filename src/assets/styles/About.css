@@ -1,8 +1,11 @@
-.about-content {
-  max-width: 900px;
+.about-layout {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 3rem;
   margin-top: 2rem;
   width: 100%;
   box-sizing: border-box;
+  align-items: start;
 }
 
 .about-section {
@@ -23,16 +26,30 @@
 }
 
 .comment .hashtag {
-  color: var(--accent-orange);
+  color: var(--accent-lime);
   margin-right: 5px;
+}
+
+/* Carte stack principale */
+.skills-card {
+  border: 1px solid #1c1c1c;
+  background: #111;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.skills-card-title {
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  color: var(--text-gray);
+  margin-bottom: 1rem;
 }
 
 /* Grille de tags style terminal */
 .about-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 15px;
-  margin-top: 3rem;
+  gap: 12px;
   width: 100%;
 }
 
@@ -40,10 +57,10 @@
   border: 1px solid #333;
   background: transparent;
   color: #eee;
-  padding: 1.2rem 0.5rem; /* Réduit légèrement pour un look plus compact */
+  padding: 1rem 0.5rem;
   text-align: center;
-  font-size: 0.95rem;
-  font-family: var(--font-mono); /* Très important pour le style terminal */
+  font-size: 0.85rem;
+  font-family: var(--font-mono);
   transition: all 0.3s ease;
   cursor: default;
   display: flex;
@@ -52,52 +69,144 @@
 }
 
 .skill-tag:hover {
-  border-color: var(--accent-orange);
-  background: rgba(255, 123, 84, 0.05); /* Utilise ta variable orange avec opacité */
+  border-color: var(--accent-lime);
+  background: rgba(200, 245, 96, 0.06);
   color: white;
   transform: translateY(-2px);
 }
 
 .desc-text strong {
-  color: var(--accent-orange);
+  color: var(--accent-lime);
   font-weight: 600;
+}
+
+/* --- Colonne latérale --- */
+.about-side {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.side-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.side-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 1.25rem 0.75rem;
+  border: 1px solid #1c1c1c;
+  border-radius: 8px;
+  background: #111;
+}
+
+.side-stat-value {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--accent-lime);
+}
+
+.side-stat-label {
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  color: var(--text-gray);
+  text-align: center;
+}
+
+.side-card {
+  border: 1px solid #1c1c1c;
+  border-radius: 8px;
+  padding: 1.25rem;
+  background: #111;
+}
+
+.side-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.side-card-icon {
+  color: var(--accent-magenta);
+  font-size: 1rem;
+}
+
+.side-card-tag {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--accent-magenta);
+  border: 1px solid rgba(255, 46, 147, 0.4);
+  background: rgba(255, 46, 147, 0.08);
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+}
+
+.side-card-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+
+.side-card-desc {
+  font-size: 0.8rem;
+  color: var(--text-gray);
+  line-height: 1.4;
+}
+
+.side-location {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #1c1c1c;
+  border-radius: 8px;
+  padding: 0.9rem 1.1rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  color: var(--text-gray);
+}
+
+.side-location-tag {
+  color: var(--accent-lime);
+  font-weight: 700;
 }
 
 /* --- MEDIA QUERIES --- */
 
-/* Tablettes et Laptops moyens */
 @media (max-width: 1024px) {
+  .about-layout {
+    grid-template-columns: 1fr;
+  }
+
   .about-grid {
-    grid-template-columns: repeat(3, 1fr); /* Passe à 3 colonnes */
+    grid-template-columns: repeat(3, 1fr);
     gap: 12px;
   }
 }
 
-/* Mobiles larges / Tablettes portrait */
 @media (max-width: 768px) {
-  .about-content {
+  .about-layout {
     margin-top: 1.5rem;
   }
 
   .about-grid {
-    grid-template-columns: repeat(2, 1fr); /* 2 colonnes */
-    margin-top: 2rem;
+    grid-template-columns: repeat(2, 1fr);
   }
-  
+
   .skill-tag {
     padding: 1rem 0.4rem;
     font-size: 0.9rem;
   }
 }
 
-/* Petits Mobiles */
 @media (max-width: 480px) {
-  .about-content {
-    padding-right: 1rem; /* Évite que le texte ne colle à la droite */
-  }
-
   .about-grid {
-    grid-template-columns: repeat(2, 1fr); /* Garde 2 colonnes mais réduit la taille */
+    grid-template-columns: repeat(2, 1fr);
     gap: 10px;
   }
 

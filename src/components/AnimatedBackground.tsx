@@ -15,18 +15,18 @@ interface CodeSymbol {
 }
 
 const CODE_SYMBOLS: CodeSymbol[] = [
-  { text: '</>', top: '8%', left: '10%', size: 30, color: '#ff7b54', duration: 16, delay: 0, parallaxSpeed: 0.15 },
-  { text: '{ }', top: '15%', left: '85%', size: 36, color: '#ffcc33', duration: 20, delay: -4, parallaxSpeed: -0.2 },
-  { text: '01', top: '28%', left: '5%', size: 22, color: '#44cc44', duration: 14, delay: -8, parallaxSpeed: 0.3 },
-  { text: '=>', top: '40%', left: '92%', size: 28, color: '#4488ff', duration: 18, delay: -2, parallaxSpeed: -0.15 },
-  { text: 'git commit', top: '52%', left: '14%', size: 16, color: '#a370f7', duration: 22, delay: -10, parallaxSpeed: 0.25 },
-  { text: '<div>', top: '62%', left: '80%', size: 20, color: '#ff7b54', duration: 17, delay: -6, parallaxSpeed: -0.1 },
-  { text: '{ }', top: '72%', left: '8%', size: 26, color: '#ffcc33', duration: 19, delay: -12, parallaxSpeed: 0.2 },
-  { text: 'npm run dev', top: '83%', left: '58%', size: 15, color: '#4488ff', duration: 21, delay: -3, parallaxSpeed: -0.3 },
-  { text: '10', top: '10%', left: '48%', size: 20, color: '#44cc44', duration: 15, delay: -9, parallaxSpeed: 0.18 },
-  { text: 'const x =', top: '90%', left: '28%', size: 15, color: '#a370f7', duration: 23, delay: -1, parallaxSpeed: -0.22 },
-  { text: '[ ]', top: '35%', left: '35%', size: 24, color: '#44cc44', duration: 18, delay: -14, parallaxSpeed: 0.12 },
-  { text: 'async', top: '68%', left: '45%', size: 14, color: '#ff7b54', duration: 20, delay: -7, parallaxSpeed: -0.18 },
+  { text: '</>', top: '8%', left: '10%', size: 30, color: '#c8f560', duration: 16, delay: 0, parallaxSpeed: 0.15 },
+  { text: '{ }', top: '15%', left: '85%', size: 36, color: '#3ddbd9', duration: 20, delay: -4, parallaxSpeed: -0.2 },
+  { text: '01', top: '28%', left: '5%', size: 22, color: '#c8f560', duration: 14, delay: -8, parallaxSpeed: 0.3 },
+  { text: '=>', top: '40%', left: '92%', size: 28, color: '#3ddbd9', duration: 18, delay: -2, parallaxSpeed: -0.15 },
+  { text: 'git commit', top: '52%', left: '14%', size: 16, color: '#ff2e93', duration: 22, delay: -10, parallaxSpeed: 0.25 },
+  { text: '<div>', top: '62%', left: '80%', size: 20, color: '#c8f560', duration: 17, delay: -6, parallaxSpeed: -0.1 },
+  { text: '{ }', top: '72%', left: '8%', size: 26, color: '#3ddbd9', duration: 19, delay: -12, parallaxSpeed: 0.2 },
+  { text: 'npm run dev', top: '83%', left: '58%', size: 15, color: '#3ddbd9', duration: 21, delay: -3, parallaxSpeed: -0.3 },
+  { text: '10', top: '10%', left: '48%', size: 20, color: '#c8f560', duration: 15, delay: -9, parallaxSpeed: 0.18 },
+  { text: 'const x =', top: '90%', left: '28%', size: 15, color: '#ff2e93', duration: 23, delay: -1, parallaxSpeed: -0.22 },
+  { text: '[ ]', top: '35%', left: '35%', size: 24, color: '#c8f560', duration: 18, delay: -14, parallaxSpeed: 0.12 },
+  { text: 'async', top: '68%', left: '45%', size: 14, color: '#ff2e93', duration: 20, delay: -7, parallaxSpeed: -0.18 },
 ];
 
 interface FloatingIcon {
@@ -42,12 +42,12 @@ interface FloatingIcon {
 
 // Platformes, SaaS, CRM, applications, graphiques — le vocabulaire visuel du métier
 const FLOATING_ICONS: FloatingIcon[] = [
-  { Icon: Layout, top: '20%', left: '68%', size: 40, color: '#ff7b54', duration: 19, delay: -5, parallaxSpeed: 0.2 },
-  { Icon: Cloud, top: '46%', left: '88%', size: 44, color: '#4488ff', duration: 24, delay: -11, parallaxSpeed: -0.25 },
-  { Icon: Users, top: '58%', left: '20%', size: 36, color: '#a370f7', duration: 20, delay: -3, parallaxSpeed: 0.15 },
-  { Icon: AppWindow, top: '78%', left: '70%', size: 38, color: '#ffcc33', duration: 21, delay: -9, parallaxSpeed: -0.18 },
-  { Icon: LineChart, top: '5%', left: '38%', size: 42, color: '#44cc44', duration: 17, delay: -6, parallaxSpeed: 0.22 },
-  { Icon: Workflow, top: '88%', left: '10%', size: 38, color: '#ff7b54', duration: 23, delay: -13, parallaxSpeed: -0.12 },
+  { Icon: Layout, top: '20%', left: '68%', size: 40, color: '#c8f560', duration: 19, delay: -5, parallaxSpeed: 0.2 },
+  { Icon: Cloud, top: '46%', left: '88%', size: 44, color: '#3ddbd9', duration: 24, delay: -11, parallaxSpeed: -0.25 },
+  { Icon: Users, top: '58%', left: '20%', size: 36, color: '#ff2e93', duration: 20, delay: -3, parallaxSpeed: 0.15 },
+  { Icon: AppWindow, top: '78%', left: '70%', size: 38, color: '#3ddbd9', duration: 21, delay: -9, parallaxSpeed: -0.18 },
+  { Icon: LineChart, top: '5%', left: '38%', size: 42, color: '#c8f560', duration: 17, delay: -6, parallaxSpeed: 0.22 },
+  { Icon: Workflow, top: '88%', left: '10%', size: 38, color: '#ff2e93', duration: 23, delay: -13, parallaxSpeed: -0.12 },
 ];
 
 const AnimatedBackground: React.FC = () => {

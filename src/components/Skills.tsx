@@ -22,7 +22,11 @@ const Skills: React.FC = () => {
       className={`section-container reveal-section ${isVisible ? 'is-visible' : ''}`}
     >
       <SectionBackdrop variant="skills" />
-      <h2 className="section-title"><span className="path">~/</span>Expertises</h2>
+      <h2 className="section-title">
+        <span className="path">~/</span>Expertises
+        <span className="title-rule" />
+        <span className="title-index">[02]</span>
+      </h2>
 
       <div className="skills-grid">
         {categories.map(cat => (

@@ -8,12 +8,9 @@ const Footer: React.FC = () => {
   return (
     <footer className="footer">
       <div className="color-bar">
-        <span className="bar orange"></span>
-        <span className="bar gold"></span>
-        <span className="bar yellow"></span>
-        <span className="bar green"></span>
-        <span className="bar light-blue"></span>
-        <span className="bar purple"></span>
+        <span className="bar lime"></span>
+        <span className="bar magenta"></span>
+        <span className="bar cyan"></span>
       </div>
       
       <div className="footer-container">
@@ -32,7 +29,7 @@ const Footer: React.FC = () => {
           
           {/* Le copyright passe automatiquement à la ligne grâce au flex-direction: column */}
           <p className="copyright">
-            © {currentYear} // Hassy Tsihoarana.
+            © {currentYear} HASSY TSIHOARANA // SYSTEM OPTIMIZED
           </p>
         </div>
 

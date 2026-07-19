@@ -8,13 +8,24 @@ const Home: React.FC = () => {
     <section id="home" className="home-container">
       <div className="home-wrapper">
         <div className="hero-content">
-          <h1>Bienvenue sur mon portfolio</h1>
-          <h1><span className="chevron">{">"}</span> Hassy Tsihoarana -</h1>
-          <h1 className="highlight">Développeur Full-stack<span className="cursor"></span></h1>
+          <div className="hero-status">
+            <span className="status-dot" />
+            SYSTÈME EN LIGNE // PRÊT POUR NOUVELLES MISSIONS
+          </div>
 
-          <div className="hero-sub">
-            <p><span className="dollar">$</span> Code, Build, Deploy</p>
-            <p className="desc">J'aime explorer de nouvelles idées et technos directement dans mes projets.</p>
+          <p className="hero-role">DÉVELOPPEUR FULL-STACK &amp; CTO</p>
+
+          <h1 className="hero-name">
+            <span>HASSY</span>
+            <span className="hero-name-accent">TSIHOARANA</span>
+          </h1>
+
+          <div className="hero-intro">
+            <p>
+              Je transforme des idées en plateformes complètes : backend robuste,
+              APIs efficaces et interfaces fluides. J'automatise, je déploie,
+              je pilote la technique.
+            </p>
           </div>
 
           <div className="hero-btns">
@@ -22,7 +33,7 @@ const Home: React.FC = () => {
               className="btn-light"
               onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
             >
-              Voir les projets
+              Voir mes projets
             </button>
             <button
               className="btn-dark"
@@ -33,7 +44,7 @@ const Home: React.FC = () => {
           </div>
         </div>
 
-        {/* Section Photo */}
+        {/* Photo avec flip au survol */}
         <div className="hero-image-container">
           <div className="photo-circle">
             <div className="photo-flip-inner">

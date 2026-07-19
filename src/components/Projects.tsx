@@ -95,7 +95,11 @@ const Projects: React.FC = () => {
       className={`section-container reveal-section ${isVisible ? 'is-visible' : ''}`}
     >
       <SectionBackdrop variant="projects" />
-      <h2 className="section-title"><span className="path">~/</span>projets</h2>
+      <h2 className="section-title">
+        <span className="path">~/</span>projets
+        <span className="title-rule" />
+        <span className="title-index">[04]</span>
+      </h2>
 
       <div className="projects-grid">
         {projectList.map((project, index) => (

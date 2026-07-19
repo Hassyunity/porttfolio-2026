@@ -4,7 +4,7 @@ import { Sun, Moon } from 'lucide-react';
 import '../assets/styles/Navbar.css';
 import cvPath from '../assets/fichier/cv_fr.pdf';
 
-const SECTION_IDS = ['about', 'skills', 'projects', 'contact'];
+const SECTION_IDS = ['about', 'skills', 'experience', 'projects', 'contact'];
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -65,17 +65,18 @@ const Navbar: React.FC = () => {
             <img src="/lg.png" alt="Logo" className="logo-img" />
           </div>
         </Link>
+        <span className="logo-sys">Hassy</span>
       </div>
-<div className="contact-item cv-download">
-            <a 
-              href={cvPath} 
-              download="CV_Hassy_Tsihoarana.pdf" 
-              className="footer-link highlight cv-link-container"
-            >
-              <span className="pointing-hand">👉</span>
-              <span className="download-text">Download_CV</span>
-            </a>
-          </div>
+      <div className="contact-item cv-download">
+        <a
+          href={cvPath}
+          download="CV_Hassy_Tsihoarana.pdf"
+          className="footer-link highlight cv-link-container"
+        >
+          <span className="pointing-hand">👉</span>
+          <span className="download-text">Download_CV</span>
+        </a>
+      </div>
       {/* Bouton Burger */}
       <div className={`burger ${isOpen ? 'active' : ''}`} onClick={toggleMenu}>
         <div className="line1"></div>
@@ -85,12 +86,13 @@ const Navbar: React.FC = () => {
 
       {/* Liens de navigation */}
       <div className={`nav-links ${isOpen ? 'nav-active' : ''}`}>
-        <a href="/#about" className={`nav-link link-about ${isHome && activeSection === 'about' ? 'active' : ''}`} onClick={closeMenu}>./A propos</a>
-        <a href="/#skills" className={`nav-link link-skills ${isHome && activeSection === 'skills' ? 'active' : ''}`} onClick={closeMenu}>./Expertises</a>
-        <a href="/#projects" className={`nav-link link-projects ${isHome && activeSection === 'projects' ? 'active' : ''}`} onClick={closeMenu}>./projects</a>
-        <a href="/#contact" className={`nav-link link-contact ${isHome && activeSection === 'contact' ? 'active' : ''}`} onClick={closeMenu}>./contacts</a>
-        <Link to="/blogs" className="nav-link link-blog" onClick={closeMenu}>./blogs</Link>
-        <Link to="/album" className="nav-link link-album" onClick={closeMenu}>./albums</Link>
+        <a href="/#about" className={`nav-link link-about ${isHome && activeSection === 'about' ? 'active' : ''}`} onClick={closeMenu}>PROFIL</a>
+        <a href="/#skills" className={`nav-link link-skills ${isHome && activeSection === 'skills' ? 'active' : ''}`} onClick={closeMenu}>EXPERTISES</a>
+        <a href="/#experience" className={`nav-link link-experience ${isHome && activeSection === 'experience' ? 'active' : ''}`} onClick={closeMenu}>PARCOURS</a>
+        <a href="/#projects" className={`nav-link link-projects ${isHome && activeSection === 'projects' ? 'active' : ''}`} onClick={closeMenu}>PROJETS</a>
+        <a href="/#contact" className={`nav-link link-contact ${isHome && activeSection === 'contact' ? 'active' : ''}`} onClick={closeMenu}>CONTACT</a>
+        <Link to="/blogs" className="nav-link link-blog" onClick={closeMenu}>BLOGS</Link>
+        <Link to="/album" className="nav-link link-album" onClick={closeMenu}>ALBUMS</Link>
         <button
           className={`theme-toggle ${theme === 'light' ? 'is-light' : ''}`}
           onClick={() => setTheme(prev => prev === 'dark' ? 'light' : 'dark')}

@@ -41,9 +41,9 @@
   animation: orb-float 22s ease-in-out infinite;
 }
 
-.bg-orb-orange { background: #ff7b54; }
-.bg-orb-blue { background: #4488ff; animation-delay: -7s; }
-.bg-orb-purple { background: #a370f7; animation-delay: -14s; }
+.bg-orb-orange { background: var(--accent-lime); }
+.bg-orb-blue { background: var(--accent-cyan); animation-delay: -7s; }
+.bg-orb-purple { background: var(--accent-magenta); animation-delay: -14s; }
 
 @keyframes orb-float {
   0%, 100% { transform: translate(0, 0) scale(1); }

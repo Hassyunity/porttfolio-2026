@@ -4,8 +4,11 @@ import Navbar from './components/Navbar';
 import AnimatedBackground from './components/AnimatedBackground';
 import Home from './components/Home';
 import About from './components/About';
+import Ticker from './components/Ticker';
 import Skills from './components/Skills';
+import Experience from './components/Experience';
 import Projects from './components/Projects';
+import Results from './components/Results';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import WhatsAppButton from './components/WhatsAppButton';
@@ -20,8 +23,11 @@ const MainPortfolio = () => (
   <>
     <Home />
     <About />
+    <Ticker />
     <Skills />
+    <Experience />
     <Projects />
+    <Results />
     <Contact />
   </>
 );

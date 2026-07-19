@@ -34,12 +34,9 @@
   border-radius: 2px;
 }
 
-.orange { background-color: #ff7b54; }
-.gold { background-color: #ffcc33; }
-.yellow { background-color: #ffee55; }
-.green { background-color: #44cc44; }
-.light-blue { background-color: #4488ff; }
-.purple { background-color: #a370f7; }
+.lime { background-color: var(--accent-lime); }
+.magenta { background-color: var(--accent-magenta); }
+.cyan { background-color: var(--accent-cyan); }
 
 /* --- Structure Interne (Gauche/Droite) --- */
 .footer-container {
@@ -96,8 +93,8 @@
 }
 
 .cv-link-container:hover .download-text {
-  border-bottom-color: #ff7b54;
-  color: #ff7b54;
+  border-bottom-color: var(--accent-lime);
+  color: var(--accent-lime);
 }
 
 /* --- Alignement des Contacts --- */
@@ -131,7 +128,8 @@
 .copyright {
   color: #555;
   font-family: var(--font-mono);
-  font-size: 0.85rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
   margin: 0;
 }
 

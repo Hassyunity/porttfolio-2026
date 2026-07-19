@@ -4,7 +4,9 @@
   --bg: #0a0a0a;
   --text: #ffffff;
   --text-gray: #888888;
-  --accent-orange: #ff7b54;
+  --accent-lime: #c8f560;
+  --accent-magenta: #ff2e93;
+  --accent-cyan: #3ddbd9;
   --font-mono: 'JetBrains Mono', monospace;
 }
 
@@ -13,7 +15,9 @@
   --bg: #ffffff;
   --text: #0a0a0a;
   --text-gray: #666666;
-  --accent-orange: #ff7b54;
+  --accent-lime: #7fae1f;
+  --accent-magenta: #d6127a;
+  --accent-cyan: #0d9c9a;
 }
 html, body {
   margin: 0;
@@ -101,41 +105,47 @@ body {
   margin-bottom: 3rem;
   display: flex;
   align-items: center;
+  gap: 1.5rem;
 }
 
-#about .path { color: #ff7b54; margin-right: 0.5rem; }
-#skills .path { color: #ffcc33; margin-right: 0.5rem; }
-#projects .path { color: #44cc44; margin-right: 0.5rem; }
-#contact .path { color: #4488ff; margin-right: 0.5rem; }
-#blog-page .path { color: #a370f7; margin-right: 0.5rem; }
-#album .path { color: #ff4d6d; margin-right: 0.5rem; }
+.title-rule {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.18), transparent);
+}
+
+[data-theme="light"] .title-rule {
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.15), transparent);
+}
+
+.title-index {
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: var(--text-gray);
+  letter-spacing: 0.1em;
+}
+
+#about .path { color: var(--accent-lime); margin-right: 0.5rem; }
+#skills .path { color: var(--accent-cyan); margin-right: 0.5rem; }
+#experience .path { color: var(--accent-magenta); margin-right: 0.5rem; }
+#projects .path { color: var(--accent-magenta); margin-right: 0.5rem; }
+#results .path { color: var(--accent-lime); margin-right: 0.5rem; }
+#contact .path { color: var(--accent-cyan); margin-right: 0.5rem; }
+#blog-page .path { color: var(--accent-magenta); margin-right: 0.5rem; }
+#album .path { color: var(--accent-cyan); margin-right: 0.5rem; }
 
 @media (max-width: 1200px) {
   .section-container::before {
     left: 15px;
-    bottom: 50px; 
+    bottom: 50px;
   }
 }
-/* About - Orange */
-#about::before {
-  background-color: #ff7b54;
-}
 
-/* Skills - Jaune */
-#skills::before {
-  background-color: #ffcc33;
-}
-
-/* Projects - Vert */
-#projects::before {
-  background-color: #44cc44;
-}
-
-/* Contact - Bleu */
-#contact::before {
-  background-color: #4488ff;
-}
-
-#blog-page::before {
-  background-color: #a370f7;
-}
+#about::before { background-color: var(--accent-lime); }
+#skills::before { background-color: var(--accent-cyan); }
+#experience::before { background-color: var(--accent-magenta); }
+#projects::before { background-color: var(--accent-magenta); }
+#results::before { background-color: var(--accent-lime); }
+#contact::before { background-color: var(--accent-cyan); }
+#blog-page::before { background-color: var(--accent-magenta); }
+#album::before { background-color: var(--accent-cyan); }

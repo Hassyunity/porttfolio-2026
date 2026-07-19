@@ -15,7 +15,7 @@
   top: 10%;
   height: 85%;
   width: 4px;
-  background-color: #ffcc33; 
+  background-color: var(--accent-cyan); 
   border-radius: 2px;
   z-index: 1;
 }
@@ -57,7 +57,7 @@
 }
 
 .arrow {
-  color: #ffcc33;
+  color: var(--accent-cyan);
   font-size: 0.7rem;
   margin-right: 12px;
 }
@@ -115,7 +115,7 @@
 }
 
 .focus-highlight {
-  color: #ffcc33;
+  color: var(--accent-cyan);
   font-weight: bold;
 }
 

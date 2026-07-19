@@ -1,17 +1,42 @@
-/* Ligne verticale spécifique au contact */
-#contact::before {
-  background-color: #4488ff; /* Bleu */
+/* --- CTA --- */
+.contact-cta {
+  margin-bottom: 3rem;
+}
+
+.contact-cta-label {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--accent-magenta);
+  margin-bottom: 1rem;
+}
+
+.contact-cta-heading {
+  display: flex;
+  flex-direction: column;
+  font-size: clamp(2.2rem, 6vw, 3.8rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  margin-bottom: 1.5rem;
+}
+
+.contact-cta-accent {
+  background: linear-gradient(90deg, var(--text), var(--text-gray));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .contact-intro {
   color: #ccc;
   font-size: 1.1rem;
-  margin-bottom: 3rem;
   font-family: var(--font-mono);
 }
 
 .arrow-prompt {
-  color: #4488ff;
+  color: var(--accent-cyan);
   margin-right: 10px;
 }
 
@@ -33,8 +58,8 @@
 }
 
 .contact-card:hover {
-  border-color: #4488ff;
-  background: rgba(68, 136, 255, 0.05);
+  border-color: var(--accent-cyan);
+  background: rgba(61, 219, 217, 0.05);
   transform: translateY(-2px);
 }
 
@@ -52,36 +77,44 @@
 }
 
 .contact-value {
-  color: #eee;
+  color: #ccc;
   font-size: 1.1rem;
   word-break: break-all;
-}
-
-
-.header-left {
-  display: flex;
-  align-items: center;
-  gap: 10px;
 }
 
 .contact-extra {
   font-family: var(--font-mono);
   font-size: 0.75rem;
-  color: #4488ff;
-  border: 1px solid #4488ff;
+  color: var(--accent-cyan);
+  border: 1px solid var(--accent-cyan);
   padding: 2px 8px;
   border-radius: 12px;
-  background: rgba(68, 136, 255, 0.1);
+  background: rgba(61, 219, 217, 0.1);
 }
 
 .contact-card:hover .contact-extra {
-  background: rgba(68, 136, 255, 0.2);
-  box-shadow: 0 0 10px rgba(68, 136, 255, 0.3);
+  background: rgba(61, 219, 217, 0.2);
+  box-shadow: 0 0 10px rgba(61, 219, 217, 0.3);
 }
 
-.contact-value {
-  color: #ccc;
-  word-break: break-all;
+/* --- Statut de bas de section --- */
+.contact-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 3rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  color: var(--text-gray);
+}
+
+.contact-status .status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-lime);
+  box-shadow: 0 0 6px var(--accent-lime);
 }
 
 /* Responsive */
