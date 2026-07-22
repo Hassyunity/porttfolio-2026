@@ -1,12 +1,66 @@
 .home-container {
+  position: relative;
   min-height: 100vh;
   display: flex;
   align-items: center;
   padding: 7rem 4rem 2rem 4rem;
   box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* Fonds alternés en fondu, toutes les 3s, en boucle */
+.home-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 0;
+}
+
+.home-bg-1 {
+  background-image: url('/back.jpg');
+  animation: home-bg-crossfade-1 6s ease-in-out infinite;
+}
+
+.home-bg-2 {
+  background-image: url('/back2.jpg');
+  opacity: 0;
+  animation: home-bg-crossfade-2 6s ease-in-out infinite;
+}
+
+@keyframes home-bg-crossfade-1 {
+  0%, 42% { opacity: 1; }
+  50%, 92% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes home-bg-crossfade-2 {
+  0%, 42% { opacity: 0; }
+  50%, 92% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.home-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(10, 10, 10, 0.8) 0%, rgba(10, 10, 10, 0.92) 60%, rgba(10, 10, 10, 1) 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-bg-1, .home-bg-2 {
+    animation: none;
+  }
+
+  .home-bg-2 {
+    opacity: 0;
+  }
 }
 
 .home-wrapper {
+  position: relative;
+  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: space-between;

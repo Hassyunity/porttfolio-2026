@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { X, Send, Bot } from 'lucide-react';
+import { X, Send } from 'lucide-react';
 import '../assets/styles/ChatWidget.css';
 import { knowledgeBase, findTopic, FALLBACK_ANSWER, type KnowledgeTopic } from '../data/hassyKnowledge';
 
@@ -116,18 +116,20 @@ const ChatWidget: React.FC = () => {
             <X size={12} />
           </button>
           <div className="chat-greeting-body">
-            <span className="chat-greeting-avatar"><Bot size={16} /></span>
+            <span className="chat-greeting-avatar">
+              <img src="/back.jpg" alt="" />
+            </span>
             <p>👋 Salut, je suis <strong>Altea</strong> ! Une question sur le parcours de Hassy ?</p>
           </div>
         </div>
       )}
 
       <button
-        className="chat-toggle"
+        className={`chat-toggle ${isOpen ? 'chat-toggle-open' : ''}`}
         onClick={toggleChat}
         aria-label={isOpen ? 'Fermer le chat' : 'Ouvrir le chat avec Altea'}
       >
-        {isOpen ? <X size={24} /> : <Bot size={26} aria-hidden="true" />}
+        {isOpen ? <X size={24} /> : <img src="/back.jpg" alt="" className="chat-toggle-avatar" />}
       </button>
     </div>
   );

@@ -6,6 +6,10 @@ import myOffice from '../assets/images/bureau.jpg';
 const Home: React.FC = () => {
   return (
     <section id="home" className="home-container">
+      <div className="home-bg home-bg-1" />
+      <div className="home-bg home-bg-2" />
+      <div className="home-overlay" />
+
       <div className="home-wrapper">
         <div className="hero-content">
           <div className="hero-status">

@@ -1,0 +1,19 @@
+le leads arrive dans "Leads_Meta/Google_Ads/Funnel" avec deux automatisation precis: * ajout des description client, 1er qualification== ajoute d'etiquete gris avec onjectif du client en dessus, 2 em qualificaiton(si le client a remplie en entier le formulaire == ajoute d'etiquette gris avec scor du client)
+
+ * liste "Rappel RDV Calendly" == si un client a remplit le rendez-vous callendly de sa part donc creation du card client dans cette liste
+
+  * liste "NRP" == des leads ajouter dans cette liste par un commrciaux donc ajout de checklist de nombre de nrp a faire(8 tentative a checket) ou si le client a repondus donc le commerciaux cherck la case du checklist "A repondu"
+
+ * liste "Numéro non attribué -> 🤖 campagne emailing auto" == si le numero et non attribuer , le commerciaux deplace la card dans la liste et une template mail serait envoyer automatique dire au client que on a essayer de vous joindre mais votre numero n'est pas attribue donc on vous invite a nous recontacte en direct avec tell numero"le numero du commercial en charge" ou bien nous repondre dans cette mail, et cette template est envoyer avec lien youtube du choix de voyage du client(celui qu'il a choisie dans le formmulaire sinon le youtube globale en cas de non remplissage du formulaire et de meme pour le brochure envoyer avec 
+
+* "Devis envoyés"  == a ne pas toucher par qui que se soit car c'est en rouge == devis envoyer par le commerciale via power_up envoie de devie dans trello et la card a ete deplacer automatiquement par le systeme et serait accampagner de l'automatisation de suivie de devis de j+1, j+3 et j+7 si sans reponse cette card serait deplacer automatiquement par le systeme dans les trois relance a valider par les commerciaux selon son statut "Relance J1 à valider" ou Relance J3 à valider ou Relance J3 à valider et ces liste Relance a valider require la validation des commerciaux et c'est important( le commerciax ouvre la carte et coche la checkliste "valider" apres la relance serait envoyer au client 
+
+* "En attente de paiement" quant une card est deplacer dans cette liste la une cheklist nommer "client a payer et signer" serait creer automatiquement et cette checklist ne s'active pas que si le commerciaux ajoute la date d'arriver et la date de retour avec la nombre de personne qui vas venir, apres la card serait deplacer automatiquement dans "🤖 Paiment effectué et signé" et ca creer automatiquement une agenda client dans reservation celebrations voyages pour le sejour du client plus notification slack que tel personne 
+
+* important a retenir pour envoyer une devis ou creer une rvd closing au client faut aller dans la card du client et cliquer sur le "power-ups" et choisie l'option rdv ou envoie de devis ensuite pour envoie devis(template deja pres a remplire avec une visuel de confirmation avant envoie) et pour rdv closing choie de date dispo deja donner pour le callendly de celebrations voyage, le liens serait envoyer automatiquement au client et creer dans callendly plus notifications slack
+
+
+
+
+
+ 
