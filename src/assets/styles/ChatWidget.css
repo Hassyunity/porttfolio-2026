@@ -172,16 +172,29 @@
   font-size: 0.85rem;
 }
 
-.chat-close {
+.chat-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chat-close,
+.chat-voice-toggle {
   background: transparent;
   border: none;
   color: #888;
   cursor: pointer;
   display: flex;
+  padding: 0;
 }
 
-.chat-close:hover {
+.chat-close:hover,
+.chat-voice-toggle:hover {
   color: #fff;
+}
+
+.chat-voice-toggle[aria-pressed="true"] {
+  color: var(--accent-lime);
 }
 
 .chat-messages {

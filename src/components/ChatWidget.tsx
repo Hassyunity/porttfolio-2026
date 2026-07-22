@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { X, Send } from 'lucide-react';
+import { X, Send, Volume2, VolumeX } from 'lucide-react';
 import '../assets/styles/ChatWidget.css';
 import { knowledgeBase, findTopic, FALLBACK_ANSWER, type KnowledgeTopic } from '../data/hassyKnowledge';
+import { speak, stopSpeaking, isSpeechSupported } from '../lib/speech';
 
 interface ChatMessage {
   role: 'user' | 'assistant';
@@ -16,11 +17,36 @@ const ChatWidget: React.FC = () => {
   ]);
   const [askedTopicIds, setAskedTopicIds] = useState<Set<string>>(new Set());
   const [input, setInput] = useState('');
+  const [voiceEnabled, setVoiceEnabled] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isOpen]);
+
+  // Lit à voix haute (voix féminine) le dernier message d'Altea, si activé
+  useEffect(() => {
+    if (!voiceEnabled) return;
+    const last = messages[messages.length - 1];
+    if (last?.role === 'assistant') {
+      speak(last.content);
+    }
+  }, [messages, voiceEnabled]);
+
+  // Coupe la voix si le chat se ferme, ou au démontage du composant
+  useEffect(() => {
+    if (!isOpen) stopSpeaking();
+  }, [isOpen]);
+
+  useEffect(() => () => stopSpeaking(), []);
+
+  const toggleVoice = () => {
+    setVoiceEnabled((prev) => {
+      const next = !prev;
+      if (!next) stopSpeaking();
+      return next;
+    });
+  };
 
   // Bulle de salutation qui apparaît automatiquement, puis se referme si ignorée
   useEffect(() => {
@@ -67,9 +93,22 @@ const ChatWidget: React.FC = () => {
         <div className="chat-panel">
           <div className="chat-header">
             <span className="chat-title">// altea_chat</span>
-            <button className="chat-close" onClick={() => setIsOpen(false)} aria-label="Fermer le chat">
-              <X size={18} />
-            </button>
+            <div className="chat-header-actions">
+              {isSpeechSupported() && (
+                <button
+                  className="chat-voice-toggle"
+                  onClick={toggleVoice}
+                  aria-pressed={voiceEnabled}
+                  aria-label={voiceEnabled ? 'Désactiver la lecture audio' : 'Écouter les réponses à voix haute'}
+                  title={voiceEnabled ? 'Désactiver la voix' : 'Écouter les réponses'}
+                >
+                  {voiceEnabled ? <Volume2 size={16} /> : <VolumeX size={16} />}
+                </button>
+              )}
+              <button className="chat-close" onClick={() => setIsOpen(false)} aria-label="Fermer le chat">
+                <X size={18} />
+              </button>
+            </div>
           </div>
 
           <div className="chat-messages">
