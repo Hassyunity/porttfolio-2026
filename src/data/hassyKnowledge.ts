@@ -29,13 +29,61 @@ export const knowledgeBase: KnowledgeTopic[] = [
   },
   {
     id: 'expertises',
-    label: 'Ses expertises',
+    label: 'Sa stack technique',
     keywords: [
       'expertise', 'competence', 'compétence', 'stack', 'technologie',
       'techno', 'skill', 'maitrise', 'maîtrise'
     ],
     answer:
       "Le stack de Hassy, en résumé :\n→ Frontend : TypeScript, React\n→ Backend : Ruby on Rails, Node.js, PostgreSQL\n→ DevOps : Git, Docker, Nginx, CI/CD, Cloud\n→ SaaS & CRM sur mesure : n8n, Make (Integromat), API Stripe, Signature électronique, CRM personnalisé\n→ Outils du quotidien : VS Code, Postman, Figma, GitHub, Jira, ClickUp, Trello\n\nBref, de la conception à la mise en prod, il touche à (presque) tout — logique, vu qu'il est aussi CTO chez XR Technologie.",
+  },
+  {
+    id: 'automatisation',
+    label: 'Son expertise automatisation',
+    keywords: [
+      'automatisation', 'automatiser', 'n8n', 'make (integromat)', 'workflow',
+      'agents ia', 'agent ia', 'intelligence artificielle'
+    ],
+    answer:
+      "L'automatisation, c'est un vrai fil rouge chez Hassy : n8n, Make (Integromat), API Stripe, signature électronique, CRM sur mesure...\n\nC'est le cœur d'Altea Flow (réconciliation de données pilotée par agents IA) et d'Auto | DECISIONS (workflows n8n pour des clients en RH, Finance et Marketing). Il explore aussi les fonctionnalités IA pour optimiser les processus métiers au quotidien.",
+  },
+  {
+    id: 'projets',
+    label: 'Ses projets',
+    keywords: [
+      'projet', 'projets', 'portfolio de projets', 'altea', 'auto decisions',
+      'auto|decisions', 'babel', 'bazar naka', 'h-max', 'hmax', 'api restful', 'realisation'
+    ],
+    answer:
+      "Quelques réalisations de Hassy :\n→ Altea Flow (2026) — SaaS d'automatisation piloté par agents IA (n8n, Rails, React, Supabase)\n→ Auto | DECISIONS — agence d'automatisation n8n pour RH, Finance, Marketing\n→ Bazar Naka — supermarché en ligne (Rails, PostgreSQL)\n→ Babel Goods — e-commerce pour boutiques Facebook (React, Vite, Tailwind)\n→ H-max AI — assistant virtuel avec météo en temps réel (React, TypeScript)\n→ API RESTful Node/React — projet full-stack sur les APIs REST\n→ Pulse by Ingedata — plateforme RH d'entreprise (projet confidentiel)\n\nTous les liens sont dans la section ~/projets juste au-dessus !",
+  },
+  {
+    id: 'resultats',
+    label: 'Ses résultats',
+    keywords: ['résultat', 'résultats', 'impact', 'accomplissement'],
+    answer:
+      "Quelques résultats concrets plutôt que des promesses en l'air :\n→ Altea Flow : SaaS complet en production, de la conception à l'infra\n→ Auto | DECISIONS : automatisations n8n déployées chez plusieurs clients (RH, Finance, Marketing)\n→ Pulse by Ingedata : microservices RH couverts par des tests automatisés (RSpec, Cypress) pour limiter les régressions\n\nLe détail est dans la section ~/résultats.",
+  },
+  {
+    id: 'contact',
+    label: 'Le contacter',
+    keywords: ['contact', 'email', 'mail', 'linkedin', 'github', 'joindre', 'contacter'],
+    answer:
+      "Le plus simple : hassy.tsihoarana@gmail.com ✉️\n\nSinon :\n→ GitHub : github.com/Hassyunity (73 repos)\n→ LinkedIn : linkedin.com/in/tsihoarana-hassy-b8349020b/\n→ Ou directement via la bulle WhatsApp bleue en bas de l'écran 👋",
+  },
+  {
+    id: 'localisation',
+    label: 'Où il est basé',
+    keywords: ['localisation', 'où est', 'ou est', 'basé', 'madagascar', 'pays'],
+    answer:
+      "Hassy est basé à Madagascar 🇲🇬 — c'est de là qu'il code, déploie et pilote ses projets, dont XR Technologie.",
+  },
+  {
+    id: 'blog',
+    label: 'Ses articles de blog',
+    keywords: ['blog', 'article', 'vision ia', 'sécurité api', 'jwt', 'sécuriser une api'],
+    answer:
+      "Deux articles à lire dans la section ~/blogs :\n→ « L'IA : Assistante de création, pas notre futur » — comment Hassy a transformé l'IA en copilote plutôt qu'en remplaçant\n→ « Sécuriser une API : L'implémentation du JWT » — guide pratique sur l'authentification par tokens\n\nDes réflexions sur le code, l'IA et l'artisanat numérique, écrites par Hassy lui-même.",
   },
 ];
 
