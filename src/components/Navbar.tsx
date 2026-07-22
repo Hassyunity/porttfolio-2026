@@ -42,6 +42,10 @@ const Navbar: React.FC = () => {
 
   return (
     <nav className={`navbar ${isOpen ? 'menu-open' : ''}`}>
+      <div className="navbar-bg navbar-bg-1" />
+      <div className="navbar-bg navbar-bg-2" />
+      <div className="navbar-overlay" />
+
       <div className="nav-logo">
         <Link to="/" onClick={() => { window.scrollTo(0, 0); closeMenu(); }}>
           <div className="logo-wrapper">

@@ -8,10 +8,48 @@
   justify-content: space-between;
   align-items: center;
   z-index: 1000;
-  background: rgba(10, 10, 10, 0.7);
+  overflow: hidden;
   backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   transition: all 0.3s ease;
+}
+
+/* Fonds alternés en fondu, en écho à la section d'accueil */
+.navbar-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: -2;
+}
+
+.navbar-bg-1 {
+  background-image: url('/back.jpg');
+  animation: home-bg-crossfade-1 6s ease-in-out infinite;
+}
+
+.navbar-bg-2 {
+  background-image: url('/back2.jpg');
+  opacity: 0;
+  animation: home-bg-crossfade-2 6s ease-in-out infinite;
+}
+
+.navbar-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: rgba(10, 10, 10, 0.75);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .navbar-bg-1, .navbar-bg-2 {
+    animation: none;
+  }
+
+  .navbar-bg-2 {
+    opacity: 0;
+  }
 }
 
 /* LOGO */
