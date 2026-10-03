@@ -55,21 +55,21 @@ export const knowledgeBase: KnowledgeTopic[] = [
       'auto|decisions', 'babel', 'bazar naka', 'h-max', 'hmax', 'api restful', 'realisation'
     ],
     answer:
-      "Quelques réalisations de Hassy :\n Altea Flow (2026) — SaaS d'automatisation piloté par agents IA (n8n, Rails, React, Supabase)\n Auto | DECISIONS — agence d'automatisation n8n pour RH, Finance, Marketing\n Bazar Naka — supermarché en ligne (Rails, PostgreSQL)\n Babel Goods — e-commerce pour boutiques Facebook (React, Vite, Tailwind)\n H-max AI — assistant virtuel avec météo en temps réel (React, TypeScript)\n API RESTful Node/React — projet full-stack sur les APIs REST\n Pulse by Ingedata — plateforme RH d'entreprise (projet confidentiel)\n\nTous les liens sont dans la section ~/projets juste au-dessus !",
+      "Quelques réalisations de Hassy :\n Altea Flow (2026) — SaaS d'automatisation piloté par agents IA (n8n, Rails, React, Supabase)\n Auto | DECISIONS — agence d'automatisation n8n pour RH, Finance, Marketing\n Bazar Naka — supermarché en ligne (Rails, PostgreSQL)\n Babel Goods — e-commerce pour boutiques Facebook (React, Vite, Tailwind)\n H-max AI — assistant virtuel avec météo en temps réel (React, TypeScript)\n API RESTful Node/React — projet full-stack sur les APIs REST\n Pulse by Ingedata — plateforme RH d'entreprise (projet confidentiel)\n\nTous les liens sont dans la section Projets de la page !",
   },
   {
     id: 'resultats',
     label: 'Ses résultats',
     keywords: ['résultat', 'résultats', 'impact', 'accomplissement'],
     answer:
-      "Quelques résultats concrets plutôt que des promesses en l'air :\n Altea Flow : SaaS complet en production, de la conception à l'infra\n Auto | DECISIONS : automatisations n8n déployées chez plusieurs clients (RH, Finance, Marketing)\n Pulse by Ingedata : microservices RH couverts par des tests automatisés (RSpec, Cypress) pour limiter les régressions\n\nLe détail est dans la section ~/résultats.",
+      "Quelques résultats concrets plutôt que des promesses en l'air :\n Altea Flow : SaaS complet en production, de la conception à l'infra\n Auto | DECISIONS : automatisations n8n déployées chez plusieurs clients (RH, Finance, Marketing)\n Pulse by Ingedata : microservices RH couverts par des tests automatisés (RSpec, Cypress) pour limiter les régressions\n\nLe détail est dans la section Résultats.",
   },
   {
     id: 'contact',
     label: 'Le contacter',
     keywords: ['contact', 'email', 'mail', 'linkedin', 'github', 'joindre', 'contacter'],
     answer:
-      "Le plus simple : hassy.tsihoarana@gmail.com ✉️\n\nSinon :\n GitHub : github.com/Hassyunity (73 repos)\n LinkedIn : linkedin.com/in/tsihoarana-hassy-b8349020b/\n Ou directement via la bulle WhatsApp bleue en bas de l'écran 👋",
+      "Le plus simple : hassy.tsihoarana@gmail.com ✉️\n\nSinon :\n GitHub : github.com/Hassyunity (73 repos)\n LinkedIn : linkedin.com/in/tsihoarana-hassy-b8349020b/\n Ou directement via le bouton WhatsApp en bas à droite de l'écran 👋",
   },
   {
     id: 'localisation',
@@ -83,7 +83,7 @@ export const knowledgeBase: KnowledgeTopic[] = [
     label: 'Ses articles de blog',
     keywords: ['blog', 'article', 'vision ia', 'sécurité api', 'jwt', 'sécuriser une api'],
     answer:
-      "Deux articles à lire dans la section ~/blogs :\n « L'IA : Assistante de création, pas notre futur » — comment Hassy a transformé l'IA en copilote plutôt qu'en remplaçant\n « Sécuriser une API : L'implémentation du JWT » — guide pratique sur l'authentification par tokens\n\nDes réflexions sur le code, l'IA et l'artisanat numérique, écrites par Hassy lui-même.",
+      "Deux articles à lire dans la rubrique Blog :\n « L'IA : Assistante de création, pas notre futur » — comment Hassy a transformé l'IA en copilote plutôt qu'en remplaçant\n « Sécuriser une API : L'implémentation du JWT » — guide pratique sur l'authentification par tokens\n\nDes réflexions sur le code, l'IA et l'artisanat numérique, écrites par Hassy lui-même.",
   },
 ];
 

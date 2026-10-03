@@ -1,14 +1,25 @@
 import React from 'react';
 import '../assets/styles/About.css';
 import { useReveal } from '../hooks/useReveal';
-import SectionBackdrop from './SectionBackdrop';
+import officePhoto from '../assets/images/bureau.jpg';
+
+const PILLARS = [
+  {
+    title: 'Concevoir',
+    text: "Des architectures SaaS claires et évolutives, pensées pour le produit autant que pour le code.",
+  },
+  {
+    title: 'Automatiser',
+    text: "Des workflows n8n et des agents IA qui suppriment les tâches répétitives et fiabilisent les données.",
+  },
+  {
+    title: 'Piloter',
+    text: "Déploiements cloud, CI/CD et coordination d'équipe : la technique au service des objectifs business.",
+  },
+];
 
 const About: React.FC = () => {
   const { ref, isVisible } = useReveal<HTMLElement>();
-  const skills = [
-    "Ruby on Rails", "TypeScript", "React", "Node.js",
-    "n8n", "Docker", "PostgreSQL", "deploiement"
-  ];
 
   return (
     <section
@@ -16,88 +27,51 @@ const About: React.FC = () => {
       ref={ref}
       className={`section-container reveal-section ${isVisible ? 'is-visible' : ''}`}
     >
-      <SectionBackdrop variant="about" />
-      <h2 className="section-title">
-        <span className="path">~/</span>A propos
-        <span className="title-rule" />
-        <span className="title-index">[01]</span>
-      </h2>
-
       <div className="about-layout">
-        <div className="about-main">
-          <div className="about-section reveal-item" style={{ '--reveal-delay': '0s' } as React.CSSProperties}>
-            <p className="comment">
-              <span className="hashtag">#</span> Qui je suis ?</p>
+        <figure className="about-visual reveal-item">
+          <img src={officePhoto} alt="Hassy Tsihoarana à son poste de travail" loading="lazy" />
+          <figcaption>
+            <span>Basé à</span> Madagascar
+          </figcaption>
+        </figure>
+
+        <div className="about-body">
+          <p className="eyebrow reveal-item">01 — Profil</p>
+          <h2 className="section-title reveal-item" style={{ '--reveal-delay': '0.08s' } as React.CSSProperties}>
+            Un développeur qui pense <em>produit</em>, pas seulement code.
+          </h2>
+
+          <div className="about-text reveal-item" style={{ '--reveal-delay': '0.16s' } as React.CSSProperties}>
             <p>
-              Développeur Full-stack passionné par la création de produits numériques,
-              je transforme des idées en plateformes complètes : backend robuste,
-              APIs efficaces et interfaces fluides. Mon objectif est simple :
-              créer des outils intelligents qui simplifient le travail et apportent un vrai impact
-              en solutions concrètes, performantes et surtout utiles au quotidien.
+              Développeur full-stack passionné par la création de produits numériques, je transforme
+              des idées en plateformes complètes : backend robuste, APIs efficaces et interfaces fluides.
+            </p>
+            <p>
+              Spécialisé en <strong>Ruby on Rails</strong> et <strong>React</strong>, j'interviens sur
+              l'ensemble de la chaîne — du développement aux déploiements <strong>Cloud</strong> — et
+              j'intègre des systèmes d'automatisation avec <strong>n8n</strong> et des
+              <strong> fonctionnalités IA</strong> pour maximiser la valeur délivrée.
             </p>
           </div>
 
-          <div className="about-section reveal-item" style={{ '--reveal-delay': '0.12s' } as React.CSSProperties}>
-            <p className="comment">
-              <span className="hashtag">#</span> Ce que je fais
-            </p>
-            <p className="desc-text">
-              Spécialisé en <strong>Ruby on Rails</strong> et <strong>React</strong>,
-              je conçois des solutions <strong>SaaS</strong> et des applications
-              <strong> web modernes</strong>.
-              J'interviens sur l'ensemble de la chaîne technique,
-              du développement aux déploiements <strong>Cloud</strong>, afin de construire des plateformes robustes,
-              évolutives et performantes.
-              Au-delà du développement, j'intègre des systèmes d'automatisation avec <strong>n8n</strong> et
-              j'explore les <strong>fonctionnalités IA</strong> pour optimiser les processus métiers et maximiser
-              la valeur délivrée.
-            </p>
-          </div>
-
-          <div className="about-section reveal-item" style={{ '--reveal-delay': '0.24s' } as React.CSSProperties}>
-            <p className="comment">
-              <span className="hashtag">#</span> Mon approche
-            </p>
-            <p>Je code, j'automatise, j'optimise, et je ne m'arrête jamais d'apprendre.</p>
-          </div>
-
-          <div className="skills-card reveal-item" style={{ '--reveal-delay': '0.36s' } as React.CSSProperties}>
-            <p className="skills-card-title">STACK PRINCIPALE</p>
-            <div className="about-grid">
-              {skills.map((skill) => (
-                <div key={skill} className="skill-tag">
-                  {skill}
-                </div>
-              ))}
-            </div>
-          </div>
+          <blockquote className="about-quote reveal-item" style={{ '--reveal-delay': '0.24s' } as React.CSSProperties}>
+            « Je code, j'automatise, j'optimise — et je ne m'arrête jamais d'apprendre. »
+          </blockquote>
         </div>
+      </div>
 
-        <div className="about-side">
-          <div className="side-stats reveal-item" style={{ '--reveal-delay': '0.1s' } as React.CSSProperties}>
-            <div className="side-stat">
-              <span className="side-stat-value">3-5</span>
-              <span className="side-stat-label">ANS D'EXPÉRIENCE</span>
-            </div>
-            <div className="side-stat">
-              <span className="side-stat-value">7</span>
-              <span className="side-stat-label">PROJETS LIVRÉS</span>
-            </div>
-          </div>
-
-          <div className="side-card reveal-item" style={{ '--reveal-delay': '0.2s' } as React.CSSProperties}>
-            <div className="side-card-header">
-              <span className="side-card-icon">⌘</span>
-              <span className="side-card-tag">ACTUEL</span>
-            </div>
-            <p className="side-card-title">CTO &amp; Responsable Projet</p>
-            <p className="side-card-desc">Fullstack Developer / DevOps chez XR Technologie.</p>
-          </div>
-
-          <div className="side-location reveal-item" style={{ '--reveal-delay': '0.3s' } as React.CSSProperties}>
-            <span>BASE : MADAGASCAR</span>
-          </div>
-        </div>
+      <div className="about-pillars">
+        {PILLARS.map((pillar, i) => (
+          <article
+            key={pillar.title}
+            className="about-pillar reveal-item"
+            style={{ '--reveal-delay': `${0.1 + i * 0.1}s` } as React.CSSProperties}
+          >
+            <span className="about-pillar-index">0{i + 1}</span>
+            <h3>{pillar.title}</h3>
+            <p>{pillar.text}</p>
+          </article>
+        ))}
       </div>
     </section>
   );

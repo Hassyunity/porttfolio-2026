@@ -1,179 +1,95 @@
-/* --- Conteneur Principal du Footer --- */
 .footer {
-  /* Force le noir sur toute la largeur de la fenêtre */
-  width: 100vw; 
-  position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
-  
-  background-color: #000;
-  padding: 3.5rem 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center; 
-  gap: 2.5rem;
-  z-index: 10;
-  box-sizing: border-box;
-  border-top: 1px solid #111;
+  border-top: 1px solid var(--line);
+  margin-top: clamp(2rem, 6vw, 4rem);
+  background: var(--bg-elevated);
 }
 
-/* --- Barre Multicolore --- */
-.color-bar {
-  display: flex;
-  gap: 8px;
-  width: 100%;
-  max-width: 300px;
-  justify-content: center;
+.footer-inner {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: clamp(3.5rem, 7vw, 5rem) var(--gutter) 2rem;
 }
 
-.bar {
-  height: 4px;
-  flex: 1;
-  border-radius: 2px;
-}
-
-.lime { background-color: var(--accent-lime); }
-.magenta { background-color: var(--accent-magenta); }
-.cyan { background-color: var(--accent-cyan); }
-
-/* --- Structure Interne (Gauche/Droite) --- */
-.footer-container {
-  width: 100%;
-  max-width: 1200px;
+.footer-top {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start; /* Aligné en haut pour mieux gérer le multi-ligne à gauche */
-  padding: 0 4rem;
-  box-sizing: border-box;
+  gap: 3rem;
+  flex-wrap: wrap;
+  padding-bottom: 3.5rem;
 }
 
-.footer-left {
-  flex: 1;
+.footer-name {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  line-height: 1;
+  margin-bottom: 0.6rem;
+}
+
+.footer-tagline {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-bottom: 1.75rem;
+}
+
+.footer-cv {
+  padding: 0.75rem 1.3rem;
+}
+
+.footer-cols {
   display: flex;
-  flex-direction: column; /* Empile CV et Copyright */
-  align-items: flex-start;
-  gap: 0.75rem; /* Espace entre le bloc CV et le copyright */
+  gap: clamp(2.5rem, 7vw, 6rem);
+  flex-wrap: wrap;
 }
 
-.footer-right {
-  flex: 1;
+.footer-col {
   display: flex;
   flex-direction: column;
-  align-items: flex-end; /* Aligne les contacts à droite sur desktop */
+  gap: 0.7rem;
 }
 
-/* --- Bloc Téléchargement CV --- */
-.cv-download {
-  display: flex;
-  align-items: center;
+.footer-col-title {
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-bottom: 0.3rem;
 }
 
-.cv-link-container {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  text-decoration: none;
-}
-
-.pointing-hand {
-  font-size: 1.2rem;
-  display: inline-block;
-  animation: point-wiggle 1s ease-in-out infinite;
-}
-
-.download-text {
-  color: #fff;
-  font-family: var(--font-mono);
+.footer-col a {
+  color: var(--text-muted);
   font-size: 0.9rem;
-  border-bottom: 1px dashed #444;
-  padding-bottom: 2px;
-  transition: all 0.2s ease;
-}
-
-.cv-link-container:hover .download-text {
-  border-bottom-color: var(--accent-lime);
-  color: var(--accent-lime);
-}
-
-/* --- Alignement des Contacts --- */
-.contact-item {
-  display: flex;
-  align-items: center;
-  font-family: var(--font-mono);
-  font-size: 0.9rem;
-  margin: 0.2rem 0;
-}
-
-.footer-label {
-  color: #444;
-  font-weight: bold;
-  display: inline-block;
-  min-width: 45px; 
-  text-align: left;
-}
-
-.footer-link {
-  color: #888;
   text-decoration: none;
-  transition: all 0.2s ease;
-  white-space: nowrap;
+  transition: color 0.3s ease;
 }
 
-.footer-link:hover {
-  color: #fff;
+.footer-col a:hover {
+  color: var(--accent-strong);
 }
 
-.copyright {
-  color: #555;
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.05em;
-  margin: 0;
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.8rem;
+  color: var(--text-faint);
 }
 
-/* --- Animations --- */
-@keyframes point-wiggle {
-  0%, 100% { transform: translateX(0); }
-  50% { transform: translateX(-6px); } /* Pointe vers le texte */
+.footer-top-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
 }
 
-/* --- Media Queries (Responsive) --- */
-
-@media (max-width: 900px) {
-  .footer-container {
-    padding: 0 2rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .footer {
-    padding: 2.5rem 0;
-  }
-  
-  .footer-container {
-    flex-direction: column;
-    gap: 2.5rem;
-    text-align: center;
-    align-items: center;
-  }
-
-  .footer-left, .footer-right {
-    align-items: center; /* Centre tout sur mobile */
-    text-align: center;
-  }
-
-  .footer-left {
-    order: 2; /* Met le bloc gauche (CV + Copyright) en bas sur mobile */
-  }
-}
-
-@media (max-width: 480px) {
-  .color-bar {
-    max-width: 200px;
-  }
-  .copyright, .contact-item, .download-text {
-    font-size: 0.8rem;
-  }
+.footer-top-btn:hover {
+  color: var(--accent-strong);
 }

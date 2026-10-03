@@ -1,221 +1,136 @@
 .about-layout {
   display: grid;
-  grid-template-columns: 1.6fr 1fr;
-  gap: 3rem;
-  margin-top: 2rem;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(2.5rem, 6vw, 6rem);
+  align-items: center;
+}
+
+/* --- Visuel --- */
+.about-visual {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+
+.about-visual img {
   width: 100%;
-  box-sizing: border-box;
-  align-items: start;
+  height: 100%;
+  object-fit: cover;
+  object-position: 40% center;
+  filter: saturate(0.85) contrast(1.05);
+  transition: transform 1.4s var(--ease);
 }
 
-.about-section {
-  margin-bottom: 2.5rem;
+.about-visual:hover img {
+  transform: scale(1.04);
 }
 
-.about-section p {
-  color: #ccc;
-  font-size: clamp(1rem, 2.5vw, 1.1rem); /* Texte fluide */
-  line-height: 1.6;
-}
-
-.comment {
-  color: #888;
-  font-weight: bold;
-  margin-bottom: 0.8rem;
-  font-size: clamp(1.1rem, 3vw, 1.2rem); /* Titre de section fluide */
-}
-
-.comment .hashtag {
-  color: var(--accent-lime);
-  margin-right: 5px;
-}
-
-/* Carte stack principale */
-.skills-card {
-  border: 1px solid #1c1c1c;
-  background: #111;
-  border-radius: 8px;
-  padding: 1.5rem;
-}
-
-.skills-card-title {
-  font-size: 0.7rem;
-  letter-spacing: 0.12em;
-  color: var(--text-gray);
-  margin-bottom: 1rem;
-}
-
-/* Grille de tags style terminal */
-.about-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-  width: 100%;
-}
-
-.skill-tag {
-  border: 1px solid #333;
-  background: transparent;
-  color: #eee;
-  padding: 1rem 0.5rem;
-  text-align: center;
-  font-size: 0.85rem;
-  font-family: var(--font-mono);
-  transition: all 0.3s ease;
-  cursor: default;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.skill-tag:hover {
-  border-color: var(--accent-lime);
-  background: rgba(200, 245, 96, 0.06);
-  color: white;
-  transform: translateY(-2px);
-}
-
-.desc-text strong {
-  color: var(--accent-lime);
-  font-weight: 600;
-}
-
-/* --- Colonne latérale --- */
-.about-side {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
-
-.side-stats {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
-
-.side-stat {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 1.25rem 0.75rem;
-  border: 1px solid #1c1c1c;
-  border-radius: 8px;
-  background: #111;
-}
-
-.side-stat-value {
-  font-size: 1.8rem;
-  font-weight: 800;
-  color: var(--accent-lime);
-}
-
-.side-stat-label {
-  font-size: 0.62rem;
-  letter-spacing: 0.08em;
-  color: var(--text-gray);
-  text-align: center;
-}
-
-.side-card {
-  border: 1px solid #1c1c1c;
-  border-radius: 8px;
-  padding: 1.25rem;
-  background: #111;
-}
-
-.side-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.75rem;
-}
-
-.side-card-icon {
-  color: var(--accent-magenta);
-  font-size: 1rem;
-}
-
-.side-card-tag {
-  font-size: 0.6rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  color: var(--accent-magenta);
-  border: 1px solid rgba(255, 46, 147, 0.4);
-  background: rgba(255, 46, 147, 0.08);
-  padding: 0.2rem 0.5rem;
+.about-visual figcaption {
+  position: absolute;
+  left: 1.25rem;
+  bottom: 1.25rem;
+  padding: 0.55rem 1rem;
+  background: rgba(12, 11, 10, 0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--line-strong);
   border-radius: 999px;
-}
-
-.side-card-title {
-  font-size: 0.95rem;
-  font-weight: 700;
-  margin-bottom: 0.4rem;
-}
-
-.side-card-desc {
   font-size: 0.8rem;
-  color: var(--text-gray);
-  line-height: 1.4;
+  color: var(--text);
 }
 
-.side-location {
+.about-visual figcaption span {
+  color: var(--text-muted);
+  margin-right: 0.25rem;
+}
+
+/* --- Texte --- */
+.about-body .section-title {
+  margin-bottom: 2rem;
+}
+
+.about-text {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border: 1px solid #1c1c1c;
-  border-radius: 8px;
-  padding: 0.9rem 1.1rem;
-  font-size: 0.7rem;
-  letter-spacing: 0.06em;
-  color: var(--text-gray);
+  flex-direction: column;
+  gap: 1.1rem;
+  color: var(--text-muted);
+  font-size: 1.02rem;
+  font-weight: 300;
+  line-height: 1.8;
 }
 
-.side-location-tag {
-  color: var(--accent-lime);
-  font-weight: 700;
+.about-text strong {
+  color: var(--text);
+  font-weight: 500;
 }
 
-/* --- MEDIA QUERIES --- */
+.about-quote {
+  margin-top: 2.25rem;
+  padding-left: 1.5rem;
+  border-left: 1px solid var(--accent);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(1.3rem, 2.2vw, 1.6rem);
+  line-height: 1.35;
+  color: var(--text);
+}
 
-@media (max-width: 1024px) {
+/* --- Piliers --- */
+.about-pillars {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: clamp(4rem, 8vw, 6rem);
+  border-top: 1px solid var(--line);
+}
+
+.about-pillar {
+  padding: 2.25rem 2rem 0 0;
+}
+
+.about-pillar + .about-pillar {
+  padding-left: 2rem;
+  border-left: 1px solid var(--line);
+}
+
+.about-pillar-index {
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+.about-pillar h3 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 1.85rem;
+  margin: 0.75rem 0 0.75rem;
+}
+
+.about-pillar p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  font-weight: 300;
+  line-height: 1.7;
+}
+
+@media (max-width: 900px) {
   .about-layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
-  .about-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-  }
-}
-
-@media (max-width: 768px) {
-  .about-layout {
-    margin-top: 1.5rem;
+  .about-visual {
+    aspect-ratio: 16 / 11;
   }
 
-  .about-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .about-pillars {
+    grid-template-columns: minmax(0, 1fr);
   }
 
-  .skill-tag {
-    padding: 1rem 0.4rem;
-    font-size: 0.9rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .about-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-  }
-
-  .skill-tag {
-    padding: 0.8rem 0.3rem;
-    font-size: 0.8rem;
-  }
-
-  .comment {
-    margin-bottom: 0.5rem;
+  .about-pillar,
+  .about-pillar + .about-pillar {
+    padding: 1.75rem 0;
+    border-left: none;
+    border-bottom: 1px solid var(--line);
   }
 }

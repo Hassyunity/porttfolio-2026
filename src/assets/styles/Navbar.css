@@ -3,216 +3,191 @@
   top: 0;
   left: 0;
   right: 0;
-  padding: 1.5rem 4rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   z-index: 1000;
-  overflow: hidden;
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  transition: all 0.3s ease;
+  border-bottom: 1px solid transparent;
+  transition: background 0.5s var(--ease), border-color 0.5s var(--ease), backdrop-filter 0.5s var(--ease);
 }
 
-/* Fonds alternés en fondu, en écho à la section d'accueil */
-.navbar-bg {
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  z-index: -2;
+.navbar.is-scrolled {
+  background: rgba(12, 11, 10, 0.78);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border-bottom-color: var(--line);
 }
 
-.navbar-bg-1 {
-  background-image: url('/back.jpg');
-  animation: home-bg-crossfade-1 6s ease-in-out infinite;
+.navbar-inner {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 1.1rem var(--gutter);
+  display: flex;
+  align-items: center;
+  gap: 2rem;
 }
 
-.navbar-bg-2 {
-  background-image: url('/back2.jpg');
-  opacity: 0;
-  animation: home-bg-crossfade-2 6s ease-in-out infinite;
-}
-
-.navbar-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: rgba(10, 10, 10, 0.75);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .navbar-bg-1, .navbar-bg-2 {
-    animation: none;
-  }
-
-  .navbar-bg-2 {
-    opacity: 0;
-  }
-}
-
-/* LOGO */
-.nav-logo {
+/* --- Marque --- */
+.nav-brand {
   display: flex;
   align-items: center;
   gap: 0.7rem;
-  cursor: pointer;
+  text-decoration: none;
+  margin-right: auto;
+  position: relative;
+  z-index: 2;
 }
 
-.logo-sys {
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  color: var(--accent-lime);
-}
-
-.logo-wrapper {
-  width: 45px;
-  height: 45px;
-  border-radius: 50%; 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 2px solid rgba(255,255,255,0.06);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  overflow: hidden;
-}
-
-.logo-img {
-  height: 75%;
-  width: auto;
+.nav-brand-logo {
+  width: 34px;
+  height: 34px;
   object-fit: contain;
 }
 
-.logo-wrapper:hover {
-  transform: scale(1.1) rotate(15deg);
-  box-shadow: 0 0 8px var(--accent-lime);
+.nav-brand-name {
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  letter-spacing: 0.01em;
+  color: var(--text);
 }
 
-.nav-links { 
-  display: flex; 
-  gap: 2.5rem; 
+/* --- Liens --- */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2.1rem;
 }
 
 .nav-link {
-  text-decoration: none;
-  color: var(--text);
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
   position: relative;
-  font-family: var(--font-mono);
+  text-decoration: none;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  letter-spacing: 0.03em;
   transition: color 0.3s ease;
 }
 
-/* LES PETITS TRAITS (::after) */
 .nav-link::after {
   content: '';
   position: absolute;
-  bottom: -6px;
   left: 0;
-  width: 15px;
-  height: 3px;
-  transition: width 0.3s;
+  right: 0;
+  bottom: -6px;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.45s var(--ease);
 }
 
-.nav-link:hover::after {
-  width: 100%;
+.nav-link:hover,
+.nav-link.active {
+  color: var(--text);
 }
 
-.link-about:hover { color: var(--accent-lime); }
-.link-skills:hover { color: var(--accent-cyan); }
-.link-experience:hover { color: var(--accent-magenta); }
-.link-projects:hover { color: var(--accent-lime); }
-.link-contact:hover { color: var(--accent-cyan); }
-.link-blog:hover { color: var(--accent-magenta); }
-.link-album:hover { color: var(--accent-lime); }
-
-.link-about::after { background-color: var(--accent-lime); }
-.link-skills::after { background-color: var(--accent-cyan); }
-.link-experience::after { background-color: var(--accent-magenta); }
-.link-projects::after { background-color: var(--accent-lime); }
-.link-contact::after { background-color: var(--accent-cyan); }
-.link-blog::after { background-color: var(--accent-magenta); }
-.link-album::after { background-color: var(--accent-lime); }
-
-/* Nav "spy" : lien de la section active au scroll */
-.link-about.active { color: var(--accent-lime); }
-.link-skills.active { color: var(--accent-cyan); }
-.link-experience.active { color: var(--accent-magenta); }
-.link-projects.active { color: var(--accent-lime); }
-.link-contact.active { color: var(--accent-cyan); }
-
-.link-about.active::after,
-.link-skills.active::after,
-.link-experience.active::after,
-.link-projects.active::after,
-.link-contact.active::after {
-  width: 100%;
+.nav-link:hover::after,
+.nav-link.active::after {
+  transform: scaleX(1);
 }
 
+/* --- CTA CV --- */
+.nav-cv {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 1.05rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  color: var(--text);
+  transition: border-color 0.3s ease, color 0.3s ease, background 0.3s ease;
+}
+
+.nav-cv:hover {
+  border-color: var(--accent);
+  color: var(--accent-strong);
+  background: var(--accent-soft);
+}
+
+.nav-cv-mobile { display: none; }
+
+/* --- Burger --- */
 .burger {
   display: none;
+  position: relative;
+  z-index: 2;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
   cursor: pointer;
-  z-index: 1002;
 }
 
-.burger div {
-  width: 25px;
-  height: 2px;
-  background-color: var(--text);
-  margin: 5px;
-  transition: all 0.3s ease;
+.burger span {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  height: 1px;
+  background: var(--text);
+  transition: transform 0.4s var(--ease), top 0.4s var(--ease);
 }
 
-/* --- MEDIA QUERIES --- */
+.burger span:first-child { top: 16px; }
+.burger span:last-child { top: 22px; }
 
-@media (max-width: 1024px) {
-  .navbar { padding: 1rem 2.5rem; }
-  .nav-links { gap: 1.5rem; }
+.burger.active span:first-child { top: 19px; transform: rotate(45deg); }
+.burger.active span:last-child { top: 19px; transform: rotate(-45deg); }
+
+@media (max-width: 980px) {
+  .nav-links { gap: 1.4rem; }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 880px) {
   .burger { display: block; }
+  .nav-cv-desktop { display: none; }
 
   .nav-links {
     position: fixed;
-    right: 0;
-    top: 0;
-    height: 100vh;
-    width: 75%;
-    background: rgba(10, 10, 10, 0.98);
-    display: flex;
+    inset: 0;
     flex-direction: column;
+    align-items: flex-start;
     justify-content: center;
-    align-items: center;
-    gap: 3.5rem; /* Espace pour bien voir les traits */
-    transform: translateX(100%);
-    transition: transform 0.4s ease-in-out;
+    gap: 1.4rem;
+    padding: 6rem var(--gutter) 3rem;
+    background: var(--bg);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.45s var(--ease), visibility 0.45s;
   }
 
-  .nav-active { transform: translateX(0%); }
-
-  .nav-link { font-size: 1.2rem; }
-
-  .nav-link::after {
-    width: 20px;
-    bottom: -10px;
-    height: 4px;
-    display: block !important;
-  }
-  
-  .nav-link:hover::after {
-    width: 100%;
+  .nav-active {
+    opacity: 1;
+    visibility: visible;
   }
 
-  /* Animation Burger */
-  .burger.active .line1 { transform: rotate(-45deg) translate(-5px, 5px); }
-  .burger.active .line2 { opacity: 0; }
-  .burger.active .line3 { transform: rotate(45deg) translate(-5px, -5px); }
-}
+  .nav-link {
+    font-family: var(--font-serif);
+    font-size: 2.4rem;
+    line-height: 1.1;
+    letter-spacing: 0;
+    color: var(--text);
+  }
 
-@media (max-width: 480px) {
-  .nav-links { width: 100%; }
+  .nav-link::after { display: none; }
+
+  .nav-link.active { color: var(--accent); }
+
+  .nav-cv-mobile {
+    display: inline-flex;
+    margin-top: 1.5rem;
+    padding: 0.85rem 1.4rem;
+    font-size: 0.85rem;
+  }
+
+  /* backdrop-filter créerait un bloc conteneur pour le menu en position fixe */
+  .navbar.menu-open {
+    background: var(--bg);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
 }

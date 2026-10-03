@@ -1,14 +1,15 @@
 import React from 'react';
 import '../assets/styles/Experience.css';
 import { useReveal } from '../hooks/useReveal';
-import SectionBackdrop from './SectionBackdrop';
 
 interface Job {
   title: string;
   company: string;
   location: string;
   period: string;
+  current?: boolean;
   bullets: string[];
+  stack: string[];
 }
 
 const JOBS: Job[] = [
@@ -16,24 +17,26 @@ const JOBS: Job[] = [
     title: "Fullstack Developer, DevOps & CTO",
     company: "XR Technologie",
     location: "Madagascar",
-    period: "ACTUEL",
+    period: "Aujourd'hui",
+    current: true,
     bullets: [
-      "Pilotage technique et architecture globale des produits (CTO)",
-      "Développement fullstack avec Ruby on Rails et React",
+      "Pilotage technique et architecture globale des produits",
+      "Développement full-stack avec Ruby on Rails et React",
       "Déploiements, infrastructure et automatisation (DevOps)",
       "Gestion de projets transverses et coordination d'équipe"
-    ]
+    ],
+    stack: ["Ruby on Rails", "React", "Docker", "CI/CD", "n8n"]
   },
   {
     title: "Développeur Full-stack",
     company: "Pulse by Ingedata",
     location: "Madagascar",
-    period: "PRÉCÉDENT",
+    period: "Précédemment",
     bullets: [
       "Développement de microservices RH (Recrutement, Talent, Candidat)",
-      "Mise en place de tests automatisés avec RSpec et Cypress",
-      "Stack : Ruby on Rails, PostgreSQL, AppScript, Docker"
-    ]
+      "Mise en place de tests automatisés avec RSpec et Cypress"
+    ],
+    stack: ["Ruby on Rails", "PostgreSQL", "AppScript", "RSpec", "Cypress", "Docker"]
   }
 ];
 
@@ -46,40 +49,51 @@ const Experience: React.FC = () => {
       ref={ref}
       className={`section-container reveal-section ${isVisible ? 'is-visible' : ''}`}
     >
-      <SectionBackdrop variant="experience" />
-      <h2 className="section-title">
-        <span className="path">~/</span>parcours
-        <span className="title-rule" />
-        <span className="title-index">[03]</span>
-      </h2>
+      <div className="section-head">
+        <div>
+          <p className="eyebrow reveal-item">03 — Parcours</p>
+          <h2 className="section-title reveal-item">
+            Du code à la <em>direction technique</em>.
+          </h2>
+        </div>
+        <p className="section-lead reveal-item" style={{ '--reveal-delay': '0.1s' } as React.CSSProperties}>
+          Un parcours construit sur le terrain, des microservices critiques jusqu'au pilotage
+          technique d'une entreprise.
+        </p>
+      </div>
 
-      <div className="timeline">
+      <ol className="timeline">
         {JOBS.map((job, i) => (
-          <div
+          <li
             key={job.company}
             className="timeline-entry reveal-item"
-            style={{ '--reveal-delay': `${i * 0.15}s` } as React.CSSProperties}
+            style={{ '--reveal-delay': `${i * 0.12}s` } as React.CSSProperties}
           >
-            <span className="timeline-dot" />
-            <div className="timeline-card">
-              <div className="timeline-card-header">
-                <div>
-                  <h3 className="timeline-title">{job.title}</h3>
-                  <p className="timeline-company">
-                    {job.company} <span className="timeline-location">// {job.location}</span>
-                  </p>
-                </div>
-                <span className="timeline-period">{job.period}</span>
-              </div>
+            <div className="timeline-meta">
+              <span className={`timeline-period ${job.current ? 'is-current' : ''}`}>{job.period}</span>
+              <span className="timeline-location">{job.location}</span>
+            </div>
+
+            <div className="timeline-main">
+              <h3 className="timeline-company">{job.company}</h3>
+              <p className="timeline-title">{job.title}</p>
+            </div>
+
+            <div className="timeline-details">
               <ul className="timeline-bullets">
                 {job.bullets.map((bullet) => (
                   <li key={bullet}>{bullet}</li>
                 ))}
               </ul>
+              <div className="project-tags">
+                {job.stack.map((tech) => (
+                  <span key={tech} className="tag">{tech}</span>
+                ))}
+              </div>
             </div>
-          </div>
+          </li>
         ))}
-      </div>
+      </ol>
     </section>
   );
 };

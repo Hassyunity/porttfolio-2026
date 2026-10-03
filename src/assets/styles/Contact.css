@@ -1,124 +1,98 @@
-/* --- CTA --- */
-.contact-cta {
-  margin-bottom: 3rem;
-}
-
-.contact-cta-label {
-  display: inline-block;
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  color: var(--accent-magenta);
-  margin-bottom: 1rem;
-}
-
-.contact-cta-heading {
-  display: flex;
-  flex-direction: column;
-  font-size: clamp(2.2rem, 6vw, 3.8rem);
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: -0.01em;
-  margin-bottom: 1.5rem;
-}
-
-.contact-cta-accent {
-  background: linear-gradient(90deg, var(--text), var(--text-gray));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-.contact-intro {
-  color: #ccc;
-  font-size: 1.1rem;
-  font-family: var(--font-mono);
-}
-
-.arrow-prompt {
-  color: var(--accent-cyan);
-  margin-right: 10px;
-}
-
-/* Grille 2x2 */
-.contact-grid {
+.contact-layout {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+  gap: clamp(3rem, 7vw, 6rem);
+  align-items: end;
 }
 
-.contact-card {
-  background: #111;
-  border: 1px solid #222;
-  border-radius: 8px;
-  padding: 1.5rem 2rem;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  display: block;
+.contact-heading {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(2.8rem, 6.5vw, 5.2rem);
+  line-height: 1;
+  letter-spacing: -0.015em;
+  margin-bottom: 1.75rem;
 }
 
-.contact-card:hover {
-  border-color: var(--accent-cyan);
-  transform: translateY(-2px);
+.contact-heading em {
+  font-style: italic;
+  color: var(--accent);
 }
 
-.contact-header {
+.contact-main-btn {
+  margin-top: 2.5rem;
+}
+
+/* --- Liste des canaux --- */
+.contact-list {
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+
+.contact-list li {
+  border-bottom: 1px solid var(--line);
+}
+
+.contact-row {
   display: flex;
   align-items: center;
-  gap: 12px;
-  color: #888;
-  margin-bottom: 0.8rem;
+  gap: 1.1rem;
+  padding: 1.4rem 0;
+  text-decoration: none;
+  color: var(--text);
+}
+
+.contact-icon {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  color: var(--text-muted);
+  transition: background 0.4s var(--ease), color 0.4s var(--ease), border-color 0.4s var(--ease);
+}
+
+.contact-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
 }
 
 .contact-label {
-  font-size: 0.9rem;
-  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-faint);
 }
 
 .contact-value {
-  color: #ccc;
-  font-size: 1.1rem;
-  word-break: break-all;
+  font-size: 0.98rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.contact-extra {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  color: var(--accent-cyan);
-  border: 1px solid var(--accent-cyan);
-  padding: 2px 8px;
-  border-radius: 12px;
-  background: rgba(61, 219, 217, 0.1);
+.contact-arrow {
+  color: var(--text-faint);
+  transition: transform 0.4s var(--ease), color 0.4s var(--ease);
 }
 
-.contact-card:hover .contact-extra {
-  background: rgba(61, 219, 217, 0.2);
-  box-shadow: 0 0 10px rgba(61, 219, 217, 0.3);
+.contact-row:hover .contact-icon {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg);
 }
 
-/* --- Statut de bas de section --- */
-.contact-status {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  justify-content: center;
-  margin-top: 3rem;
-  font-size: 0.7rem;
-  letter-spacing: 0.08em;
-  color: var(--text-gray);
+.contact-row:hover .contact-arrow {
+  color: var(--accent);
+  transform: translate(3px, -3px);
 }
 
-.contact-status .status-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--accent-lime);
-  box-shadow: 0 0 6px var(--accent-lime);
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .contact-grid {
-    grid-template-columns: 1fr;
+@media (max-width: 900px) {
+  .contact-layout {
+    grid-template-columns: minmax(0, 1fr);
   }
 }

@@ -1,23 +1,44 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { ArrowDownToLine } from 'lucide-react';
 import '../assets/styles/Navbar.css';
 import cvPath from '../assets/fichier/cv_fr.pdf';
 
-const SECTION_IDS = ['about', 'skills', 'experience', 'projects', 'contact'];
+const SECTION_LINKS = [
+  { id: 'about', label: 'Profil' },
+  { id: 'skills', label: 'Expertises' },
+  { id: 'experience', label: 'Parcours' },
+  { id: 'projects', label: 'Projets' },
+  { id: 'contact', label: 'Contact' },
+];
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('');
   const location = useLocation();
 
   const isHome = location.pathname === '/';
 
+  useEffect(() => {
+    const onScroll = () => setIsScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  // Bloque le scroll de la page quand le menu mobile est ouvert
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [isOpen]);
+
   // Nav "spy" : surligne le lien de la section actuellement visible à l'écran
   useEffect(() => {
     if (!isHome) return;
 
-    const sections = SECTION_IDS
-      .map((id) => document.getElementById(id))
+    const sections = SECTION_LINKS
+      .map(({ id }) => document.getElementById(id))
       .filter((el): el is HTMLElement => el !== null);
 
     if (sections.length === 0) return;
@@ -37,51 +58,50 @@ const Navbar: React.FC = () => {
     return () => observer.disconnect();
   }, [isHome]);
 
-  const toggleMenu = () => setIsOpen(!isOpen);
   const closeMenu = () => setIsOpen(false);
 
   return (
-    <nav className={`navbar ${isOpen ? 'menu-open' : ''}`}>
-      <div className="navbar-bg navbar-bg-1" />
-      <div className="navbar-bg navbar-bg-2" />
-      <div className="navbar-overlay" />
-
-      <div className="nav-logo">
-        <Link to="/" onClick={() => { window.scrollTo(0, 0); closeMenu(); }}>
-          <div className="logo-wrapper">
-            <img src="/lg.png" alt="Logo" className="logo-img" />
-          </div>
+    <header className={`navbar ${isScrolled || !isHome ? 'is-scrolled' : ''} ${isOpen ? 'menu-open' : ''}`}>
+      <div className="navbar-inner">
+        <Link to="/" className="nav-brand" onClick={() => { window.scrollTo(0, 0); closeMenu(); }}>
+          <img src="/lg.png" alt="" className="nav-brand-logo" />
+          <span className="nav-brand-name">Hassy Tsihoarana</span>
         </Link>
-        <span className="logo-sys">Hassy</span>
-      </div>
-      <div className="contact-item cv-download">
-        <a
-          href={cvPath}
-          download="CV_Hassy_Tsihoarana.pdf"
-          className="footer-link highlight cv-link-container"
-        >
-          <span className="pointing-hand">👉</span>
-          <span className="download-text">Download_CV</span>
-        </a>
-      </div>
-      {/* Bouton Burger */}
-      <div className={`burger ${isOpen ? 'active' : ''}`} onClick={toggleMenu}>
-        <div className="line1"></div>
-        <div className="line2"></div>
-        <div className="line3"></div>
-      </div>
 
-      {/* Liens de navigation */}
-      <div className={`nav-links ${isOpen ? 'nav-active' : ''}`}>
-        <a href="/#about" className={`nav-link link-about ${isHome && activeSection === 'about' ? 'active' : ''}`} onClick={closeMenu}>PROFIL</a>
-        <a href="/#skills" className={`nav-link link-skills ${isHome && activeSection === 'skills' ? 'active' : ''}`} onClick={closeMenu}>EXPERTISES</a>
-        <a href="/#experience" className={`nav-link link-experience ${isHome && activeSection === 'experience' ? 'active' : ''}`} onClick={closeMenu}>PARCOURS</a>
-        <a href="/#projects" className={`nav-link link-projects ${isHome && activeSection === 'projects' ? 'active' : ''}`} onClick={closeMenu}>PROJETS</a>
-        <a href="/#contact" className={`nav-link link-contact ${isHome && activeSection === 'contact' ? 'active' : ''}`} onClick={closeMenu}>CONTACT</a>
-        <Link to="/blogs" className="nav-link link-blog" onClick={closeMenu}>BLOGS</Link>
-        <Link to="/album" className="nav-link link-album" onClick={closeMenu}>ALBUMS</Link>
+        <nav className={`nav-links ${isOpen ? 'nav-active' : ''}`} aria-label="Navigation principale">
+          {SECTION_LINKS.map(({ id, label }) => (
+            <a
+              key={id}
+              href={`/#${id}`}
+              className={`nav-link ${isHome && activeSection === id ? 'active' : ''}`}
+              onClick={closeMenu}
+            >
+              {label}
+            </a>
+          ))}
+          <Link to="/blogs" className={`nav-link ${location.pathname === '/blogs' ? 'active' : ''}`} onClick={closeMenu}>Blog</Link>
+          <Link to="/album" className={`nav-link ${location.pathname === '/album' ? 'active' : ''}`} onClick={closeMenu}>Album</Link>
+
+          <a href={cvPath} download="CV_Hassy_Tsihoarana.pdf" className="nav-cv nav-cv-mobile" onClick={closeMenu}>
+            Télécharger le CV <ArrowDownToLine size={15} />
+          </a>
+        </nav>
+
+        <a href={cvPath} download="CV_Hassy_Tsihoarana.pdf" className="nav-cv nav-cv-desktop">
+          CV <ArrowDownToLine size={14} />
+        </a>
+
+        <button
+          className={`burger ${isOpen ? 'active' : ''}`}
+          onClick={() => setIsOpen((prev) => !prev)}
+          aria-label={isOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
+          aria-expanded={isOpen}
+        >
+          <span />
+          <span />
+        </button>
       </div>
-    </nav>
+    </header>
   );
 };
 

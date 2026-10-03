@@ -1,178 +1,211 @@
-/* Grille de projets */
-.projects-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 16px;
-  margin-top: 2rem;
-}
-
-/* Style de la carte */
-.project-card {
-  --rx: 0deg;
-  --ry: 0deg;
-  --mx: 50%;
-  --my: 50%;
-  --lift: 0px;
-  position: relative;
-  background: #111; /* Fond opaque, uni */
-  border: 1px solid #222; /* Bordure discrète */
-  border-radius: 8px;
-  padding: 1.5rem;
+.featured-list {
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  transform: perspective(900px) translateY(var(--lift)) rotateX(var(--rx)) rotateY(var(--ry));
-  transition: border-color 0.3s ease, transform 0.15s ease, box-shadow 0.3s ease;
-  will-change: transform;
+  gap: clamp(4rem, 9vw, 7rem);
 }
 
-/* Halo lumineux qui suit le curseur */
-.project-card::before {
+.featured-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+  gap: clamp(2rem, 5vw, 4.5rem);
+  align-items: center;
+}
+
+.featured-card.is-reversed {
+  grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr);
+}
+
+.featured-card.is-reversed .featured-media {
+  order: 2;
+}
+
+/* --- Visuel --- */
+.featured-media {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 10;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.7);
+}
+
+.featured-media::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at var(--mx) var(--my), rgba(255, 46, 147, 0.12), transparent 55%);
+  background: linear-gradient(180deg, transparent 60%, rgba(12, 11, 10, 0.35));
+  transition: opacity 0.6s var(--ease);
+}
+
+.featured-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: left top;
+  transition: transform 1.2s var(--ease);
+}
+
+.featured-card:hover .featured-media img {
+  transform: scale(1.035);
+}
+
+.featured-card:hover .featured-media::after {
   opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
 }
 
-.project-card:hover::before {
-  opacity: 1;
-}
-
-/* Effet au survol (souris uniquement, pas de sticky-hover sur mobile) */
-@media (hover: hover) and (pointer: fine) {
-  .project-card:hover {
-    --lift: -4px;
-    border-color: #333;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .project-card {
-    transform: none !important;
-    transition: border-color 0.3s ease;
-  }
-}
-
-/* Header de la carte : Titre + Badge */
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 1rem;
-}
-
-.project-title {
-  color: #fff;
-  font-size: 1.2rem;
-  font-weight: bold;
-}
-
-/* Badges de statut */
-.status-badge {
-  font-size: 0.7rem;
-  padding: 4px 10px;
-  border-radius: 4px;
-  font-family: var(--font-mono);
-  text-transform: lowercase;
-}
-
-.status-badge.production {
-  background: rgba(200, 245, 96, 0.1);
-  color: var(--accent-lime);
-  border: 1px solid rgba(200, 245, 96, 0.2);
-}
-
-.status-badge.development {
-  background: rgba(136, 136, 136, 0.1);
-  color: #888; /* Gris pour development */
-  border: 1px solid rgba(136, 136, 136, 0.2);
-}
-
-/* Description */
-.project-desc {
-  color: #aaa;
-  font-size: 0.9rem;
-  line-height: 1.45;
-  margin-bottom: 1.25rem;
-  flex-grow: 1;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  overflow: hidden;
-}
-
-/* Tags technos */
-.project-tags {
+/* --- Texte --- */
+.featured-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
-  margin-bottom: 1rem;
+  align-items: center;
+  gap: 0.4rem 1rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 1.1rem;
 }
 
-.tag {
-  background: #1a1a1a;
-  color: #888;
-  padding: 4px 12px;
-  border-radius: 4px;
-  font-size: 0.8rem;
-  border: 1px solid #222;
+.featured-index {
+  color: var(--accent);
 }
 
-/* Lien "view website" */
-.view-link {
-  color: var(--accent-lime);
-  text-decoration: none;
-  font-size: 0.9rem;
+.featured-title {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  line-height: 1;
+  margin-bottom: 1.1rem;
+}
+
+.featured-desc {
+  color: var(--text-muted);
+  font-size: 0.98rem;
+  font-weight: 300;
+  line-height: 1.75;
+  margin-bottom: 1.5rem;
+}
+
+.featured-link {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.4rem;
+  margin-top: 2rem;
+  padding-bottom: 0.3rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.03em;
+  text-decoration: none;
+  color: var(--text);
+  border-bottom: 1px solid var(--line-strong);
+  transition: color 0.3s ease, border-color 0.3s ease;
 }
 
-.view-link:hover .arrow {
-  transform: translateX(5px);
-  transition: transform 0.2s;
+.featured-link svg {
+  transition: transform 0.35s var(--ease);
 }
 
-/* --- RESPONSIVE MOBILE --- */
-@media (max-width: 768px) {
-  .projects-grid {
-    grid-template-columns: 1fr; /* Force une seule colonne */
-    gap: 15px;
-  }
-
-  .project-card {
-    padding: 1.25rem; /* Réduit l'espace interne sur mobile */
-  }
-
-  .project-title {
-    font-size: 1.1rem; /* Texte un peu plus petit */
-  }
-
-  .tag {
-    font-size: 0.75rem;
-    padding: 3px 10px;
-  }
-
-  /* On s'assure que le lien est facile à cliquer avec le pouce */
-  .view-link {
-    padding: 10px 0;
-    width: 100%;
-    justify-content: flex-start;
-  }
+.featured-link:hover {
+  color: var(--accent-strong);
+  border-color: var(--accent);
 }
 
-/* Pour les très petits écrans (iPhone SE, etc.) */
-@media (max-width: 380px) {
-  .projects-grid {
-    min-width: 100%;
+.featured-link:hover svg {
+  transform: translate(2px, -2px);
+}
+
+/* --- Autres réalisations --- */
+.others {
+  margin-top: clamp(5rem, 10vw, 8rem);
+}
+
+.others-title {
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 1.25rem;
+}
+
+.others-list {
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+
+.others-list li {
+  border-bottom: 1px solid var(--line);
+}
+
+.others-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr) minmax(0, 1.5fr) auto;
+  gap: 1.5rem;
+  align-items: baseline;
+  padding: 1.6rem 0;
+  text-decoration: none;
+  color: inherit;
+  transition: padding 0.5s var(--ease);
+}
+
+a.others-row:hover {
+  padding-left: 0.75rem;
+}
+
+.others-name {
+  font-family: var(--font-serif);
+  font-size: 1.55rem;
+  line-height: 1.2;
+  transition: color 0.3s ease;
+}
+
+a.others-row:hover .others-name {
+  color: var(--accent-strong);
+}
+
+.others-category {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.others-desc {
+  font-size: 0.88rem;
+  font-weight: 300;
+  color: var(--text-faint);
+}
+
+.others-action {
+  color: var(--text-muted);
+  align-self: center;
+}
+
+.others-private {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+  .featured-card,
+  .featured-card.is-reversed {
+    grid-template-columns: minmax(0, 1fr);
   }
 
-  .card-header {
-    flex-direction: column; /* Titre au dessus du badge si pas assez de place */
-    gap: 10px;
+  .featured-card.is-reversed .featured-media {
+    order: 0;
   }
+
+  .others-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.35rem 1rem;
+  }
+
+  .others-name { grid-column: 1; }
+  .others-action { grid-column: 2; grid-row: 1; }
+  .others-category,
+  .others-desc { grid-column: 1 / -1; }
 }

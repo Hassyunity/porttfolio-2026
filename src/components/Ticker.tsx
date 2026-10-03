@@ -2,8 +2,8 @@ import React from 'react';
 import '../assets/styles/Ticker.css';
 
 const TICKER_ITEMS = [
-  'RUBY ON RAILS', 'REACT', 'TYPESCRIPT', 'NODE.JS', 'DOCKER', 'POSTGRESQL',
-  'N8N', 'CI/CD', 'CLOUD', 'API STRIPE', 'CRM PERSONNALISÉ', 'GIT'
+  'Ruby on Rails', 'React', 'TypeScript', 'Node.js', 'Docker', 'PostgreSQL',
+  'n8n', 'CI/CD', 'Cloud', 'API Stripe', 'CRM sur mesure', 'Agents IA'
 ];
 
 const Ticker: React.FC = () => (
@@ -12,7 +12,7 @@ const Ticker: React.FC = () => (
       {[...TICKER_ITEMS, ...TICKER_ITEMS].map((item, i) => (
         <span key={i} className="ticker-item">
           {item}
-          <span className="ticker-dot">•</span>
+          <span className="ticker-sep">✦</span>
         </span>
       ))}
     </div>

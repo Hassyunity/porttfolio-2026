@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import '../assets/styles/Blog.css';
 import { supabase } from '../lib/supabaseClient';
 
@@ -45,6 +46,10 @@ const BlogPage: React.FC = () => {
 
   // --- Charger les commentaires depuis Supabase ---
   const fetchComments = async (postId: number) => {
+    if (!supabase) {
+      setCommentsError("Les commentaires sont momentanément indisponibles.");
+      return;
+    }
     setCommentsLoading(true);
     setCommentsError(null);
     try {
@@ -73,7 +78,7 @@ const BlogPage: React.FC = () => {
   // --- Ajouter un commentaire via Supabase ---
   const handleAddComment = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedPost || !newComment.author || !newComment.text) return;
+    if (!supabase || !selectedPost || !newComment.author || !newComment.text) return;
 
     setSubmitting(true);
     try {
@@ -99,14 +104,15 @@ const BlogPage: React.FC = () => {
     const postComments = comments;
 
     return (
-      <section id="blog-page" className="section-container detail-view">
+      <main className="blog-page blog-detail">
         <button className="back-btn" onClick={() => setSelectedPost(null)}>
-          <span className="arrow">←</span> back to blogs
+          <ArrowLeft size={16} /> Tous les articles
         </button>
 
         <header className="post-header">
-          <span className="post-date"># {selectedPost.date}</span>
+          <p className="eyebrow">{selectedPost.date}</p>
           <h1 className="post-title-detail">{selectedPost.title}</h1>
+          <p className="post-excerpt">{selectedPost.excerpt}</p>
           <div className="project-tags">
             {selectedPost.tags.map((tag) => (
               <span key={tag} className="tag">
@@ -147,12 +153,10 @@ const BlogPage: React.FC = () => {
           )}
         </article>
 
-        <hr className="divider" />
-
         {/* SECTION COMMENTAIRES */}
         <section className="comments-section">
-          <h3 className="section-subtitle">
-            <span className="path">//</span> commentaires ({postComments.length})
+          <h3 className="comments-title">
+            Commentaires <span>({postComments.length})</span>
           </h3>
 
           <div className="comments-list">
@@ -178,7 +182,7 @@ const BlogPage: React.FC = () => {
           </div>
 
           <form className="comment-form" onSubmit={handleAddComment}>
-            <h4>Laissez un commentaire</h4>
+            <h4>Laisser un commentaire</h4>
             <input
               type="text"
               placeholder="Votre nom"
@@ -197,51 +201,51 @@ const BlogPage: React.FC = () => {
               rows={4}
               required
             ></textarea>
-            <button type="submit" className="submit-btn" disabled={submitting}>
-              {submitting ? 'Envoi...' : 'Poster le commentaire'}
+            <button type="submit" className="btn btn-primary" disabled={submitting}>
+              {submitting ? 'Envoi...' : 'Publier le commentaire'}
             </button>
           </form>
         </section>
-      </section>
+      </main>
     );
   }
 
-  // --- VUE LISTE (GRID) ---
+  // --- VUE LISTE ---
   return (
-    <section id="blog-page" className="section-container">
-      <h2 className="section-title">
-        <span className="path">~/</span>blogs
-      </h2>
-      <p className="comment">
-        # Réflexions sur le code, l'IA et l'artisanat numérique.
-      </p>
+    <main className="blog-page">
+      <header className="page-header">
+        <p className="eyebrow">Journal</p>
+        <h1 className="section-title">
+          Réflexions sur le code, l'<em>IA</em> et l'artisanat numérique.
+        </h1>
+      </header>
 
-      <div className="projects-grid">
+      <div className="blog-list">
         {blogPosts.map((post) => (
-          <div
+          <button
             key={post.id}
-            className="project-card blog-card"
-            onClick={() => setSelectedPost(post)}
+            className="blog-card"
+            onClick={() => { setSelectedPost(post); window.scrollTo(0, 0); }}
           >
-            <div className="card-header">
-              <span className="post-date">{post.date}</span>
-            </div>
-            <h3 className="project-title">{post.title}</h3>
-            <p className="project-desc">{post.excerpt}</p>
-            <div className="project-tags">
-              {post.tags.map((tag) => (
-                <span key={tag} className="tag">
-                  {tag}
-                </span>
-              ))}
-            </div>
-            <span className="read-more">
-              Lire l'article <span className="arrow">→</span>
+            <span className="blog-card-date">{post.date}</span>
+            <span className="blog-card-main">
+              <span className="blog-card-title">{post.title}</span>
+              <span className="blog-card-excerpt">{post.excerpt}</span>
+              <span className="project-tags">
+                {post.tags.map((tag) => (
+                  <span key={tag} className="tag">
+                    {tag}
+                  </span>
+                ))}
+              </span>
             </span>
-          </div>
+            <span className="blog-card-read">
+              Lire <ArrowRight size={16} />
+            </span>
+          </button>
         ))}
       </div>
-    </section>
+    </main>
   );
 };
 

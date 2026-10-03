@@ -92,7 +92,10 @@ const ChatWidget: React.FC = () => {
       {isOpen && (
         <div className="chat-panel">
           <div className="chat-header">
-            <span className="chat-title">// altea_chat</span>
+            <p className="chat-title">
+              <strong>Altea</strong>
+              <span>Assistante de Hassy</span>
+            </p>
             <div className="chat-header-actions">
               {isSpeechSupported() && (
                 <button
@@ -158,7 +161,7 @@ const ChatWidget: React.FC = () => {
             <span className="chat-greeting-avatar">
               <img src="/back.jpg" alt="" />
             </span>
-            <p>👋 Salut, je suis <strong>Altea</strong> ! Une question sur le parcours de Hassy ?</p>
+            <p>Bonjour, je suis <strong>Altea</strong>. Une question sur le parcours de Hassy ?</p>
           </div>
         </div>
       )}
