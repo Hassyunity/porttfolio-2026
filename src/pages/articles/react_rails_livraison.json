@@ -1,0 +1,152 @@
+{
+  "id": 3,
+  "title": "React et Ruby on Rails : ma stratégie pour livrer un projet à la hauteur des attentes",
+  "date": "10 Octobre 2026",
+  "excerpt": "Comprendre les besoins, structurer le développement, valider avec RSpec et Cypress, puis préparer la mise en production : la démarche que j’ai suivie pour livrer une application fiable et adaptée aux attentes du client.",
+  "content": [
+    {
+      "type": "paragraph",
+      "text": "Livrer une application ne se résume pas à écrire du code qui fonctionne sur sa machine. Un projet réussi, c’est un projet qui répond au besoin réel du client, qui reste stable une fois en ligne et que l’équipe peut faire évoluer sereinement. Sur ce projet, j’ai associé React côté interface et Ruby on Rails côté API. Dans cet article, je reviens sur la démarche que j’ai suivie, étape par étape, et surtout sur les raisons de chacun de mes choix."
+    },
+    {
+      "type": "heading",
+      "text": "1. Comprendre les attentes avant d’écrire la moindre ligne"
+    },
+    {
+      "type": "paragraph",
+      "text": "La première erreur à éviter est de confondre ce que le client demande avec ce dont il a réellement besoin. J’ai donc commencé par des échanges ciblés : quel problème l’application doit-elle résoudre, qui va l’utiliser au quotidien, et à quoi ressemble une journée de travail réussie avec l’outil ? Ces questions transforment une liste de fonctionnalités en objectifs concrets."
+    },
+    {
+      "type": "paragraph",
+      "text": "À partir de ces échanges, j’ai formalisé des critères de réussite mesurables et validés avec le client. Ils sont devenus la référence commune pour toute la suite du projet :"
+    },
+    {
+      "type": "list",
+      "items": [
+        "Des parcours utilisateurs prioritaires clairement identifiés, décrits du point de vue de l’utilisateur final.",
+        "Des critères d’acceptation précis pour chaque fonctionnalité : ce qui doit se passer, et ce qui ne doit jamais se produire.",
+        "Des exigences non fonctionnelles explicites : temps de réponse, sécurité des données, compatibilité mobile.",
+        "Un périmètre priorisé, distinguant l’essentiel pour la première version de ce qui peut attendre."
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "Ce travail en amont paraît parfois lent, mais il évite l’essentiel des allers-retours coûteux : chaque décision technique peut ensuite être justifiée par un besoin validé."
+    },
+    {
+      "type": "heading",
+      "text": "2. Une architecture choisie pour le besoin, pas par habitude"
+    },
+    {
+      "type": "paragraph",
+      "text": "J’ai fait le choix d’une séparation nette entre le frontend et le backend. Ruby on Rails, en mode API, apporte un cadre éprouvé pour modéliser les données, gérer les validations et exposer des endpoints cohérents. Ses conventions accélèrent le développement sans sacrifier la lisibilité. React, de son côté, permet de construire une interface réactive, découpée en composants réutilisables, et facile à faire évoluer."
+    },
+    {
+      "type": "paragraph",
+      "text": "Cette séparation a un intérêt concret : chaque couche peut être testée, déployée et maintenue indépendamment. Le contrat entre les deux, c’est l’API. Je l’ai défini tôt, avec des formats de réponse et des messages d’erreur cohérents, pour que l’interface puisse avancer en parallèle du backend sans mauvaise surprise."
+    },
+    {
+      "type": "heading",
+      "text": "3. Avancer par étapes, avec des validations régulières"
+    },
+    {
+      "type": "paragraph",
+      "text": "Plutôt que de livrer un bloc final après plusieurs semaines de silence, j’ai découpé le projet en incréments courts. Chaque étape aboutissait à une fonctionnalité utilisable, présentée au client puis ajustée selon ses retours. Cette méthode garde le projet aligné sur les besoins réels et rend les écarts visibles au moment où ils coûtent le moins cher à corriger."
+    },
+    {
+      "type": "list",
+      "items": [
+        "Découpage des fonctionnalités en livrables autonomes, ordonnés selon les priorités définies avec le client.",
+        "Démonstrations régulières sur un environnement de préproduction, avec des données proches de la réalité.",
+        "Prise en compte des retours dans l’itération suivante, plutôt qu’en fin de projet.",
+        "Suivi transparent de l’avancement : ce qui est terminé, ce qui est en cours, ce qui reste à arbitrer."
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "Ces points de validation ont aussi un effet humain important : le client voit le produit prendre forme, il en devient acteur, et la confiance s’installe tout au long du projet."
+    },
+    {
+      "type": "heading",
+      "text": "4. La qualité comme garantie : RSpec côté backend"
+    },
+    {
+      "type": "paragraph",
+      "text": "Un projet fiable repose sur des tests qui protègent la logique métier. Côté Rails, j’ai utilisé RSpec pour couvrir les éléments les plus critiques. L’objectif n’était pas de viser un pourcentage de couverture arbitraire, mais de sécuriser ce qui aurait le plus d’impact en cas d’erreur :"
+    },
+    {
+      "type": "list",
+      "items": [
+        "Les modèles : validations, associations et règles métier, pour garantir l’intégrité des données.",
+        "Les requêtes API : codes de retour, formats de réponse et gestion des erreurs pour chaque endpoint.",
+        "Les autorisations : vérifier qu’un utilisateur n’accède qu’aux ressources qui lui sont destinées.",
+        "Les cas limites : données manquantes, valeurs inattendues, actions répétées."
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "Ces tests sont exécutés automatiquement à chaque modification. Ils servent de filet de sécurité : je peux refactorer ou ajouter une fonctionnalité en sachant immédiatement si quelque chose a été cassé."
+    },
+    {
+      "type": "heading",
+      "text": "5. Tester l’expérience réelle : les parcours utilisateurs avec Cypress"
+    },
+    {
+      "type": "paragraph",
+      "text": "Des tests unitaires solides ne garantissent pas qu’un utilisateur pourra mener sa tâche jusqu’au bout. Avec Cypress, j’ai automatisé les parcours clés de bout en bout, dans un vrai navigateur : inscription et connexion, création et modification des données principales, gestion des erreurs de saisie, affichage sur différentes tailles d’écran."
+    },
+    {
+      "type": "paragraph",
+      "text": "Ces scénarios reprennent directement les critères d’acceptation définis au début du projet. C’est ce qui boucle la démarche : ce que le client a validé sur le papier devient un test exécutable, rejoué automatiquement avant chaque mise en production."
+    },
+    {
+      "type": "heading",
+      "text": "6. Préparer la production avec rigueur"
+    },
+    {
+      "type": "paragraph",
+      "text": "La mise en production est souvent le moment où les projets fragiles révèlent leurs faiblesses. Je l’ai donc préparée comme une étape à part entière, et non comme une formalité de dernière minute :"
+    },
+    {
+      "type": "list",
+      "items": [
+        "Des environnements distincts (développement, préproduction, production), chacun avec sa propre configuration.",
+        "Des secrets jamais versionnés : clés d’API, identifiants et jetons sont stockés dans des variables d’environnement et des credentials chiffrés.",
+        "Une base de données hébergée dans le cloud, avec des migrations maîtrisées et des sauvegardes automatiques.",
+        "Un domaine personnalisé avec certificat HTTPS, et une configuration CORS limitée aux origines autorisées.",
+        "Un déploiement reproductible, pour que chaque mise en ligne suive exactement le même processus."
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "Cette préparation réduit les risques au moment du lancement, mais elle facilite surtout la vie après : une nouvelle version peut être déployée sans stress, et un retour arrière reste possible si nécessaire."
+    },
+    {
+      "type": "heading",
+      "text": "7. Vérifier en conditions réelles et accompagner la prise en main"
+    },
+    {
+      "type": "paragraph",
+      "text": "Une fois l’application en ligne, mon travail n’était pas terminé. J’ai repris les parcours critiques directement en production pour confirmer que tout fonctionnait avec la configuration réelle : base de données, domaine, envoi d’e-mails, performances. J’ai aussi surveillé les journaux d’erreurs durant les premiers jours pour corriger rapidement tout comportement inattendu."
+    },
+    {
+      "type": "paragraph",
+      "text": "Enfin, j’ai accompagné le client dans la prise en main de l’outil : présentation des fonctionnalités, documentation claire des usages et de l’exploitation, puis recueil des premiers retours pour planifier les évolutions. Une application n’apporte de la valeur que si les personnes qui l’utilisent se l’approprient."
+    },
+    {
+      "type": "heading",
+      "text": "Ce que je retiens"
+    },
+    {
+      "type": "paragraph",
+      "text": "React et Ruby on Rails forment un duo efficace, mais ce ne sont pas les technologies qui font la réussite d’un projet. C’est la méthode : comprendre avant de construire, valider souvent, automatiser la qualité et préparer la production avec la même exigence que le code. C’est cette démarche qui permet de livrer une application fiable, adaptée aux attentes du client, et prête à évoluer avec lui."
+    }
+  ],
+  "tags": [
+    "React",
+    "Ruby on Rails",
+    "RSpec",
+    "Cypress",
+    "Déploiement"
+  ]
+}

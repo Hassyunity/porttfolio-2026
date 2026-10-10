@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import '../assets/styles/Blog.css';
 import { supabase } from '../lib/supabaseClient';
@@ -6,6 +6,7 @@ import { supabase } from '../lib/supabaseClient';
 // Importation des fichiers JSON
 import visionIA from './articles/vision_ia.json';
 import securiteAPI from './articles/securite_api.json';
+import reactRailsLivraison from './articles/react_rails_livraison.json';
 
 // --- INTERFACES ---
 interface ContentBlock {
@@ -32,9 +33,15 @@ interface Comment {
 }
 
 const COMMENTS_TABLE = 'comments_blogs_portfolio';
+const NAME_MAX = 100;
+const CONTENT_MAX = 500;
 
 // Initialisation des articles
-const blogPosts: BlogPost[] = [visionIA as BlogPost, securiteAPI as BlogPost];
+const blogPosts: BlogPost[] = [
+  reactRailsLivraison as BlogPost,
+  visionIA as BlogPost,
+  securiteAPI as BlogPost,
+];
 
 const BlogPage: React.FC = () => {
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
@@ -42,10 +49,11 @@ const BlogPage: React.FC = () => {
   const [newComment, setNewComment] = useState({ author: '', text: '' });
   const [commentsLoading, setCommentsLoading] = useState(false);
   const [commentsError, setCommentsError] = useState<string | null>(null);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
   // --- Charger les commentaires depuis Supabase ---
-  const fetchComments = async (postId: number) => {
+  const fetchComments = useCallback(async (postId: number) => {
     if (!supabase) {
       setCommentsError("Les commentaires sont momentanément indisponibles.");
       return;
@@ -67,33 +75,42 @@ const BlogPage: React.FC = () => {
     } finally {
       setCommentsLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
+    setComments([]);
+    setSubmitError(null);
     if (selectedPost) {
       fetchComments(selectedPost.id);
     }
-  }, [selectedPost]);
+  }, [selectedPost, fetchComments]);
 
   // --- Ajouter un commentaire via Supabase ---
   const handleAddComment = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!supabase || !selectedPost || !newComment.author || !newComment.text) return;
+    const name = newComment.author.trim();
+    const content = newComment.text.trim();
+    if (!supabase || !selectedPost) return;
+    if (!name || content.length < 3) {
+      setSubmitError('Merci de renseigner votre nom et un message (3 caractères minimum).');
+      return;
+    }
 
     setSubmitting(true);
+    setSubmitError(null);
     try {
-      const { error } = await supabase.from(COMMENTS_TABLE).insert({
-        name: newComment.author,
-        content: newComment.text,
-        post_id: selectedPost.id
-      });
+      const { data, error } = await supabase
+        .from(COMMENTS_TABLE)
+        .insert({ name, content, post_id: selectedPost.id })
+        .select('id, post_id, name, content, created_at')
+        .single();
 
       if (error) throw error;
       setNewComment({ author: '', text: '' });
-      await fetchComments(selectedPost.id); // Recharge les commentaires
+      setComments((prev) => [data, ...prev]);
     } catch (err) {
       console.error('Erreur insertion commentaire:', err);
-      setCommentsError("Le commentaire n'a pas pu être envoyé. Réessayez plus tard.");
+      setSubmitError("Le commentaire n'a pas pu être envoyé. Réessayez plus tard.");
     } finally {
       setSubmitting(false);
     }
@@ -187,6 +204,8 @@ const BlogPage: React.FC = () => {
               type="text"
               placeholder="Votre nom"
               value={newComment.author}
+              maxLength={NAME_MAX}
+              disabled={!supabase}
               onChange={(e) =>
                 setNewComment({ ...newComment, author: e.target.value })
               }
@@ -195,13 +214,17 @@ const BlogPage: React.FC = () => {
             <textarea
               placeholder="Votre message..."
               value={newComment.text}
+              minLength={3}
+              maxLength={CONTENT_MAX}
+              disabled={!supabase}
               onChange={(e) =>
                 setNewComment({ ...newComment, text: e.target.value })
               }
               rows={4}
               required
             ></textarea>
-            <button type="submit" className="btn btn-primary" disabled={submitting}>
+            {submitError && <p className="comment-empty comment-error">{submitError}</p>}
+            <button type="submit" className="btn btn-primary" disabled={submitting || !supabase}>
               {submitting ? 'Envoi...' : 'Publier le commentaire'}
             </button>
           </form>
