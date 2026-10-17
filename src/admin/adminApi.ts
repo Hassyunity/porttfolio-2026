@@ -1,6 +1,8 @@
+import type { PostgrestError } from '@supabase/supabase-js';
+import { supabase } from '../lib/supabaseClient';
 import { STATIC_POSTS } from '../data/blog';
 import { invalidatePublishedPosts } from '../lib/blogApi';
-import { isPostRow, nextPostId, readLocalPosts, writeLocalPosts, type PostRow, type PostStatus } from '../lib/postStore';
+import { POSTS_TABLE, POST_COLUMNS, isPostRow, type PostRow, type PostStatus } from '../lib/postStore';
 
 export type { PostRow, PostStatus };
 
@@ -28,120 +30,131 @@ export const STATE_LABEL: Record<PostState, string> = {
   published: 'Publié',
 };
 
-// API asynchrone : le stockage pourra passer sur un serveur sans toucher à l'interface.
+/** Levée quand l'article a été modifié depuis un autre appareil entre-temps. */
+export class ConflictError extends Error {}
 
-function save(posts: PostRow[]) {
-  try {
-    writeLocalPosts(posts);
-  } catch {
-    throw new Error('Le stockage du navigateur est plein ou bloqué. Exportez une sauvegarde, puis libérez de l\'espace.');
-  }
-  invalidatePublishedPosts();
+function client() {
+  if (!supabase) throw new Error('Supabase n\'est pas configuré (VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY).');
+  return supabase;
 }
 
-function assertUniqueSlug(posts: PostRow[], slug: string, id?: number) {
-  if (posts.some(post => post.slug === slug && post.id !== id) || STATIC_POSTS.some(post => post.slug === slug)) {
-    throw new Error('Ce slug est déjà utilisé par un autre article. Choisissez-en un autre.');
-  }
+/** Traduit les erreurs Postgres / PostgREST en messages compréhensibles. */
+function fail(error: PostgrestError): never {
+  if (error.code === '23505') throw new Error('Ce slug est déjà utilisé par un autre article. Choisissez-en un autre.');
+  if (error.code === '42501' || error.code === 'PGRST301') throw new Error('Accès refusé : votre compte n\'a pas les droits d\'administration.');
+  if (error.code === '23514') throw new Error('Données invalides (titre, slug, résumé ou nombre de tags hors limites).');
+  if (error.code === 'PGRST116') throw new Error('Article introuvable : il a peut-être été supprimé.');
+  if (error.code === '42P01') throw new Error('La table blog_posts n\'existe pas : exécutez supabase/blog_posts.sql dans Supabase.');
+  throw new Error(error.message || 'Erreur réseau : vérifiez votre connexion.');
 }
 
-const byUpdatedDesc = (a: PostRow, b: PostRow) => Date.parse(b.updated_at) - Date.parse(a.updated_at);
+function assertSlugFree(slug: string) {
+  if (STATIC_POSTS.some(post => post.slug === slug)) {
+    throw new Error('Ce slug est déjà utilisé par un article existant du blog. Choisissez-en un autre.');
+  }
+}
 
 export async function listPosts(): Promise<PostRow[]> {
-  return readLocalPosts().sort(byUpdatedDesc);
+  const { data, error } = await client().from(POSTS_TABLE).select(POST_COLUMNS).order('updated_at', { ascending: false });
+  if (error) fail(error);
+  return data as PostRow[];
 }
 
 export async function getPost(id: number): Promise<PostRow> {
-  const post = readLocalPosts().find(item => item.id === id);
-  if (!post) throw new Error('Article introuvable : il a peut-être été supprimé.');
-  return post;
+  const { data, error } = await client().from(POSTS_TABLE).select(POST_COLUMNS).eq('id', id).single();
+  if (error) fail(error);
+  return data as PostRow;
 }
 
 export async function createPost(input: PostInput): Promise<PostRow> {
-  const posts = readLocalPosts();
-  assertUniqueSlug(posts, input.slug);
-  const now = new Date().toISOString();
-  const row: PostRow = { id: nextPostId(posts), ...input, created_at: now, updated_at: now };
-  save([...posts, row]);
-  return row;
+  assertSlugFree(input.slug);
+  const { data, error } = await client().from(POSTS_TABLE).insert(input).select(POST_COLUMNS).single();
+  if (error) fail(error);
+  invalidatePublishedPosts();
+  return data as PostRow;
 }
 
-export async function updatePost(id: number, input: PostInput): Promise<PostRow> {
-  const posts = readLocalPosts();
-  const current = posts.find(post => post.id === id);
-  if (!current) throw new Error('Article introuvable : il a peut-être été supprimé.');
-  assertUniqueSlug(posts, input.slug, id);
-  const row: PostRow = { ...current, ...input, updated_at: new Date().toISOString() };
-  save(posts.map(post => (post.id === id ? row : post)));
-  return row;
+/**
+ * Met à jour l'article seulement s'il n'a pas changé depuis `expectedUpdatedAt`
+ * (verrouillage optimiste) : deux appareils ne s'écrasent jamais en silence.
+ */
+export async function updatePost(id: number, input: PostInput, expectedUpdatedAt: string): Promise<PostRow> {
+  assertSlugFree(input.slug);
+  const { data, error } = await client()
+    .from(POSTS_TABLE)
+    .update(input)
+    .eq('id', id)
+    .eq('updated_at', expectedUpdatedAt)
+    .select(POST_COLUMNS);
+  if (error) fail(error);
+  if (!data?.length) {
+    const { data: current } = await client().from(POSTS_TABLE).select('id').eq('id', id).maybeSingle();
+    if (!current) throw new Error('Article introuvable : il a été supprimé depuis un autre appareil.');
+    throw new ConflictError('Cet article a été modifié depuis un autre appareil. Votre texte est conservé ici : rechargez la dernière version pour comparer.');
+  }
+  invalidatePublishedPosts();
+  return data[0] as PostRow;
 }
 
 export async function deletePost(id: number): Promise<void> {
-  save(readLocalPosts().filter(post => post.id !== id));
+  const { error } = await client().from(POSTS_TABLE).delete().eq('id', id);
+  if (error) fail(error);
+  invalidatePublishedPosts();
 }
 
-// --- Export / import ------------------------------------------------------
+// --- Sauvegarde / import ------------------------------------------------------
 
-function download(filename: string, data: unknown) {
-  const blob = new Blob([JSON.stringify(data, null, 2) + '\n'], { type: 'application/json' });
+export async function exportBackup() {
+  const posts = await listPosts();
+  const blob = new Blob([JSON.stringify(posts, null, 2) + '\n'], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
-  const link = Object.assign(document.createElement('a'), { href: url, download: filename });
+  const link = Object.assign(document.createElement('a'), { href: url, download: `sauvegarde-blog-${new Date().toISOString().slice(0, 10)}.json` });
   link.click();
   URL.revokeObjectURL(url);
 }
 
-/** Articles publiés + programmés : le fichier public/blog-posts.json du site. */
-export const sitePayload = (posts: PostRow[]) =>
-  posts
-    .filter(post => post.status === 'published')
-    .sort((a, b) => Date.parse(b.published_at!) - Date.parse(a.published_at!));
-
-export function exportForSite() {
-  download('blog-posts.json', sitePayload(readLocalPosts()));
+/**
+ * Envoie des articles (fichier de sauvegarde ou ancien stockage du navigateur) dans Supabase.
+ * Rapprochement par slug : un article existant n'est remplacé que si la version importée est plus récente.
+ */
+export async function importRows(rows: PostRow[]) {
+  const existing = new Map((await listPosts()).map(post => [post.slug, post]));
+  let added = 0;
+  let updated = 0;
+  let skipped = 0;
+  for (const row of rows) {
+    const input: PostInput = {
+      slug: row.slug, title: row.title, excerpt: row.excerpt, content: row.content,
+      tags: row.tags, status: row.status, published_at: row.published_at,
+    };
+    const current = existing.get(row.slug);
+    if (current) {
+      if (Date.parse(row.updated_at) > Date.parse(current.updated_at)) {
+        await updatePost(current.id, input, current.updated_at);
+        updated++;
+      } else {
+        skipped++;
+      }
+    } else if (STATIC_POSTS.some(post => post.slug === row.slug)) {
+      skipped++;
+    } else {
+      await createPost(input);
+      added++;
+    }
+  }
+  return { added, updated, skipped };
 }
 
-export function exportBackup() {
-  download(`sauvegarde-blog-${new Date().toISOString().slice(0, 10)}.json`, readLocalPosts().sort(byUpdatedDesc));
-}
-
-/** Fusionne un fichier exporté (sauvegarde ou blog-posts.json). La version la plus récente gagne. */
-export async function importPosts(file: File) {
+export async function importFile(file: File) {
   let data: unknown;
   try {
     data = JSON.parse(await file.text());
   } catch {
     throw new Error('Fichier illisible : ce n\'est pas un JSON valide.');
   }
-  const incoming = Array.isArray(data) ? data.filter(isPostRow) : [];
-  if (!incoming.length) throw new Error('Aucun article valide trouvé dans ce fichier.');
-
-  const posts = readLocalPosts();
-  let added = 0;
-  let updated = 0;
-  let skipped = 0;
-  for (const post of incoming) {
-    const index = posts.findIndex(item => item.id === post.id);
-    if (index >= 0) {
-      if (Date.parse(post.updated_at) > Date.parse(posts[index].updated_at)) { posts[index] = post; updated++; }
-      continue;
-    }
-    if (posts.some(item => item.slug === post.slug)) { skipped++; continue; }
-    posts.push(post);
-    added++;
-  }
-  save(posts);
-  return { added, updated, skipped, ignored: (Array.isArray(data) ? data.length : 0) - incoming.length };
-}
-
-/** Nombre de différences entre les articles publiés localement et le fichier du site. */
-export function countPendingChanges(local: PostRow[], site: PostRow[]) {
-  const signature = (post: PostRow) => JSON.stringify([post.slug, post.title, post.excerpt, post.content, post.tags, post.published_at]);
-  const localPublished = new Map(sitePayload(local).map(post => [post.id, signature(post)]));
-  const sitePublished = new Map(site.map(post => [post.id, signature(post)]));
-  let pending = 0;
-  localPublished.forEach((sig, id) => { if (sitePublished.get(id) !== sig) pending++; });
-  sitePublished.forEach((_sig, id) => { if (!localPublished.has(id)) pending++; });
-  return pending;
+  const rows = Array.isArray(data) ? data.filter(isPostRow) : [];
+  if (!rows.length) throw new Error('Aucun article valide trouvé dans ce fichier.');
+  return importRows(rows);
 }
 
 export const formatDateTime = (iso: string) =>

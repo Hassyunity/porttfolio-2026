@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Link, Navigate, Route, Routes } from 'react-router-dom';
+import type { Session } from '@supabase/supabase-js';
 import { ExternalLink, LogOut, ShieldAlert } from 'lucide-react';
 import '../assets/styles/Blog.css';
 import './Admin.css';
-import { PASSWORD_HASH, hasSession, signOut } from './auth';
+import { supabase } from '../lib/supabaseClient';
 import AdminLogin from './AdminLogin';
 import AdminDashboard from './AdminDashboard';
 import AdminEditor from './AdminEditor';
@@ -23,27 +24,64 @@ function useNoIndex() {
 
 const AdminApp = () => {
   useNoIndex();
-  const [authed, setAuthed] = useState(hasSession);
+  // undefined = session en cours de lecture
+  const [session, setSession] = useState<Session | null | undefined>(supabase ? undefined : null);
+  const [adminCheck, setAdminCheck] = useState<{ userId: string; ok: boolean; error?: string } | null>(null);
 
-  if (!PASSWORD_HASH) {
+  useEffect(() => {
+    if (!supabase) return;
+    supabase.auth.getSession().then(({ data }) => setSession(data.session));
+    const { data } = supabase.auth.onAuthStateChange((_event, next) => setSession(next));
+    return () => data.subscription.unsubscribe();
+  }, []);
+
+  // Le droit d'admin est vérifié côté base (table blog_admins), pas seulement la connexion.
+  const userId = session?.user.id;
+  useEffect(() => {
+    if (!supabase || !userId) return;
+    supabase.rpc('is_blog_admin').then(({ data, error }) => {
+      setAdminCheck({ userId, ok: !error && data === true, error: error?.message });
+    });
+  }, [userId]);
+
+  const check = userId && adminCheck?.userId === userId ? adminCheck : null;
+  const signOut = () => supabase?.auth.signOut();
+
+  if (!supabase) {
     return (
       <div className="admin-gate">
         <div className="admin-card">
           <ShieldAlert size={22} />
-          <h1>Mot de passe non configuré</h1>
+          <h1>Supabase n'est pas configuré</h1>
           <p>
-            Ajoutez <code>VITE_ADMIN_PASSWORD_HASH</code> (empreinte SHA-256 de votre mot de passe) dans
-            <code> .env.local</code>, puis relancez le serveur. Pour la calculer :
+            Renseignez <code>VITE_SUPABASE_URL</code> et <code>VITE_SUPABASE_ANON_KEY</code> dans <code>.env.local</code>
+            (Supabase › Project Settings › API), puis relancez le serveur.
           </p>
-          <p><code>npm run admin:hash -- "votre-mot-de-passe"</code></p>
         </div>
       </div>
     );
   }
 
-  if (!authed) return <AdminLogin onSuccess={() => setAuthed(true)} />;
+  if (session === undefined || (session && !check)) {
+    return <div className="admin-gate"><p className="admin-muted">Vérification de l'accès…</p></div>;
+  }
 
-  const logout = () => { signOut(); setAuthed(false); };
+  if (!session) return <AdminLogin />;
+
+  if (!check?.ok) {
+    return (
+      <div className="admin-gate">
+        <div className="admin-card">
+          <ShieldAlert size={22} />
+          <h1>Accès refusé</h1>
+          {check?.error
+            ? <p>La vérification a échoué ({check.error}). Avez-vous exécuté <code>supabase/blog_posts.sql</code> ?</p>
+            : <p>Le compte <strong>{session.user.email}</strong> n'est pas administrateur du blog.</p>}
+          <button type="button" className="btn btn-ghost" onClick={signOut}>Se déconnecter</button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="admin">
@@ -53,8 +91,9 @@ const AdminApp = () => {
           <span>Studio <em>blog</em></span>
         </Link>
         <div className="admin-top-actions">
+          <span className="admin-user">{session.user.email}</span>
           <a href="/blog" target="_blank" rel="noopener noreferrer" className="admin-link"><ExternalLink size={14} /> Voir le blog</a>
-          <button type="button" className="admin-link" onClick={logout}><LogOut size={14} /> Déconnexion</button>
+          <button type="button" className="admin-link" onClick={signOut}><LogOut size={14} /> Déconnexion</button>
         </div>
       </header>
 

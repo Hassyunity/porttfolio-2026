@@ -22,8 +22,13 @@ const Experience: React.FC = () => (
             <span className="job-period">{job.period}</span>
             <span>{job.location}</span>
           </div>
-          <h2>{job.company}</h2>
-          <p className="job-title">{job.title}</p>
+          <div className="job-id">
+            <img className="job-logo" src={job.logo} alt={`Logo ${job.company}`} />
+            <div>
+              <h2>{job.company}</h2>
+              <p className="job-title">{job.title}</p>
+            </div>
+          </div>
           <ul className="job-bullets">{job.bullets.map(bullet => <li key={bullet}>{bullet}</li>)}</ul>
           <div className="tags">{job.stack.map(tech => <span key={tech} className="tag">{tech}</span>)}</div>
         </li>

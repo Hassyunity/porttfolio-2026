@@ -1,27 +1,25 @@
 import React, { useState } from 'react';
 import { ArrowRight, Lock } from 'lucide-react';
-import { signIn } from './auth';
+import { supabase } from '../lib/supabaseClient';
 
-const AdminLogin: React.FC<{ onSuccess: () => void }> = ({ onSuccess }) => {
+const AdminLogin: React.FC = () => {
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [attempts, setAttempts] = useState(0);
 
   const submit = async (event: React.FormEvent) => {
     event.preventDefault();
+    if (!supabase) return;
     setLoading(true);
     setError(null);
-    // Délai croissant après chaque échec pour freiner les essais en série
-    await new Promise(resolve => setTimeout(resolve, Math.min(attempts, 6) * 500));
-    if (await signIn(password)) {
-      onSuccess();
-      return;
+    const { error: authError } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+    if (authError) {
+      setError(authError.status === 400 ? 'Email ou mot de passe incorrect.' : authError.message);
+      setPassword('');
+      setLoading(false);
     }
-    setAttempts(count => count + 1);
-    setPassword('');
-    setError('Mot de passe incorrect.');
-    setLoading(false);
+    // En cas de succès, onAuthStateChange (AdminApp) prend le relais.
   };
 
   return (
@@ -29,17 +27,21 @@ const AdminLogin: React.FC<{ onSuccess: () => void }> = ({ onSuccess }) => {
       <form className="admin-card admin-login" onSubmit={submit}>
         <span className="admin-login-icon"><Lock size={18} /></span>
         <h1>Espace d'administration</h1>
-        <p>Entrez votre mot de passe pour écrire et publier vos articles.</p>
+        <p>Connectez-vous pour retrouver vos articles sur tous vos appareils.</p>
 
         <label className="admin-field">
+          <span>Email</span>
+          <input type="email" autoComplete="username" value={email} onChange={e => setEmail(e.target.value)} required autoFocus />
+        </label>
+        <label className="admin-field">
           <span>Mot de passe</span>
-          <input type="password" autoComplete="current-password" value={password} onChange={e => setPassword(e.target.value)} required autoFocus />
+          <input type="password" autoComplete="current-password" value={password} onChange={e => setPassword(e.target.value)} required />
         </label>
 
         {error && <p className="admin-error" role="alert">{error}</p>}
 
         <button type="submit" className="btn btn-primary" disabled={loading}>
-          {loading ? 'Vérification…' : <>Entrer <ArrowRight size={16} /></>}
+          {loading ? 'Connexion…' : <>Se connecter <ArrowRight size={16} /></>}
         </button>
       </form>
     </div>

@@ -1,7 +1,4 @@
-// Stockage des articles écrits depuis /admin, sans serveur :
-// - brouillons et articles en cours : localStorage du navigateur de l'admin ;
-// - articles en ligne pour tous : fichier public/blog-posts.json, exporté depuis l'admin
-//   puis déployé avec le site.
+// Types et validation des articles écrits depuis /admin (stockés dans Supabase, table blog_posts).
 
 export type PostStatus = 'draft' | 'published';
 
@@ -19,17 +16,14 @@ export interface PostRow {
   updated_at: string;
 }
 
+export const POSTS_TABLE = 'blog_posts';
+export const POST_COLUMNS = 'id, slug, title, excerpt, content, tags, status, published_at, created_at, updated_at';
 export const SLUG_RE = /^[a-z0-9]+(-[a-z0-9]+)*$/;
-export const SITE_FILE = '/blog-posts.json';
-
-const STORE_KEY = 'ht-blog-posts:v1';
-const LAST_ID_KEY = 'ht-blog-posts:last-id';
-// Les articles historiques (JSON) utilisent les id 1 à 3 ; on démarre à 1000.
-const FIRST_ID = 1000;
 
 const isString = (value: unknown): value is string => typeof value === 'string';
 const isDate = (value: unknown) => isString(value) && !Number.isNaN(Date.parse(value));
 
+/** Valide un article venant d'un fichier importé ou de l'ancien stockage du navigateur. */
 export function isPostRow(value: unknown): value is PostRow {
   if (!value || typeof value !== 'object') return false;
   const post = value as Record<string, unknown>;
@@ -46,42 +40,21 @@ export function isPostRow(value: unknown): value is PostRow {
     && isDate(post.updated_at);
 }
 
-/** Article visible par le public : publié et date de mise en ligne atteinte. */
-export const isLive = (post: Pick<PostRow, 'status' | 'published_at'>) =>
-  post.status === 'published' && post.published_at !== null && Date.parse(post.published_at) <= Date.now();
+// --- Ancien stockage navigateur (avant Supabase), lu uniquement pour la migration ---
+const LEGACY_KEY = 'ht-blog-posts:v1';
 
-export function readLocalPosts(): PostRow[] {
+export function readLegacyPosts(): PostRow[] {
   try {
-    const data: unknown = JSON.parse(localStorage.getItem(STORE_KEY) ?? '[]');
+    const data: unknown = JSON.parse(localStorage.getItem(LEGACY_KEY) ?? '[]');
     return Array.isArray(data) ? data.filter(isPostRow) : [];
   } catch {
     return [];
   }
 }
 
-/** Lève une erreur si le stockage est plein ou indisponible. */
-export function writeLocalPosts(posts: PostRow[]) {
-  localStorage.setItem(STORE_KEY, JSON.stringify(posts));
-  const maxId = posts.reduce((max, post) => Math.max(max, post.id), 0);
-  if (maxId > lastId()) localStorage.setItem(LAST_ID_KEY, String(maxId));
-}
-
-function lastId() {
-  try { return Number(localStorage.getItem(LAST_ID_KEY)) || FIRST_ID - 1; } catch { return FIRST_ID - 1; }
-}
-
-/** Identifiant jamais réutilisé, même après suppression. */
-export const nextPostId = (posts: PostRow[]) =>
-  Math.max(lastId(), ...posts.map(post => post.id)) + 1;
-
-/** Articles publiés avec le site (public/blog-posts.json). */
-export async function fetchSitePosts(): Promise<PostRow[]> {
+export function clearLegacyPosts() {
   try {
-    const response = await fetch(SITE_FILE, { cache: 'no-cache' });
-    if (!response.ok) return [];
-    const data: unknown = await response.json();
-    return Array.isArray(data) ? data.filter(isPostRow) : [];
-  } catch {
-    return [];
-  }
+    localStorage.removeItem(LEGACY_KEY);
+    localStorage.removeItem('ht-blog-posts:last-id');
+  } catch { /* stockage indisponible */ }
 }

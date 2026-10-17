@@ -8,6 +8,8 @@ import frontendArt from '../assets/images/skills/frontend.svg';
 import backendArt from '../assets/images/skills/backend.svg';
 import devopsArt from '../assets/images/skills/devops.svg';
 import automationArt from '../assets/images/skills/automation.svg';
+import xrLogo from '../assets/images/logos/xr-technologie.webp';
+import ingedataLogo from '../assets/images/logos/ingedata.png';
 
 // Ordre des écrans : sert au menu, à la barre « précédent / suivant » et aux raccourcis clavier.
 export const PAGES = [
@@ -127,6 +129,7 @@ export interface Job {
   location: string;
   period: string;
   current?: boolean;
+  logo: string;
   bullets: string[];
   stack: string[];
 }
@@ -138,6 +141,7 @@ export const JOBS: Job[] = [
     location: 'Madagascar',
     period: "Aujourd'hui",
     current: true,
+    logo: xrLogo,
     bullets: [
       'Pilotage technique et architecture globale des produits',
       'Développement full-stack avec Ruby on Rails et React',
@@ -151,6 +155,7 @@ export const JOBS: Job[] = [
     company: 'Pulse by Ingedata',
     location: 'Madagascar',
     period: 'Précédemment',
+    logo: ingedataLogo,
     bullets: [
       'Développement de microservices RH (Recrutement, Talent, Candidat)',
       'Mise en place de tests automatisés avec RSpec et Cypress',

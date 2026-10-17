@@ -5,7 +5,7 @@ import {
   Link2, List, ListOrdered, Minus, PenLine, Quote, RotateCcw, Send, Trash2, Undo2, X,
 } from 'lucide-react';
 import {
-  STATE_LABEL, createPost, deletePost, formatDateTime, getPost, postState, timeAgo, updatePost,
+  ConflictError, STATE_LABEL, createPost, deletePost, formatDateTime, getPost, postState, timeAgo, updatePost,
   type PostInput, type PostRow, type PostStatus,
 } from './adminApi';
 import { slugify } from '../data/blog';
@@ -59,7 +59,7 @@ function toLocalInput(date: Date) {
 
 const SUCCESS: Record<Action, string> = {
   save: 'Modifications enregistrées.',
-  publish: 'Article publié dans la section Blog de ce navigateur. Exportez blog-posts.json depuis le tableau de bord pour le mettre en ligne pour tous.',
+  publish: 'Article publié : il est en ligne sur le blog pour tous les visiteurs.',
   schedule: 'Article programmé.',
   unpublish: 'Article repassé en brouillon : il n\'est plus visible sur le site.',
 };
@@ -77,7 +77,7 @@ const AdminEditor: React.FC = () => {
   const [loading, setLoading] = useState(!isNew);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [busy, setBusy] = useState<Action | 'delete' | null>(null);
-  const [notice, setNotice] = useState<{ type: 'ok' | 'error'; text: string } | null>(null);
+  const [notice, setNotice] = useState<{ type: 'ok' | 'error'; text: string; conflict?: boolean } | null>(null);
   const [view, setView] = useState<View>('split');
   const [scheduling, setScheduling] = useState(false);
   const [scheduleAt, setScheduleAt] = useState('');
@@ -183,7 +183,7 @@ const AdminEditor: React.FC = () => {
     setBusy(action);
     setNotice(null);
     try {
-      const row = post ? await updatePost(post.id, input) : await createPost(input);
+      const row = post ? await updatePost(post.id, input, post.updated_at) : await createPost(input);
       clearBackup(storageKey);
       setBackup(null);
       const draft = toDraft(row);
@@ -197,11 +197,25 @@ const AdminEditor: React.FC = () => {
       setNotice({ type: 'ok', text: action === 'schedule' ? `Article programmé : en ligne le ${formatDateTime(row.published_at!)}.` : SUCCESS[action] });
       if (!post) navigate(`/admin/articles/${row.id}`, { replace: true });
     } catch (err) {
-      setNotice({ type: 'error', text: (err as Error).message });
+      setNotice({ type: 'error', text: (err as Error).message, conflict: err instanceof ConflictError });
     } finally {
       setBusy(null);
     }
   }
+
+  /** Conflit : charge la version en ligne et propose de restaurer le texte local. */
+  const reloadLatest = async () => {
+    if (!post) return;
+    const mine: Backup = { form, savedAt: Date.now() };
+    writeBackup(String(post.id), form);
+    try {
+      hydrate(await getPost(post.id));
+      setBackup(mine);
+      setNotice({ type: 'ok', text: 'Dernière version chargée. Votre texte reste disponible via « Restaurer ».' });
+    } catch (err) {
+      setNotice({ type: 'error', text: (err as Error).message });
+    }
+  };
 
   const openScheduler = () => {
     const base = post && state === 'scheduled' ? new Date(post.published_at!) : new Date(Date.now() + 24 * 3600 * 1000);
@@ -360,6 +374,7 @@ const AdminEditor: React.FC = () => {
       {notice && (
         <div className={`editor-notice is-${notice.type}`} role={notice.type === 'error' ? 'alert' : 'status'}>
           <span>{notice.text}</span>
+          {notice.conflict && <button type="button" onClick={reloadLatest}><RotateCcw size={13} /> Charger la dernière version</button>}
           <button type="button" onClick={() => setNotice(null)} aria-label="Fermer"><X size={14} /></button>
         </div>
       )}

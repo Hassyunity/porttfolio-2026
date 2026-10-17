@@ -1,11 +1,11 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { CalendarClock, Download, ExternalLink, FileText, HardDrive, PenLine, Plus, Search, Trash2, Upload, UploadCloud } from 'lucide-react';
+import { CalendarClock, CloudUpload, Download, ExternalLink, FileText, PenLine, Plus, RefreshCw, Search, Trash2, Upload } from 'lucide-react';
 import {
-  STATE_LABEL, countPendingChanges, deletePost, exportBackup, exportForSite, formatDateTime, importPosts, listPosts,
+  STATE_LABEL, deletePost, exportBackup, formatDateTime, importFile, importRows, listPosts,
   postState, timeAgo, type PostRow, type PostState,
 } from './adminApi';
-import { fetchSitePosts } from '../lib/postStore';
+import { clearLegacyPosts, readLegacyPosts } from '../lib/postStore';
 import { readingMinutes } from '../lib/readingTime';
 
 type Filter = 'all' | PostState;
@@ -17,39 +17,30 @@ const FILTERS: { id: Filter; label: string }[] = [
   { id: 'published', label: 'Publiés' },
 ];
 
+const describeImport = ({ added, updated, skipped }: { added: number; updated: number; skipped: number }) =>
+  `${added} ajouté(s), ${updated} mis à jour${skipped ? `, ${skipped} déjà à jour ou ignoré(s)` : ''}.`;
+
 const AdminDashboard: React.FC = () => {
   const navigate = useNavigate();
   const [posts, setPosts] = useState<PostRow[] | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [info, setInfo] = useState<string | null>(null);
   const [filter, setFilter] = useState<Filter>('all');
   const [query, setQuery] = useState('');
-  const [sitePosts, setSitePosts] = useState<PostRow[] | null>(null);
-  const [info, setInfo] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [legacyCount, setLegacyCount] = useState(() => readLegacyPosts().length);
   const fileRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    listPosts().then(setPosts).catch((err: Error) => setError(err.message));
-    fetchSitePosts().then(setSitePosts);
+  const refresh = useCallback(() => {
+    listPosts().then(list => { setPosts(list); setError(null); }).catch((err: Error) => setError(err.message));
   }, []);
 
-  const pending = posts && sitePosts ? countPendingChanges(posts, sitePosts) : 0;
-
-  const onImport = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    event.target.value = '';
-    if (!file) return;
-    setError(null);
-    try {
-      const result = await importPosts(file);
-      setPosts(await listPosts());
-      const parts = [`${result.added} ajouté(s)`, `${result.updated} mis à jour`];
-      if (result.skipped) parts.push(`${result.skipped} ignoré(s) (slug déjà utilisé)`);
-      if (result.ignored) parts.push(`${result.ignored} invalide(s)`);
-      setInfo(`Import terminé : ${parts.join(', ')}.`);
-    } catch (err) {
-      setError((err as Error).message);
-    }
-  };
+  // Recharge au retour sur l'onglet : les changements faits sur un autre appareil apparaissent.
+  useEffect(() => {
+    refresh();
+    window.addEventListener('focus', refresh);
+    return () => window.removeEventListener('focus', refresh);
+  }, [refresh]);
 
   const counts = useMemo(() => {
     const result: Record<Filter, number> = { all: 0, draft: 0, scheduled: 0, published: 0 };
@@ -64,14 +55,37 @@ const AdminDashboard: React.FC = () => {
       (!q || post.title.toLowerCase().includes(q) || post.tags.some(tag => tag.toLowerCase().includes(q))));
   }, [posts, filter, query]);
 
-  const remove = async (post: PostRow) => {
-    if (!window.confirm(`Supprimer définitivement « ${post.title} » ?`)) return;
+  const run = async (task: () => Promise<string | void>) => {
+    setBusy(true);
+    setError(null);
+    setInfo(null);
     try {
-      await deletePost(post.id);
-      setPosts(prev => prev?.filter(item => item.id !== post.id) ?? null);
+      const message = await task();
+      if (message) setInfo(message);
+      refresh();
     } catch (err) {
       setError((err as Error).message);
+    } finally {
+      setBusy(false);
     }
+  };
+
+  const remove = (post: PostRow) => {
+    if (!window.confirm(`Supprimer définitivement « ${post.title} » ?`)) return;
+    run(async () => { await deletePost(post.id); });
+  };
+
+  const migrateLegacy = () => run(async () => {
+    const result = await importRows(readLegacyPosts());
+    clearLegacyPosts();
+    setLegacyCount(0);
+    return `Articles de ce navigateur transférés en ligne : ${describeImport(result)}`;
+  });
+
+  const onImport = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (file) run(async () => `Import terminé : ${describeImport(await importFile(file))}`);
   };
 
   return (
@@ -87,17 +101,16 @@ const AdminDashboard: React.FC = () => {
           </button>
         </div>
 
-        {pending > 0 && (
+        {legacyCount > 0 && (
           <div className="admin-publish">
-            <UploadCloud size={20} />
+            <CloudUpload size={20} />
             <div>
-              <strong>{pending} changement{pending > 1 ? 's' : ''} à mettre en ligne pour tous les visiteurs</strong>
-              <p>
-                Pour l'instant, ces articles ne sont visibles que dans ce navigateur. Téléchargez <code>blog-posts.json</code>,
-                remplacez le fichier <code>public/blog-posts.json</code> du projet, puis redéployez le site.
-              </p>
+              <strong>{legacyCount} article{legacyCount > 1 ? 's' : ''} enregistré{legacyCount > 1 ? 's' : ''} uniquement dans ce navigateur</strong>
+              <p>Transférez-les en ligne pour les retrouver sur tous vos appareils. Ceux qui existent déjà ne seront remplacés que par une version plus récente.</p>
             </div>
-            <button type="button" className="btn btn-primary btn-sm" onClick={exportForSite}><Download size={14} /> blog-posts.json</button>
+            <button type="button" className="btn btn-primary btn-sm" onClick={migrateLegacy} disabled={busy}>
+              {busy ? 'Transfert…' : 'Transférer'}
+            </button>
           </div>
         )}
 
@@ -110,10 +123,13 @@ const AdminDashboard: React.FC = () => {
           ))}
         </div>
 
-        <label className="admin-search">
-          <Search size={15} />
-          <input type="search" placeholder="Rechercher par titre ou tag…" value={query} onChange={e => setQuery(e.target.value)} />
-        </label>
+        <div className="admin-toolbar">
+          <label className="admin-search">
+            <Search size={15} />
+            <input type="search" placeholder="Rechercher par titre ou tag…" value={query} onChange={e => setQuery(e.target.value)} />
+          </label>
+          <button type="button" className="icon-btn" onClick={refresh} aria-label="Actualiser" title="Actualiser"><RefreshCw size={15} /></button>
+        </div>
 
         {error && <p className="admin-error" role="alert">{error}</p>}
         {info && <p className="admin-info" role="status">{info}</p>}
@@ -147,19 +163,19 @@ const AdminDashboard: React.FC = () => {
                       <a href={`/blog/${post.slug}`} target="_blank" rel="noopener noreferrer" className="icon-btn" aria-label="Voir sur le site" title="Voir sur le site"><ExternalLink size={15} /></a>
                     )}
                     <Link to={`/admin/articles/${post.id}`} className="icon-btn" aria-label="Modifier" title="Modifier"><PenLine size={15} /></Link>
-                    <button type="button" className="icon-btn admin-danger" onClick={() => remove(post)} aria-label="Supprimer" title="Supprimer"><Trash2 size={15} /></button>
+                    <button type="button" className="icon-btn admin-danger" onClick={() => remove(post)} disabled={busy} aria-label="Supprimer" title="Supprimer"><Trash2 size={15} /></button>
                   </div>
                 </li>
               );
             })}
           </ul>
         )}
+
         <footer className="admin-storage">
-          <p><HardDrive size={14} /> Les articles sont enregistrés dans ce navigateur. Faites une sauvegarde régulière, et importez-la pour écrire depuis un autre appareil.</p>
+          <p>Vos articles sont enregistrés en ligne : connectez-vous depuis n'importe quel appareil pour les retrouver.</p>
           <div>
-            <button type="button" className="admin-link" onClick={exportForSite}><Download size={14} /> Exporter pour le site</button>
-            <button type="button" className="admin-link" onClick={exportBackup}><Download size={14} /> Sauvegarde complète</button>
-            <button type="button" className="admin-link" onClick={() => fileRef.current?.click()}><Upload size={14} /> Importer</button>
+            <button type="button" className="admin-link" onClick={() => run(exportBackup)} disabled={busy}><Download size={14} /> Télécharger une sauvegarde</button>
+            <button type="button" className="admin-link" onClick={() => fileRef.current?.click()} disabled={busy}><Upload size={14} /> Importer une sauvegarde</button>
             <input ref={fileRef} type="file" accept="application/json,.json" hidden onChange={onImport} />
           </div>
         </footer>
