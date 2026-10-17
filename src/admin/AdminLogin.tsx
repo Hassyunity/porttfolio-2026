@@ -15,8 +15,15 @@ const AdminLogin: React.FC = () => {
     setError(null);
     const { error: authError } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
     if (authError) {
-      setError(authError.status === 400 ? 'Email ou mot de passe incorrect.' : authError.message);
-      setPassword('');
+      if (authError.status === 400) {
+        setError('Email ou mot de passe incorrect.');
+        setPassword('');
+      } else if (/fetch|network/i.test(authError.message)) {
+        // Le serveur n'a pas été joint : le mot de passe n'a pas été vérifié, on le garde.
+        setError('Impossible de joindre Supabase : vérifiez VITE_SUPABASE_URL dans .env.local, que le projet n\'est pas en pause, puis relancez « npm run dev ».');
+      } else {
+        setError(authError.message);
+      }
       setLoading(false);
     }
     // En cas de succès, onAuthStateChange (AdminApp) prend le relais.
