@@ -3,7 +3,9 @@ import { Link, Navigate, useParams } from 'react-router-dom';
 import { ArrowLeft, ChevronLeft, ChevronRight, MessageCircle, X } from 'lucide-react';
 import '../assets/styles/Blog.css';
 import { supabase } from '../lib/supabaseClient';
-import { BLOG_POSTS } from '../data/blog';
+import { usePublishedPosts } from '../lib/blogApi';
+import { Markdown } from '../lib/markdown';
+import { readingMinutes } from '../lib/readingTime';
 
 interface Comment {
   id: number;
@@ -18,10 +20,6 @@ const NAME_MAX = 100;
 const CONTENT_MAX = 500;
 const COMMENTS_PER_PAGE = 3;
 const GAP = 48;
-
-// Les articles JSON utilisent **gras** à la Markdown.
-const rich = (text = '') =>
-  text.split(/\*\*(.+?)\*\*/g).map((part, i) => (i % 2 ? <strong key={i}>{part}</strong> : part));
 
 // Pagine le texte en colonnes de la hauteur disponible, comme une liseuse.
 function useColumnPager(deps: unknown[]) {
@@ -58,8 +56,9 @@ function useColumnPager(deps: unknown[]) {
 }
 
 const BlogPost: React.FC = () => {
-  const { id } = useParams();
-  const post = BLOG_POSTS.find(item => String(item.id) === id);
+  const { slug } = useParams();
+  const { posts, loading } = usePublishedPosts();
+  const post = posts.find(item => item.slug === slug);
   const { viewportRef, flowRef, page, setPage, pages, step } = useColumnPager([post?.id]);
 
   const [showComments, setShowComments] = useState(false);
@@ -121,7 +120,7 @@ const BlogPost: React.FC = () => {
     return () => window.removeEventListener('keydown', onKey);
   }, [showComments]);
 
-  if (!post) return <Navigate to="/blog" replace />;
+  if (!post) return loading ? <div className="route-loading">Chargement</div> : <Navigate to="/blog" replace />;
 
   const handleAddComment = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -159,18 +158,14 @@ const BlogPost: React.FC = () => {
     <section className="page post">
       <header className="post-head rise">
         <Link to="/blog" className="post-back"><ArrowLeft size={15} /> Tous les articles</Link>
-        <p className="kicker">{post.date}</p>
+        <p className="kicker">{post.date} · {readingMinutes(post.content)} min de lecture</p>
         <h1 className="post-title">{post.title}</h1>
       </header>
 
       <div className="post-viewport rise" style={{ '--d': 1 } as React.CSSProperties} ref={viewportRef}>
-        <div className="post-flow" ref={flowRef} style={{ transform: `translateX(${-page * step}px)` }}>
+        <div className="post-flow prose" ref={flowRef} style={{ transform: `translateX(${-page * step}px)` }}>
           <p className="post-excerpt">{post.excerpt}</p>
-          {Array.isArray(post.content) ? post.content.map((block, i) => {
-            if (block.type === 'heading') return <h2 key={i}>{rich(block.text)}</h2>;
-            if (block.type === 'list') return <ul key={i}>{block.items?.map((item, j) => <li key={j}>{rich(item)}</li>)}</ul>;
-            return <p key={i}>{rich(block.text)}</p>;
-          }) : <p>{post.content}</p>}
+          <Markdown source={post.content} />
           <div className="tags post-tags">{post.tags.map(tag => <span key={tag} className="tag">{tag}</span>)}</div>
         </div>
       </div>

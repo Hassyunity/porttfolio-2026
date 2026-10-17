@@ -12,27 +12,38 @@ const Contact = lazy(() => import('./pages/Contact'));
 const BlogPage = lazy(() => import('./pages/BlogPage'));
 const BlogPost = lazy(() => import('./pages/BlogPost'));
 const Album = lazy(() => import('./pages/Album'));
+// Espace d'administration : accessible uniquement par l'URL /admin, aucun lien visible.
+const AdminApp = lazy(() => import('./admin/AdminApp'));
+
+const loading = <div className="route-loading">Chargement</div>;
+
+const Site = () => (
+  <Layout>
+    <Suspense fallback={loading}>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/projets" element={<Projects />} />
+        <Route path="/profil" element={<About />} />
+        <Route path="/expertises" element={<Skills />} />
+        <Route path="/parcours" element={<Experience />} />
+        <Route path="/blog" element={<BlogPage />} />
+        <Route path="/blog/:slug" element={<BlogPost />} />
+        <Route path="/album" element={<Album />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/blogs" element={<Navigate to="/blog" replace />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </Suspense>
+  </Layout>
+);
 
 function App() {
   return (
     <Router>
-      <Layout>
-        <Suspense fallback={<div className="route-loading">Chargement</div>}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/projets" element={<Projects />} />
-            <Route path="/profil" element={<About />} />
-            <Route path="/expertises" element={<Skills />} />
-            <Route path="/parcours" element={<Experience />} />
-            <Route path="/blog" element={<BlogPage />} />
-            <Route path="/blog/:id" element={<BlogPost />} />
-            <Route path="/album" element={<Album />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/blogs" element={<Navigate to="/blog" replace />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </Suspense>
-      </Layout>
+      <Routes>
+        <Route path="/admin/*" element={<Suspense fallback={loading}><AdminApp /></Suspense>} />
+        <Route path="/*" element={<Site />} />
+      </Routes>
     </Router>
   );
 }
