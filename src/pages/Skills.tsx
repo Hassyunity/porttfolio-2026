@@ -17,8 +17,9 @@ const Skills: React.FC = () => (
     </header>
 
     <div className="skills-grid">
-      {CAPABILITIES.map(({ Icon, name, description, list }, i) => (
+      {CAPABILITIES.map(({ Icon, name, description, list, image }, i) => (
         <article key={name} className="skill-card rise" style={{ '--d': 1 + i } as React.CSSProperties}>
+          <img className="skill-bg" src={image} alt="" aria-hidden="true" />
           <span className="skill-icon"><Icon size={20} strokeWidth={1.5} /></span>
           <h2>{name}</h2>
           <p>{description}</p>

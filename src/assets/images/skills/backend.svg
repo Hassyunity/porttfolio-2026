@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 420" fill="none">
+  <defs>
+    <pattern id="g" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M30 0H0V30" stroke="#fff" stroke-opacity=".05"/></pattern>
+    <radialGradient id="glow" cx="50%" cy="45%" r="55%"><stop offset="0" stop-color="#f0444b" stop-opacity=".32"/><stop offset="1" stop-color="#f0444b" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="600" height="420" fill="#0d0d10"/>
+  <rect width="600" height="420" fill="url(#g)"/>
+  <rect width="600" height="420" fill="url(#glow)"/>
+
+  <!-- Liaisons -->
+  <g stroke="#fff" stroke-opacity=".2" stroke-width="2">
+    <path d="M200 140H250M200 200H250M200 260H250"/>
+    <path d="M390 200H440"/>
+  </g>
+  <g stroke="#f0444b" stroke-width="2" stroke-dasharray="6 10">
+    <path d="M200 200H250"><animate attributeName="stroke-dashoffset" from="32" to="0" dur="1s" repeatCount="indefinite"/></path>
+    <path d="M390 200H440"><animate attributeName="stroke-dashoffset" from="32" to="0" dur="1s" repeatCount="indefinite"/></path>
+  </g>
+
+  <!-- Serveurs -->
+  <g transform="translate(60 110)">
+    <g>
+      <rect width="140" height="44" rx="8" fill="#16161a" stroke="#fff" stroke-opacity=".2"/>
+      <rect y="60" width="140" height="44" rx="8" fill="#16161a" stroke="#fff" stroke-opacity=".2"/>
+      <rect y="120" width="140" height="44" rx="8" fill="#16161a" stroke="#fff" stroke-opacity=".2"/>
+    </g>
+    <g fill="#fff" fill-opacity=".14">
+      <rect x="16" y="18" width="60" height="8" rx="4"/><rect x="16" y="78" width="60" height="8" rx="4"/><rect x="16" y="138" width="60" height="8" rx="4"/>
+    </g>
+    <g fill="#f0444b">
+      <circle cx="116" cy="22" r="5"><animate attributeName="opacity" values="1;.25;1" dur="1.6s" repeatCount="indefinite"/></circle>
+      <circle cx="116" cy="82" r="5"><animate attributeName="opacity" values=".25;1;.25" dur="1.6s" repeatCount="indefinite"/></circle>
+      <circle cx="116" cy="142" r="5"><animate attributeName="opacity" values="1;.25;1" dur="2s" repeatCount="indefinite"/></circle>
+    </g>
+    <g fill="#fff" fill-opacity=".3"><circle cx="100" cy="22" r="3"/><circle cx="100" cy="82" r="3"/><circle cx="100" cy="142" r="3"/></g>
+  </g>
+
+  <!-- Réponse API -->
+  <g transform="translate(250 112)">
+    <rect width="140" height="176" rx="12" fill="#141418" stroke="#f0444b" stroke-opacity=".55"/>
+    <rect x="12" y="12" width="40" height="16" rx="4" fill="#f0444b"/>
+    <text x="32" y="24" font-family="monospace" font-size="10" font-weight="700" fill="#fff" text-anchor="middle">GET</text>
+    <text x="60" y="24" font-family="monospace" font-size="10" fill="#fff" fill-opacity=".6">/api/v1</text>
+    <g font-family="monospace" font-size="11">
+      <text x="14" y="56" fill="#fff" fill-opacity=".7">{</text>
+      <text x="24" y="76" fill="#f0444b">"status"</text><text x="84" y="76" fill="#fff" fill-opacity=".8">: 200,</text>
+      <text x="24" y="96" fill="#f0444b">"data"</text><text x="70" y="96" fill="#fff" fill-opacity=".8">: [</text>
+      <rect x="34" y="104" width="80" height="7" rx="3.5" fill="#fff" fill-opacity=".2"/>
+      <rect x="34" y="118" width="62" height="7" rx="3.5" fill="#fff" fill-opacity=".2"/>
+      <text x="24" y="144" fill="#fff" fill-opacity=".8">]</text>
+      <text x="14" y="162" fill="#fff" fill-opacity=".7">}</text>
+    </g>
+  </g>
+
+  <!-- Base de données -->
+  <g transform="translate(440 130)">
+    <path d="M0 18v104c0 10 45 18 100 18s100-8 100-18V18" fill="#16161a" stroke="#fff" stroke-opacity=".22"/>
+    <path d="M0 52c0 10 45 18 100 18s100-8 100-18M0 88c0 10 45 18 100 18s100-8 100-18" stroke="#fff" stroke-opacity=".15"/>
+    <ellipse cx="100" cy="18" rx="100" ry="18" fill="#1d1d22" stroke="#f0444b" stroke-opacity=".7"/>
+    <circle cx="170" cy="70" r="4" fill="#f0444b"/><circle cx="170" cy="106" r="4" fill="#fff" fill-opacity=".3"/>
+  </g>
+
+  <!-- Badge sécurité -->
+  <g transform="translate(274 50)">
+    <rect width="92" height="34" rx="17" fill="#1b1b20" stroke="#fff" stroke-opacity=".18"/>
+    <path d="M22 9l9 4v6c0 5-4 8-9 9-5-1-9-4-9-9v-6z" stroke="#f0444b" stroke-width="2" stroke-linejoin="round"/>
+    <text x="40" y="22" font-family="monospace" font-size="11" fill="#fff" fill-opacity=".75">JWT</text>
+  </g>
+</svg>

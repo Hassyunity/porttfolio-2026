@@ -4,6 +4,10 @@ import alteaImg from '../assets/images/altea.jpg';
 import autoImg from '../assets/images/auto.jpg';
 import bazarImg from '../assets/images/leader.jpg';
 import hmaxImg from '../assets/images/h-max.png';
+import frontendArt from '../assets/images/skills/frontend.svg';
+import backendArt from '../assets/images/skills/backend.svg';
+import devopsArt from '../assets/images/skills/devops.svg';
+import automationArt from '../assets/images/skills/automation.svg';
 
 // Ordre des écrans : sert au menu, à la barre « précédent / suivant » et aux raccourcis clavier.
 export const PAGES = [
@@ -105,13 +109,14 @@ export interface Capability {
   name: string;
   description: string;
   list: string[];
+  image: string;
 }
 
 export const CAPABILITIES: Capability[] = [
-  { Icon: LayoutTemplate, name: 'Frontend', description: 'Interfaces rapides, accessibles et soignées.', list: ['React', 'TypeScript', 'Vite', 'CSS moderne'] },
-  { Icon: Server, name: 'Backend & API', description: 'Architectures robustes et APIs bien conçues.', list: ['Ruby on Rails', 'Node.js', 'PostgreSQL', 'REST / JWT'] },
-  { Icon: CloudCog, name: 'DevOps & Cloud', description: 'Des mises en production sereines et répétables.', list: ['Docker', 'Nginx', 'CI/CD', 'Git', 'Cloud'] },
-  { Icon: Workflow, name: 'SaaS, CRM & automatisation', description: 'Des processus métier qui tournent tout seuls.', list: ['n8n', 'Make', 'API Stripe', 'Signature électronique', 'CRM sur mesure'] },
+  { Icon: LayoutTemplate, name: 'Frontend', description: 'Interfaces rapides, accessibles et soignées.', list: ['React', 'TypeScript', 'Vite', 'CSS moderne'], image: frontendArt },
+  { Icon: Server, name: 'Backend & API', description: 'Architectures robustes et APIs bien conçues.', list: ['Ruby on Rails', 'Node.js', 'PostgreSQL', 'REST / JWT'], image: backendArt },
+  { Icon: CloudCog, name: 'DevOps & Cloud', description: 'Des mises en production sereines et répétables.', list: ['Docker', 'Nginx', 'CI/CD', 'Git', 'Cloud'], image: devopsArt },
+  { Icon: Workflow, name: 'SaaS, CRM & automatisation', description: 'Des processus métier qui tournent tout seuls.', list: ['n8n', 'Make', 'API Stripe', 'Signature électronique', 'CRM sur mesure'], image: automationArt },
 ];
 
 export const TOOLS = ['VS Code', 'Postman', 'Figma', 'GitHub', 'Jira', 'ClickUp', 'Trello'];
