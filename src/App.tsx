@@ -1,52 +1,38 @@
-import { Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Home from './components/Home';
-import About from './components/About';
-import Ticker from './components/Ticker';
-import Skills from './components/Skills';
-import Experience from './components/Experience';
-import Projects from './components/Projects';
-import Results from './components/Results';
-import Contact from './components/Contact';
-import Footer from './components/Footer';
-import WhatsAppButton from './components/WhatsAppButton';
-import ChatWidget from './components/ChatWidget';
 import './assets/styles/global.css';
+import { Suspense, lazy } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import Layout from './components/Layout';
+import Home from './pages/Home';
 
+const Projects = lazy(() => import('./pages/Projects'));
+const About = lazy(() => import('./pages/About'));
+const Skills = lazy(() => import('./pages/Skills'));
+const Experience = lazy(() => import('./pages/Experience'));
+const Contact = lazy(() => import('./pages/Contact'));
 const BlogPage = lazy(() => import('./pages/BlogPage'));
+const BlogPost = lazy(() => import('./pages/BlogPost'));
 const Album = lazy(() => import('./pages/Album'));
-
-// On crée un composant qui regroupe toutes les sections du portfolio
-const MainPortfolio = () => (
-  <>
-    <Home />
-    <About />
-    <Ticker />
-    <Skills />
-    <Experience />
-    <Projects />
-    <Results />
-    <Contact />
-  </>
-);
 
 function App() {
   return (
     <Router>
-      <div className="App">
-        <Navbar />
+      <Layout>
         <Suspense fallback={<div className="route-loading">Chargement</div>}>
           <Routes>
-            <Route path="/" element={<MainPortfolio />} />
-            <Route path="/blogs" element={<BlogPage />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/projets" element={<Projects />} />
+            <Route path="/profil" element={<About />} />
+            <Route path="/expertises" element={<Skills />} />
+            <Route path="/parcours" element={<Experience />} />
+            <Route path="/blog" element={<BlogPage />} />
+            <Route path="/blog/:id" element={<BlogPost />} />
             <Route path="/album" element={<Album />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/blogs" element={<Navigate to="/blog" replace />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Suspense>
-        <Footer />
-        <WhatsAppButton />
-        <ChatWidget />
-      </div>
+      </Layout>
     </Router>
   );
 }

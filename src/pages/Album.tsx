@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import '../assets/styles/Album.css';
 import alteaImg from '../assets/images/altea.jpg';
 import leader from '../assets/images/leader.jpg';
@@ -8,73 +8,62 @@ import auto from '../assets/images/auto.jpg';
 import n8n from '../assets/images/n8n.png';
 import Bmray from '../assets/images/b-mray.jpg';
 
-interface Photo {
-  id: number;
-  url: string;
-  title: string;
-  caption: string;
-}
-
-const PHOTOS: Photo[] = [
-  { id: 1, url: alteaImg, title: 'Altea Flow', caption: 'Tableau de bord SaaS' },
-  { id: 2, url: auto, title: 'Auto | DECISIONS', caption: 'Workflows n8n' },
-  { id: 3, url: Bmray, title: 'B-Mray', caption: 'Plateforme multi-écrans' },
-  { id: 4, url: leader, title: 'Bazar Naka', caption: 'Supermarché en ligne' },
-  { id: 5, url: hmax, title: 'H-Max', caption: 'Assistant virtuel' },
-  { id: 6, url: n8n, title: 'n8n', caption: 'Automatisation' }
+const PHOTOS = [
+  { url: alteaImg, title: 'Altea Flow', caption: 'Tableau de bord SaaS' },
+  { url: auto, title: 'Auto | DECISIONS', caption: 'Workflows n8n' },
+  { url: Bmray, title: 'B-Mray', caption: 'Plateforme multi-écrans' },
+  { url: leader, title: 'Bazar Naka', caption: 'Supermarché en ligne' },
+  { url: hmax, title: 'H-Max', caption: 'Assistant virtuel' },
+  { url: n8n, title: 'n8n', caption: 'Automatisation' },
 ];
 
 const Album: React.FC = () => {
-  const [active, setActive] = useState<Photo | null>(null);
+  const [active, setActive] = useState<number | null>(null);
 
   useEffect(() => {
-    if (!active) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setActive(null);
+    if (active === null) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setActive(null);
+      if (event.key === 'ArrowRight') { event.preventDefault(); setActive((active + 1) % PHOTOS.length); }
+      if (event.key === 'ArrowLeft') { event.preventDefault(); setActive((active - 1 + PHOTOS.length) % PHOTOS.length); }
     };
-    document.body.style.overflow = 'hidden';
-    window.addEventListener('keydown', onKey);
-    return () => {
-      document.body.style.overflow = '';
-      window.removeEventListener('keydown', onKey);
-    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
   }, [active]);
 
+  const photo = active !== null ? PHOTOS[active] : null;
+
   return (
-    <main className="album-page">
-      <header className="page-header">
+    <section className="page album">
+      <header className="page-head rise">
         <p className="eyebrow">Album</p>
-        <h1 className="section-title">
-          Instants <em>capturés</em>, projets en images.
-        </h1>
+        <h1 className="page-title">Instants <em>capturés</em>, projets en images.</h1>
       </header>
 
       <div className="photo-grid">
-        {PHOTOS.map((photo) => (
-          <button key={photo.id} className="photo-card" onClick={() => setActive(photo)}>
-            <img src={photo.url} alt={photo.title} loading="lazy" />
+        {PHOTOS.map((item, i) => (
+          <button key={item.title} className="photo-card rise" style={{ '--d': 1 + i } as React.CSSProperties} onClick={() => setActive(i)}>
+            <img src={item.url} alt={item.title} />
             <span className="photo-overlay">
-              <span className="photo-title">{photo.title}</span>
-              <span className="photo-caption">{photo.caption}</span>
+              <strong>{item.title}</strong>
+              <span>{item.caption}</span>
             </span>
           </button>
         ))}
       </div>
 
-      {active && (
-        <div className="lightbox" role="dialog" aria-modal="true" aria-label={active.title} onClick={() => setActive(null)}>
-          <button className="lightbox-close" onClick={() => setActive(null)} aria-label="Fermer">
-            <X size={20} />
-          </button>
-          <figure className="lightbox-figure" onClick={(e) => e.stopPropagation()}>
-            <img src={active.url} alt={active.title} />
-            <figcaption>
-              <span>{active.title}</span> — {active.caption}
-            </figcaption>
+      {photo && active !== null && (
+        <div className="lightbox" role="dialog" aria-modal="true" aria-label={photo.title} onClick={() => setActive(null)}>
+          <button className="icon-btn lightbox-close" onClick={() => setActive(null)} aria-label="Fermer"><X size={20} /></button>
+          <button className="icon-btn lightbox-nav lightbox-prev" onClick={event => { event.stopPropagation(); setActive((active - 1 + PHOTOS.length) % PHOTOS.length); }} aria-label="Photo précédente"><ChevronLeft size={20} /></button>
+          <figure onClick={event => event.stopPropagation()}>
+            <img src={photo.url} alt={photo.title} />
+            <figcaption><strong>{photo.title}</strong> — {photo.caption} <span>{active + 1} / {PHOTOS.length}</span></figcaption>
           </figure>
+          <button className="icon-btn lightbox-nav lightbox-next" onClick={event => { event.stopPropagation(); setActive((active + 1) % PHOTOS.length); }} aria-label="Photo suivante"><ChevronRight size={20} /></button>
         </div>
       )}
-    </main>
+    </section>
   );
 };
 
