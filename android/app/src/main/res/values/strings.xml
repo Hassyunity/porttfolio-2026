@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Studio blog</string>
+    <string name="title_activity_main">Studio blog</string>
+    <string name="package_name">com.hassytsihoarana.studioblog</string>
+    <string name="custom_url_scheme">com.hassytsihoarana.studioblog</string>
+</resources>

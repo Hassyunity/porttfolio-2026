@@ -7,6 +7,7 @@ import {
 } from './adminApi';
 import { clearLegacyPosts, readLegacyPosts } from '../lib/postStore';
 import { readingMinutes } from '../lib/readingTime';
+import { isNative, siteUrl } from '../lib/platform';
 
 type Filter = 'all' | PostState;
 
@@ -35,11 +36,16 @@ const AdminDashboard: React.FC = () => {
     listPosts().then(list => { setPosts(list); setError(null); }).catch((err: Error) => setError(err.message));
   }, []);
 
-  // Recharge au retour sur l'onglet : les changements faits sur un autre appareil apparaissent.
+  // Recharge au retour sur l'onglet (ou dans l'app) : les changements faits sur un autre appareil apparaissent.
   useEffect(() => {
     refresh();
+    const onVisible = () => { if (document.visibilityState === 'visible') refresh(); };
     window.addEventListener('focus', refresh);
-    return () => window.removeEventListener('focus', refresh);
+    document.addEventListener('visibilitychange', onVisible);
+    return () => {
+      window.removeEventListener('focus', refresh);
+      document.removeEventListener('visibilitychange', onVisible);
+    };
   }, [refresh]);
 
   const counts = useMemo(() => {
@@ -159,8 +165,8 @@ const AdminDashboard: React.FC = () => {
                     </span>
                   </Link>
                   <div className="admin-row-actions">
-                    {state === 'published' && (
-                      <a href={`/blog/${post.slug}`} target="_blank" rel="noopener noreferrer" className="icon-btn" aria-label="Voir sur le site" title="Voir sur le site"><ExternalLink size={15} /></a>
+                    {state === 'published' && siteUrl(`/blog/${post.slug}`) && (
+                      <a href={siteUrl(`/blog/${post.slug}`)!} target="_blank" rel="noopener noreferrer" className="icon-btn" aria-label="Voir sur le site" title="Voir sur le site"><ExternalLink size={15} /></a>
                     )}
                     <Link to={`/admin/articles/${post.id}`} className="icon-btn" aria-label="Modifier" title="Modifier"><PenLine size={15} /></Link>
                     <button type="button" className="icon-btn admin-danger" onClick={() => remove(post)} disabled={busy} aria-label="Supprimer" title="Supprimer"><Trash2 size={15} /></button>
@@ -176,7 +182,8 @@ const AdminDashboard: React.FC = () => {
           <div>
             <button type="button" className="admin-link" onClick={() => run(exportBackup)} disabled={busy}><Download size={14} /> Télécharger une sauvegarde</button>
             <button type="button" className="admin-link" onClick={() => fileRef.current?.click()} disabled={busy}><Upload size={14} /> Importer une sauvegarde</button>
-            <input ref={fileRef} type="file" accept="application/json,.json" hidden onChange={onImport} />
+            {/* Android ne reconnaît pas toujours le type des .json : pas de filtre dans l'app. */}
+            <input ref={fileRef} type="file" accept={isNative ? undefined : 'application/json,.json'} hidden onChange={onImport} />
           </div>
         </footer>
       </div>

@@ -1,0 +1,28 @@
+/* Ajustements propres à l'application Android (chargés uniquement par mobile.tsx). */
+
+/* Affichage bord à bord : on garde le contenu hors de la barre d'état et de la barre de navigation. */
+.admin, .admin-gate {
+  padding-top: var(--safe-area-inset-top, env(safe-area-inset-top, 0px));
+  padding-bottom: var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px));
+  padding-left: var(--safe-area-inset-left, env(safe-area-inset-left, 0px));
+  padding-right: var(--safe-area-inset-right, env(safe-area-inset-right, 0px));
+}
+
+/* Comportement d'app : pas de surlignage au toucher ni de rebond qui ferait défiler toute la page. */
+html, body { overscroll-behavior: none; -webkit-tap-highlight-color: transparent; }
+button, a { -webkit-user-select: none; user-select: none; }
+
+/* Le grain plein écran du site (filtre SVG) coûte cher au rendu mobile et n'apporte rien ici. */
+body::before { display: none; }
+
+/* Cibles tactiles confortables (48 px recommandés par Android). */
+@media (max-width: 860px) {
+  .editor-toolbar button { width: 40px; height: 40px; }
+  .icon-btn { min-width: 40px; min-height: 40px; }
+  .btn-sm { padding: 0.7rem 1rem; font-size: 0.78rem; }
+  .admin-top { padding-block: 0.6rem; }
+  .admin-top-actions { gap: 1rem; }
+  /* Évite le zoom automatique d'Android sur les champs en dessous de 16 px. */
+  .admin-field input, .admin-field textarea, .admin-search input, .editor-content { font-size: 16px; }
+  .editor-actions .btn { flex: 1 1 auto; justify-content: center; }
+}

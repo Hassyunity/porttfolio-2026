@@ -12,6 +12,7 @@ import { slugify } from '../data/blog';
 import { SLUG_RE } from '../lib/postStore';
 import { Markdown } from '../lib/markdown';
 import { countWords, readingMinutes } from '../lib/readingTime';
+import { siteUrl } from '../lib/platform';
 
 interface Draft {
   title: string;
@@ -124,7 +125,13 @@ const AdminEditor: React.FC = () => {
   useEffect(() => {
     if (!dirty) return;
     const timer = window.setTimeout(() => writeBackup(storageKey, form), 600);
-    return () => window.clearTimeout(timer);
+    // Mise en arrière-plan (mobile) : le système peut fermer l'app sans prévenir, on sauvegarde tout de suite.
+    const onHide = () => { if (document.visibilityState === 'hidden') writeBackup(storageKey, form); };
+    document.addEventListener('visibilitychange', onHide);
+    return () => {
+      window.clearTimeout(timer);
+      document.removeEventListener('visibilitychange', onHide);
+    };
   }, [form, dirty, storageKey]);
 
   // Alerte avant de fermer l'onglet avec des modifications non enregistrées
@@ -346,7 +353,9 @@ const AdminEditor: React.FC = () => {
         <div className="editor-actions">
           {state === 'published' ? (
             <>
-              <a href={`/blog/${post!.slug}`} target="_blank" rel="noopener noreferrer" className="btn btn-ghost btn-sm"><ExternalLink size={14} /> Voir</a>
+              {siteUrl(`/blog/${post!.slug}`) && (
+                <a href={siteUrl(`/blog/${post!.slug}`)!} target="_blank" rel="noopener noreferrer" className="btn btn-ghost btn-sm"><ExternalLink size={14} /> Voir</a>
+              )}
               <button type="button" className="btn btn-ghost btn-sm" onClick={() => persist('unpublish')} disabled={!!busy}><Undo2 size={14} /> Dépublier</button>
               <button type="button" className="btn btn-primary btn-sm" onClick={() => persist('save')} disabled={!!busy || !dirty}>
                 {busy === 'save' ? 'Mise à jour…' : 'Mettre à jour'}

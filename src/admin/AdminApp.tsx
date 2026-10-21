@@ -1,13 +1,16 @@
 import { useEffect, useState } from 'react';
-import { Link, Navigate, Route, Routes } from 'react-router-dom';
+import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import type { Session } from '@supabase/supabase-js';
-import { ExternalLink, LogOut, ShieldAlert } from 'lucide-react';
+import { Bot, ExternalLink, FileText, LogOut, ShieldAlert } from 'lucide-react';
 import '../assets/styles/Blog.css';
 import './Admin.css';
 import { supabase } from '../lib/supabaseClient';
+import { siteUrl } from '../lib/platform';
 import AdminLogin from './AdminLogin';
 import AdminDashboard from './AdminDashboard';
 import AdminEditor from './AdminEditor';
+import AgentDashboard from './AgentDashboard';
+import AgentScript from './AgentScript';
 
 /** Empêche l'indexation de l'admin par les moteurs de recherche. */
 function useNoIndex() {
@@ -22,8 +25,11 @@ function useNoIndex() {
   }, []);
 }
 
+const blogUrl = siteUrl('/blog');
+
 const AdminApp = () => {
   useNoIndex();
+  const inAgent = useLocation().pathname.startsWith('/admin/agent');
   // undefined = session en cours de lecture
   const [session, setSession] = useState<Session | null | undefined>(supabase ? undefined : null);
   const [adminCheck, setAdminCheck] = useState<{ userId: string; ok: boolean; error?: string } | null>(null);
@@ -90,9 +96,13 @@ const AdminApp = () => {
           <span className="brand-mark" aria-hidden="true">ht.</span>
           <span>Studio <em>blog</em></span>
         </Link>
+        <nav className="admin-nav" aria-label="Sections">
+          <Link to="/admin" className={inAgent ? '' : 'is-active'} aria-current={inAgent ? undefined : 'page'}><FileText size={14} /> Articles</Link>
+          <Link to="/admin/agent" className={inAgent ? 'is-active' : ''} aria-current={inAgent ? 'page' : undefined}><Bot size={14} /> Agent IA</Link>
+        </nav>
         <div className="admin-top-actions">
           <span className="admin-user">{session.user.email}</span>
-          <a href="/blog" target="_blank" rel="noopener noreferrer" className="admin-link"><ExternalLink size={14} /> Voir le blog</a>
+          {blogUrl && <a href={blogUrl} target="_blank" rel="noopener noreferrer" className="admin-link"><ExternalLink size={14} /> Voir le blog</a>}
           <button type="button" className="admin-link" onClick={signOut}><LogOut size={14} /> Déconnexion</button>
         </div>
       </header>
@@ -100,6 +110,8 @@ const AdminApp = () => {
       <Routes>
         <Route index element={<AdminDashboard />} />
         <Route path="articles/:id" element={<AdminEditor />} />
+        <Route path="agent" element={<AgentDashboard />} />
+        <Route path="agent/:id" element={<AgentScript />} />
         <Route path="*" element={<Navigate to="/admin" replace />} />
       </Routes>
     </div>

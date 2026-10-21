@@ -1,0 +1,114 @@
+# Agent IA développeur, lancé depuis /admin › Agent IA (Edge Function agent-dispatch).
+# Il clone le dépôt cible, laisse Claude Code faire le travail demandé, puis ouvre une Pull Request.
+#
+# Secrets du dépôt (Settings › Secrets and variables › Actions) :
+#   ANTHROPIC_API_KEY ou CLAUDE_CODE_OAUTH_TOKEN   accès à Claude (clé API, ou abonnement via `claude setup-token`)
+#   AGENT_GITHUB_TOKEN                            token GitHub : Contents + Pull requests en écriture sur les dépôts cibles
+#   SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY        pour mettre à jour le statut dans l'app
+# Variable facultative : AGENT_MODEL (sinon le modèle par défaut de Claude Code).
+name: Agent IA
+run-name: Agent IA · exécution ${{ inputs.run_id }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: Identifiant de l'exécution (table agent_runs)
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ai-agent-${{ inputs.run_id }}
+
+jobs:
+  agent:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      RUN_ID: ${{ inputs.run_id }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: hub
+          sparse-checkout: .github/agent
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Lire la tâche
+        id: task
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: node hub/.github/agent/agent.mjs start
+
+      - name: Cloner le dépôt cible
+        if: steps.task.outputs.skip == 'false'
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ steps.task.outputs.repo }}
+          ref: ${{ steps.task.outputs.base }}
+          token: ${{ secrets.AGENT_GITHUB_TOKEN }}
+          path: work
+          # Aucun identifiant GitHub laissé sur le disque : l'agent ne peut ni pousser ni lire le token.
+          persist-credentials: false
+
+      - name: Installer Claude Code
+        if: steps.task.outputs.skip == 'false'
+        run: npm install -g @anthropic-ai/claude-code
+
+      - name: Travail de l'agent
+        if: steps.task.outputs.skip == 'false'
+        working-directory: work
+        # Seul l'accès à Claude est exposé ici : ni le token GitHub ni la clé Supabase.
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          AGENT_MODEL: ${{ vars.AGENT_MODEL }}
+        run: |
+          git rev-parse HEAD > "$RUNNER_TEMP/base-sha"
+          claude -p \
+            --output-format json \
+            --dangerously-skip-permissions \
+            --max-turns 120 \
+            ${AGENT_MODEL:+--model "$AGENT_MODEL"} \
+            --append-system-prompt "Tu es un développeur senior autonome qui travaille dans ce dépôt pour son propriétaire. Respecte les conventions existantes (style, structure, langue des commentaires). Installe les dépendances et lance build, lint et tests quand le projet en a, et corrige ce que tu casses. Ne pousse rien et n'ouvre pas de Pull Request : c'est fait automatiquement après toi. Termine par un compte rendu en français, en Markdown : ce que tu as fait, les fichiers touchés, comment tester, et les points à vérifier." \
+            < "$RUNNER_TEMP/prompt.md" > "$RUNNER_TEMP/result.json"
+
+      - name: Pousser la branche et ouvrir la Pull Request
+        id: pr
+        if: steps.task.outputs.skip == 'false'
+        working-directory: work
+        env:
+          GH_TOKEN: ${{ secrets.AGENT_GITHUB_TOKEN }}
+          REPO: ${{ steps.task.outputs.repo }}
+          BASE: ${{ steps.task.outputs.base }}
+          BRANCH: ${{ steps.task.outputs.branch }}
+          TITLE: ${{ steps.task.outputs.title }}
+        run: |
+          git config user.name "Agent IA"
+          git config user.email "agent-ia@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet || git commit -q -m "Agent IA : $TITLE"
+          if [ "$(git rev-parse HEAD)" = "$(cat "$RUNNER_TEMP/base-sha")" ]; then
+            touch "$RUNNER_TEMP/no-changes"
+            exit 0
+          fi
+          git push -q "https://x-access-token:${GH_TOKEN}@github.com/${REPO}.git" "HEAD:refs/heads/${BRANCH}"
+          jq -r '.result // "Pas de compte rendu."' "$RUNNER_TEMP/result.json" > "$RUNNER_TEMP/pr-body.md"
+          url=$(gh pr create --repo "$REPO" --head "$BRANCH" ${BASE:+--base "$BASE"} \
+            --title "Agent IA : $TITLE" --body-file "$RUNNER_TEMP/pr-body.md")
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+
+      - name: Enregistrer le résultat
+        if: always() && steps.task.outputs.skip != 'true'
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          JOB_STATUS: ${{ job.status }}
+          PR_URL: ${{ steps.pr.outputs.url }}
+        run: node hub/.github/agent/agent.mjs finish

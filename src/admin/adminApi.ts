@@ -2,6 +2,7 @@ import type { PostgrestError } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabaseClient';
 import { STATIC_POSTS } from '../data/blog';
 import { invalidatePublishedPosts } from '../lib/blogApi';
+import { isNative } from '../lib/platform';
 import { POSTS_TABLE, POST_COLUMNS, isPostRow, type PostRow, type PostStatus } from '../lib/postStore';
 
 export type { PostRow, PostStatus };
@@ -106,9 +107,24 @@ export async function deletePost(id: number): Promise<void> {
 
 export async function exportBackup() {
   const posts = await listPosts();
-  const blob = new Blob([JSON.stringify(posts, null, 2) + '\n'], { type: 'application/json' });
+  const json = JSON.stringify(posts, null, 2) + '\n';
+  const name = `sauvegarde-blog-${new Date().toISOString().slice(0, 10)}.json`;
+
+  if (isNative) {
+    // Pas de téléchargement dans la WebView Android : fichier temporaire + menu de partage (Drive, mail, Fichiers…).
+    const [{ Filesystem, Directory, Encoding }, { Share }] = await Promise.all([import('@capacitor/filesystem'), import('@capacitor/share')]);
+    const { uri } = await Filesystem.writeFile({ path: name, data: json, directory: Directory.Cache, encoding: Encoding.UTF8 });
+    try {
+      await Share.share({ title: name, files: [uri], dialogTitle: 'Enregistrer la sauvegarde' });
+    } catch (err) {
+      if (!/cancel/i.test((err as Error).message)) throw err;
+    }
+    return;
+  }
+
+  const blob = new Blob([json], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
-  const link = Object.assign(document.createElement('a'), { href: url, download: `sauvegarde-blog-${new Date().toISOString().slice(0, 10)}.json` });
+  const link = Object.assign(document.createElement('a'), { href: url, download: name });
   link.click();
   URL.revokeObjectURL(url);
 }

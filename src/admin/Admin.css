@@ -61,6 +61,13 @@
 .admin-brand { display: flex; align-items: baseline; gap: 0.6rem; font-size: 0.85rem; font-weight: 500; }
 .admin-brand em { font-family: var(--font-serif); font-size: 1.1em; color: var(--accent); }
 .admin-top-actions { display: flex; align-items: center; gap: 1.2rem; }
+
+/* Menu des sections */
+.admin-nav { display: flex; gap: 0.25rem; margin-right: auto; padding: 0.25rem; border: 1px solid var(--line); border-radius: 999px; }
+.admin-nav a { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.85rem; border-radius: 999px; font-size: 0.74rem; color: var(--text-muted); transition: background 0.2s, color 0.2s; }
+.admin-nav a:hover { color: var(--text); }
+.admin-nav a.is-active { background: var(--bg-soft); color: var(--text); }
+.admin-nav a.is-active svg { color: var(--accent); }
 .admin-user { font-size: 0.72rem; color: var(--text-faint); }
 
 .admin-link { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.75rem; color: var(--text-muted); transition: color 0.2s; }
@@ -123,6 +130,13 @@
 .admin-badge.is-draft { background: rgba(255, 255, 255, 0.07); color: var(--text-muted); }
 .admin-badge.is-scheduled { background: rgba(245, 177, 76, 0.12); color: #f5b14c; }
 .admin-badge.is-published { background: rgba(61, 220, 132, 0.12); color: #3ddc84; }
+/* Statuts des exécutions de l'agent IA */
+.admin-badge.is-queued, .admin-badge.is-cancelled { background: rgba(255, 255, 255, 0.07); color: var(--text-muted); }
+.admin-badge.is-running { background: rgba(245, 177, 76, 0.12); color: #f5b14c; }
+.admin-badge.is-running::before { animation: agent-pulse 1.2s ease-in-out infinite; }
+.admin-badge.is-succeeded { background: rgba(61, 220, 132, 0.12); color: #3ddc84; }
+.admin-badge.is-failed { background: var(--accent-soft); color: var(--accent-strong); }
+@keyframes agent-pulse { 50% { opacity: 0.25; } }
 
 .admin-empty { display: flex; flex-direction: column; align-items: center; gap: 0.8rem; padding: 3rem 1rem; border: 1px dashed var(--line-strong); border-radius: 16px; color: var(--text-muted); font-size: 0.85rem; }
 
@@ -292,6 +306,22 @@
 .admin-delete { display: inline-flex; align-items: center; gap: 0.45rem; align-self: flex-start; margin-top: auto; font-size: 0.74rem; color: var(--text-faint); transition: color 0.2s; }
 .admin-delete:hover { color: var(--accent); }
 
+/* --- Agent IA --- */
+.agent-bar { padding: 0 0 0.9rem; }
+.agent-repo { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 1rem; }
+.agent-prompt { min-height: 240px; font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace; line-height: 1.7; }
+
+.agent-runs { display: flex; flex-direction: column; gap: 0.6rem; }
+.agent-runs ul { display: flex; flex-direction: column; gap: 0.5rem; }
+.agent-runs-title { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-faint); }
+.agent-run { border: 1px solid var(--line); border-radius: 12px; background: var(--bg-elevated); }
+.agent-run summary { display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; padding: 0.75rem 0.9rem; cursor: pointer; list-style: none; }
+.agent-run summary::-webkit-details-marker { display: none; }
+.agent-run-when { font-size: 0.8rem; }
+.agent-run-body { display: flex; flex-direction: column; gap: 0.8rem; padding: 0 0.9rem 0.9rem; }
+.agent-run-links { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.agent-run-result { padding-top: 0.8rem; border-top: 1px solid var(--line); font-size: 0.86rem; }
+
 @media (max-width: 1100px) {
   .editor-panes { grid-template-columns: minmax(0, 1fr); }
   .view-split .editor-preview { display: none; }
@@ -300,6 +330,10 @@
 @media (max-width: 860px) {
   .admin-publish { flex-wrap: wrap; }
   .admin-user { display: none; }
+  .admin-top { flex-wrap: wrap; row-gap: 0.6rem; }
+  .admin-nav { order: 3; width: 100%; margin-right: 0; }
+  .admin-nav a { flex: 1; justify-content: center; }
+  .agent-repo { grid-template-columns: minmax(0, 1fr); }
   .admin-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .admin-row-meta { font-size: 0.68rem; }
   .editor { overflow-y: auto; }

@@ -7,9 +7,17 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "build:admin": "vite build -c vite.admin.config.ts",
+    "android:sync": "npm run build:admin && cap sync android",
+    "android:apk": "npm run android:sync && sh scripts/build-apk.sh"
   },
   "dependencies": {
+    "@capacitor/android": "^8.5.3",
+    "@capacitor/app": "^8.1.2",
+    "@capacitor/core": "^8.5.3",
+    "@capacitor/filesystem": "^8.1.5",
+    "@capacitor/share": "^8.0.3",
     "@supabase/supabase-js": "^2.110.6",
     "lucide-react": "^0.577.0",
     "react": "^19.2.0",
@@ -17,6 +25,7 @@
     "react-router-dom": "^7.13.1"
   },
   "devDependencies": {
+    "@capacitor/cli": "^8.5.3",
     "@eslint/js": "^9.39.1",
     "@types/node": "^24.10.1",
     "@types/react": "^19.2.7",
