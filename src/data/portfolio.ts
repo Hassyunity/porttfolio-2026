@@ -19,6 +19,7 @@ export const PAGES = [
   { path: '/profil', label: 'Profil' },
   { path: '/expertises', label: 'Expertises' },
   { path: '/parcours', label: 'Parcours' },
+  { path: '/avis', label: 'Avis' },
   { path: '/blog', label: 'Blog' },
   { path: '/album', label: 'Album' },
   { path: '/contact', label: 'Contact' },
@@ -173,4 +174,33 @@ export const CONTACT_METHODS = [
   { label: 'Téléphone', value: '+261 34 16 020 73', link: 'tel:+261341602073', Icon: Phone },
   { label: 'LinkedIn', value: 'tsihoarana-hassy', link: 'https://www.linkedin.com/in/tsihoarana-hassy-b8349020b/', Icon: Linkedin },
   { label: 'GitHub', value: 'Hassyunity · 73 dépôts', link: 'https://github.com/Hassyunity', Icon: Github },
+];
+
+export interface Review {
+  name: string;
+  role: string;
+  rating: number;
+  text: string;
+}
+
+// À REMPLACER par de vrais témoignages clients avant la mise en ligne.
+export const REVIEWS: Review[] = [
+  {
+    name: 'Client exemple 1',
+    role: 'Dirigeant · PME',
+    rating: 5,
+    text: 'Un développeur à l’écoute, rigoureux et force de proposition. Notre application a été livrée dans les délais, avec une qualité irréprochable.',
+  },
+  {
+    name: 'Client exemple 2',
+    role: 'Responsable produit · Startup',
+    rating: 5,
+    text: 'Hassy a su transformer notre idée en un produit solide, de l’architecture jusqu’à la mise en production. Communication claire du début à la fin.',
+  },
+  {
+    name: 'Client exemple 3',
+    role: 'Fondatrice · E-commerce',
+    rating: 5,
+    text: 'L’automatisation mise en place nous fait gagner des heures chaque semaine. Un vrai partenaire technique, réactif et créatif.',
+  },
 ];
