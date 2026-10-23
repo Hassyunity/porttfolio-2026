@@ -22,10 +22,8 @@ const RunCard: React.FC<{ run: AgentRun; open: boolean; onCancel: () => void; bu
         <summary>
           <span className={`admin-badge is-${run.status}`}>{RUN_LABEL[run.status]}</span>
           <span className="agent-run-when">{formatDateTime(run.created_at)}</span>
-          <span className="admin-muted">
-            {duration && `${duration}`}
-            {run.cost_usd !== null && ` · ${Number(run.cost_usd).toFixed(2)} $`}
-          </span>
+          {/* Pas de coût affiché : avec l'abonnement Claude, il n'est qu'une estimation, rien n'est facturé. */}
+          {duration && <span className="admin-muted">{duration}</span>}
         </summary>
 
         <div className="agent-run-body">
