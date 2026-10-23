@@ -9,6 +9,7 @@ const About = lazy(() => import('./pages/About'));
 const Skills = lazy(() => import('./pages/Skills'));
 const Experience = lazy(() => import('./pages/Experience'));
 const Contact = lazy(() => import('./pages/Contact'));
+const Reviews = lazy(() => import('./pages/Reviews'));
 const BlogPage = lazy(() => import('./pages/BlogPage'));
 const BlogPost = lazy(() => import('./pages/BlogPost'));
 const Album = lazy(() => import('./pages/Album'));
@@ -26,6 +27,7 @@ const Site = () => (
         <Route path="/profil" element={<About />} />
         <Route path="/expertises" element={<Skills />} />
         <Route path="/parcours" element={<Experience />} />
+        <Route path="/avis" element={<Reviews />} />
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/blog/:slug" element={<BlogPost />} />
         <Route path="/album" element={<Album />} />
