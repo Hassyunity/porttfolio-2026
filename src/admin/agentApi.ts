@@ -50,6 +50,8 @@ export const isActive = (run: Pick<AgentRun, 'status'>) => run.status === 'queue
 
 export const REPO_RE = /^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/;
 export const DEFAULT_REPO: string = import.meta.env.VITE_AGENT_DEFAULT_REPO ?? '';
+/** Nom de l'Edge Function tel que déployé dans Supabase (agent-dispatch par défaut). */
+const DISPATCH_FUNCTION: string = import.meta.env.VITE_AGENT_FUNCTION || 'agent-dispatch';
 
 const SCRIPT_COLUMNS = 'id, title, prompt, repo, base_branch, created_at, updated_at';
 const RUN_COLUMNS = 'id, script_id, status, repo, base_branch, branch, pr_url, run_url, result, error, cost_usd, created_at, started_at, finished_at';
@@ -109,15 +111,15 @@ export async function listRuns(scriptId: number): Promise<AgentRun[]> {
   return data as AgentRun[];
 }
 
-/** Appelle l'Edge Function agent-dispatch, seule à détenir le token GitHub. */
+/** Appelle l'Edge Function de l'agent, seule à détenir le token GitHub. */
 async function dispatch(body: Record<string, unknown>) {
-  const { data, error } = await client().functions.invoke('agent-dispatch', { body });
+  const { data, error } = await client().functions.invoke(DISPATCH_FUNCTION, { body });
   if (error) {
     if (error instanceof FunctionsHttpError) {
       const payload = await error.context.json().catch(() => null);
       throw new Error(payload?.error ?? `L'Edge Function a répondu ${error.context.status}.`);
     }
-    throw new Error('Impossible de joindre l\'Edge Function agent-dispatch : est-elle déployée ?');
+    throw new Error(`Impossible de joindre l'Edge Function « ${DISPATCH_FUNCTION} » : est-elle déployée sous ce nom ?`);
   }
   return data;
 }
