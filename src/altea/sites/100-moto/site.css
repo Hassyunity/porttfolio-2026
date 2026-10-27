@@ -1,0 +1,133 @@
+/* Site 100% Moto : styles isolés sous .m100 pour ne rien hériter du portfolio. */
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap');
+
+.m100 {
+  --m-bg: #111214;
+  --m-panel: #1a1c1f;
+  --m-line: rgba(255, 255, 255, 0.1);
+  --m-text: #f2f1ee;
+  --m-muted: #a9a8a3;
+  --m-accent: #ffb000;
+  --m-accent-ink: #1a1300;
+
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  background: var(--m-bg);
+  color: var(--m-text);
+  font-family: 'Barlow', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+}
+.m100 h1, .m100 h2, .m100 h3, .m100-logo { font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif; text-transform: uppercase; letter-spacing: 0.01em; line-height: 1.05; }
+.m100 a { color: inherit; }
+.m100-wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+
+/* En-tête */
+.m100-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0.8rem 20px;
+  background: rgba(17, 18, 20, 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--m-line);
+}
+.m100-logo { font-size: 1.6rem; font-weight: 700; text-decoration: none; }
+.m100-logo span { color: var(--m-accent); }
+.m100-nav { display: flex; gap: 1.4rem; margin-right: auto; font-weight: 500; }
+.m100-nav a { text-decoration: none; color: var(--m-muted); }
+.m100-nav a:hover { color: var(--m-text); }
+
+/* Boutons */
+.m100-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.3rem;
+  border: 2px solid var(--m-accent);
+  border-radius: 6px;
+  background: var(--m-accent);
+  color: var(--m-accent-ink) !important;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: transform 0.2s, background 0.2s;
+}
+.m100-btn:hover { transform: translateY(-2px); }
+.m100-btn-ghost { background: transparent; color: var(--m-text) !important; border-color: var(--m-line); }
+.m100-btn-ghost:hover { border-color: var(--m-accent); }
+.m100-btn-small { padding: 0.5rem 0.9rem; font-size: 0.9rem; }
+.m100-actions { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 1.8rem; }
+
+/* Accueil */
+.m100-hero {
+  padding: clamp(4rem, 12vh, 8rem) 0 4rem;
+  background:
+    radial-gradient(60rem 30rem at 85% 10%, rgba(255, 176, 0, 0.16), transparent 60%),
+    repeating-linear-gradient(-55deg, transparent 0 22px, rgba(255, 255, 255, 0.025) 22px 23px),
+    var(--m-bg);
+}
+.m100-kicker { color: var(--m-accent); font-weight: 600; font-size: 0.85rem; letter-spacing: 0.12em; text-transform: uppercase; }
+.m100-hero h1 { margin-top: 0.8rem; font-size: clamp(3rem, 9vw, 6.5rem); }
+.m100-hero h1 span { display: block; }
+.m100-hero h1 span:last-child { color: var(--m-accent); }
+.m100-lead { max-width: 36rem; margin-top: 1.2rem; color: var(--m-muted); font-size: 1.1rem; }
+.m100-highlights { display: flex; flex-wrap: wrap; gap: 2.5rem; margin-top: 3rem; }
+.m100-highlights dt { font-family: 'Barlow Condensed', sans-serif; font-size: 2.4rem; font-weight: 700; line-height: 1; }
+.m100-highlights dd { color: var(--m-muted); }
+
+/* Sections */
+.m100-section { padding: clamp(3.5rem, 9vh, 6rem) 0; }
+.m100-section-alt { background: var(--m-panel); }
+.m100-section h2 { margin: 0.5rem 0 1.8rem; font-size: clamp(2.2rem, 5vw, 3.4rem); }
+.m100 ul { list-style: none; margin: 0; padding: 0; }
+
+.m100-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem; }
+.m100-chips li { padding: 0.35rem 0.85rem; border: 1px solid var(--m-line); border-radius: 999px; color: var(--m-muted); font-size: 0.9rem; }
+
+.m100-bikes { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.2rem; }
+.m100-bike { overflow: hidden; border: 1px solid var(--m-line); border-radius: 10px; background: var(--m-panel); transition: transform 0.2s, border-color 0.2s; }
+.m100-bike:hover { transform: translateY(-4px); border-color: rgba(255, 176, 0, 0.5); }
+.m100-bike-visual { display: grid; place-items: center; aspect-ratio: 16 / 10; background: linear-gradient(135deg, #24272b, #15171a); color: var(--m-accent); }
+.m100-bike-body { display: flex; flex-direction: column; gap: 0.3rem; padding: 1rem 1.1rem 1.2rem; }
+.m100-bike-body h3 { font-size: 1.5rem; }
+.m100-bike-body p { color: var(--m-muted); font-size: 0.92rem; }
+.m100-bike-body strong { margin-top: 0.4rem; font-size: 1.25rem; color: var(--m-accent); }
+.m100-tag { align-self: flex-start; padding: 0.1rem 0.55rem; border-radius: 4px; background: rgba(255, 255, 255, 0.08); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+.m100-tag.is-new { background: var(--m-accent); color: var(--m-accent-ink); }
+
+.m100-services { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; }
+.m100-services li { padding: 1.4rem; border: 1px solid var(--m-line); border-radius: 10px; background: var(--m-bg); }
+.m100-services svg { color: var(--m-accent); }
+.m100-services h3 { margin: 0.8rem 0 0.4rem; font-size: 1.35rem; }
+.m100-services p { color: var(--m-muted); font-size: 0.95rem; }
+
+/* Contact */
+.m100-contact { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 3rem; align-items: start; }
+.m100-infos { display: flex; flex-direction: column; gap: 0.8rem; }
+.m100-infos li { display: flex; align-items: center; gap: 0.7rem; }
+.m100-infos svg { flex: none; color: var(--m-accent); }
+.m100-hours { padding: 1.5rem; border: 1px solid var(--m-line); border-radius: 10px; background: var(--m-panel); }
+.m100-hours h3 { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; font-size: 1.4rem; }
+.m100-hours dl { margin: 0; }
+.m100-hours dl div { display: flex; justify-content: space-between; gap: 1rem; padding: 0.6rem 0; border-top: 1px solid var(--m-line); }
+.m100-hours dd { margin: 0; color: var(--m-muted); text-align: right; }
+
+.m100-footer { padding: 1.5rem 0; border-top: 1px solid var(--m-line); color: var(--m-muted); font-size: 0.85rem; }
+.m100-footer .m100-wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.5rem; }
+
+@media (max-width: 760px) {
+  .m100-nav { display: none; }
+  .m100-header { justify-content: space-between; }
+  .m100-contact { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .m100 { scroll-behavior: auto; }
+}

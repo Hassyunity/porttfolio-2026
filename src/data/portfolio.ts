@@ -170,7 +170,7 @@ export const JOBS: Job[] = [
 
 export const CONTACT_METHODS = [
   { label: 'Email', value: EMAIL, link: `mailto:${EMAIL}`, Icon: Mail },
-  { label: 'Téléphone', value: '+261 34 16 020 73', link: 'tel:+261341602073', Icon: Phone },
+  { label: 'Téléphone', value: '+261 38 58 415 24', link: 'tel:+261385841524', Icon: Phone },
   { label: 'LinkedIn', value: 'tsihoarana-hassy', link: 'https://www.linkedin.com/in/tsihoarana-hassy-b8349020b/', Icon: Linkedin },
   { label: 'GitHub', value: 'Hassyunity · 73 dépôts', link: 'https://github.com/Hassyunity', Icon: Github },
 ];

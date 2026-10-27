@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import type { Session } from '@supabase/supabase-js';
-import { Bot, ExternalLink, FileText, LogOut, ShieldAlert } from 'lucide-react';
+import { Bot, ExternalLink, FileText, LogOut, ShieldAlert, Store } from 'lucide-react';
 import '../assets/styles/Blog.css';
 import './Admin.css';
 import { supabase } from '../lib/supabaseClient';
@@ -11,6 +11,7 @@ import AdminDashboard from './AdminDashboard';
 import AdminEditor from './AdminEditor';
 import AgentDashboard from './AgentDashboard';
 import AgentScript from './AgentScript';
+import AlteaPage from './AlteaPage';
 
 /** Empêche l'indexation de l'admin par les moteurs de recherche. */
 function useNoIndex() {
@@ -29,7 +30,9 @@ const blogUrl = siteUrl('/blog');
 
 const AdminApp = () => {
   useNoIndex();
-  const inAgent = useLocation().pathname.startsWith('/admin/agent');
+  const { pathname } = useLocation();
+  const section = pathname.startsWith('/admin/agent') ? 'agent' : pathname.startsWith('/admin/altea') ? 'altea' : 'articles';
+  const navProps = (name: typeof section) => ({ className: section === name ? 'is-active' : '', 'aria-current': section === name ? 'page' as const : undefined });
   // undefined = session en cours de lecture
   const [session, setSession] = useState<Session | null | undefined>(supabase ? undefined : null);
   const [adminCheck, setAdminCheck] = useState<{ userId: string; ok: boolean; error?: string } | null>(null);
@@ -97,8 +100,9 @@ const AdminApp = () => {
           <span>Studio <em>blog</em></span>
         </Link>
         <nav className="admin-nav" aria-label="Sections">
-          <Link to="/admin" className={inAgent ? '' : 'is-active'} aria-current={inAgent ? undefined : 'page'}><FileText size={14} /> Articles</Link>
-          <Link to="/admin/agent" className={inAgent ? 'is-active' : ''} aria-current={inAgent ? 'page' : undefined}><Bot size={14} /> Agent IA</Link>
+          <Link to="/admin" {...navProps('articles')}><FileText size={14} /> Articles</Link>
+          <Link to="/admin/agent" {...navProps('agent')}><Bot size={14} /> Agent IA</Link>
+          <Link to="/admin/altea" {...navProps('altea')}><Store size={14} /> Altea</Link>
         </nav>
         <div className="admin-top-actions">
           <span className="admin-user">{session.user.email}</span>
@@ -112,6 +116,7 @@ const AdminApp = () => {
         <Route path="articles/:id" element={<AdminEditor />} />
         <Route path="agent" element={<AgentDashboard />} />
         <Route path="agent/:id" element={<AgentScript />} />
+        <Route path="altea" element={<AlteaPage />} />
         <Route path="*" element={<Navigate to="/admin" replace />} />
       </Routes>
     </div>
