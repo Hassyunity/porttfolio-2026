@@ -17,9 +17,9 @@
 }
 
 .whatsapp-bubble:hover {
-  background: #25d366;
-  border-color: #25d366;
-  color: #0c0b0a;
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
   transform: translateY(-2px);
 }
 

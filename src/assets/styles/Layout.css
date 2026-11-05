@@ -94,11 +94,14 @@
 .stage {
   position: relative;
   min-height: 0;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
 }
 
 .screen {
-  height: 100%;
+  min-height: 100%;
+  height: auto;
   animation: screen-in 0.55s var(--ease) both;
 }
 

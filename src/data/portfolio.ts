@@ -1,9 +1,11 @@
 import type { LucideIcon } from 'lucide-react';
-import { LayoutTemplate, Server, CloudCog, Workflow, Mail, Linkedin, Github, Phone } from 'lucide-react';
+import { LayoutTemplate, Server, CloudCog, Workflow, Mail, Linkedin, Github, Phone, MonitorSmartphone, AppWindow } from 'lucide-react';
 import alteaImg from '../assets/images/altea.jpg';
 import autoImg from '../assets/images/auto.jpg';
 import bazarImg from '../assets/images/leader.jpg';
 import hmaxImg from '../assets/images/h-max.png';
+import vitrinImg from '../assets/images/vitrin.png';
+import dynamiqueImg from '../assets/images/dynamique.jpg';
 import frontendArt from '../assets/images/skills/frontend.svg';
 import backendArt from '../assets/images/skills/backend.svg';
 import devopsArt from '../assets/images/skills/devops.svg';
@@ -17,7 +19,7 @@ export const PAGES = [
   { path: '/', label: 'Accueil' },
   { path: '/projets', label: 'Projets' },
   { path: '/profil', label: 'Profil' },
-  { path: '/expertises', label: 'Expertises' },
+  { path: '/services', label: 'Mes services' },
   { path: '/parcours', label: 'Parcours' },
   { path: '/avis', label: 'Avis' },
   { path: '/blog', label: 'Blog' },
@@ -121,6 +123,93 @@ export const CAPABILITIES: Capability[] = [
   { Icon: Server, name: 'Backend & API', description: 'Architectures robustes et APIs bien conçues.', list: ['Ruby on Rails', 'Node.js', 'PostgreSQL', 'REST / JWT'], image: backendArt },
   { Icon: CloudCog, name: 'DevOps & Cloud', description: 'Des mises en production sereines et répétables.', list: ['Docker', 'Nginx', 'CI/CD', 'Git', 'Cloud'], image: devopsArt },
   { Icon: Workflow, name: 'SaaS, CRM & automatisation', description: 'Des processus métier qui tournent tout seuls.', list: ['n8n', 'Make', 'API Stripe', 'Signature électronique', 'CRM sur mesure'], image: automationArt },
+];
+
+/* ---------- Mes services · tarifs en ariary MGA ---------- */
+
+export interface ServicePlan {
+  name: string;
+  /** Prix en ariary MGA (nombre brut, formaté à l'affichage) */
+  price: number;
+  description: string;
+  items: string[];
+  /** Formule mise en avant par défaut */
+  popular?: boolean;
+}
+
+/** Options facultatives proposées en supplément de chaque offre */
+export interface ServiceAddon {
+  name: string;
+  description: string;
+  /** Supplément en ariary MGA */
+  price: number;
+  features: string[];
+}
+
+export interface ServiceOffer extends Capability {
+  tagline: string;
+  detail: string;
+  plans: ServicePlan[];
+  addons: ServiceAddon[];
+}
+
+export const SERVICES: ServiceOffer[] = [
+  {
+    Icon: MonitorSmartphone,
+    name: 'Site vitrine',
+    tagline: 'Votre image en ligne, prête en quelques semaines',
+    description: 'Une présence professionnelle claire, élégante et crédible pour présenter votre entreprise.',
+    detail: 'Un site responsive, rapide et soigné pour présenter votre entreprise, vos activités, vos produits et vos services, et donner envie de vous contacter.',
+    list: ['Design moderne et personnalisé', 'Pages Accueil, À propos, Services et Contact', 'Formulaire de contact', 'Adaptation mobile, tablette et ordinateur', 'Optimisation SEO de base', 'Déploiement et mise en ligne'],
+    image: vitrinImg,
+    plans: [
+      { name: 'Essentiel', price: 700000, description: 'Pour démarrer proprement votre présence web.', items: ['Jusqu à 4 pages', 'Design moderne et responsive', 'Présentation des activités et services', 'Formulaire de contact', "- Optimisation SEO de base"] },
+      { name: 'Professionnel', price: 1200000, popular: true, description: 'Le meilleur équilibre pour une image sérieuse.', items: ['Jusqu à 8 pages', 'Design personnalisé', 'Animations et interactions modernes', 'Formulaire de contact avancé', 'SEO de base et optimisation des performances', 'Intégration Google Maps et réseaux sociaux'] },
+      { name: 'Premium', price: 1800000, description: 'Pour un site premium et plus impactant.', items: ['Jusqu à 12 pages','Design entièrement personnalisé', 'Animations avancées', 'Galerie et portfolio', 'SEO renforcé'] },
+    ],
+    addons: [
+      {
+        name: 'Gestion de fiche établissement Google',
+        description: 'Mettez votre entreprise en avant dans les recherches locales Google Maps et Google Business.',
+        price: 150000,
+        features: ['Profil Google Business optimisé', 'Photos, horaires et informations claires', 'Mise à jour de la présence locale'],
+      },
+      {
+        name: 'Visite virtuelle 360°',
+        description: 'Faites explorer votre lieu à vos clients, où qu’ils soient, directement depuis votre site.',
+        price: 290000,
+        features: ['Panorama interactif intégré', 'Points d’intérêt cliquables', 'Compatible mobile et ordinateur'],
+      },
+    ],
+  },
+  {
+    Icon: AppWindow,
+    name: 'Site web dynamique',
+    tagline: 'Une expérience interactive qui transforme les visiteurs en clients',
+    description: 'Un site moderne, interactif et orienté expérience utilisateur, avec un vrai potentiel de croissance.',
+    detail: 'Une plateforme web dynamique offrant une expérience fluide et intuitive : contenus gérables, données en direct, espaces utilisateurs et fonctionnalités métier adaptées à votre activité.',
+    list: ['Interfaces modernes avec animations', 'Interactions dynamiques', 'Gestion des contenus', 'Connexion à des API', 'Tableaux de bord', 'Fonctionnalités métier'],
+    image: dynamiqueImg,
+    plans: [
+      { name: 'Starter', price: 1500000, description: 'Pour une vitrine dynamique avec plus d’interactions.', items: ['Site web dynamique', 'Sections interactives', 'Formulaire de contact', 'Responsive complet'] },
+      { name: 'Business', price: 2500000, popular: true, description: 'Pour une expérience avancée, orientée conversion.', items: ['Site web dynamique complet', 'Tableaux de bord / données', 'Authentification utilisateur', 'Connexion API & CMS', 'Optimisation UX / SEO'] },
+      { name: 'Scale', price: 4000000, description: 'Pour un site premium et prêt à grandir.', items: ['Architecture personnalisée', 'Plusieurs rôles et permissions', 'Tableau de bord avancé', 'Gestion de données et statistiques', 'Intégration d API externes', 'Automatisations selon les besoins', 'Tests et déploiement'] },
+    ],
+    addons: [
+      {
+        name: 'Gestion de fiche établissement Google',
+        description: 'Renforcez votre visibilité locale avec un profil Google Business propre et exploitable.',
+        price: 200000,
+        features: ['Profil Google Business complet', 'Présence locale optimisée', 'Informations locales mises à jour'],
+      },
+      {
+        name: 'Visite virtuelle immersive',
+        description: 'Une visite 360° du lieu intégrée à votre plateforme, avec navigation entre les espaces.',
+        price: 490000,
+        features: ['Navigation entre les pièces', 'Points d’intérêt et fiches liées', 'Intégrée à votre tableau de bord'],
+      },
+    ],
+  },
 ];
 
 export const TOOLS = ['VS Code', 'Postman', 'Figma', 'GitHub', 'Jira', 'ClickUp', 'Trello'];

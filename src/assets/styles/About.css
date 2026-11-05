@@ -68,7 +68,7 @@
   background: var(--bg-elevated);
   transition: border-color 0.3s;
 }
-.about-pillar:hover { border-color: rgba(240, 68, 75, 0.4); }
+.about-pillar:hover { border-color: rgba(255, 7, 58, 0.4); }
 .about-pillar span { font-size: 0.62rem; color: var(--accent); }
 .about-pillar h2 { margin: 0.2rem 0 0.35rem; font-size: 1.05rem; font-weight: 500; letter-spacing: -0.03em; }
 .about-pillar p { font-size: 0.78rem; line-height: 1.55; color: var(--text-muted); }

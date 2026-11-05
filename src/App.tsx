@@ -28,7 +28,8 @@ const Site = () => (
         <Route path="/" element={<Home />} />
         <Route path="/projets" element={<Projects />} />
         <Route path="/profil" element={<About />} />
-        <Route path="/expertises" element={<Skills />} />
+        <Route path="/services" element={<Skills />} />
+        <Route path="/expertises" element={<Navigate to="/services" replace />} />
         <Route path="/parcours" element={<Experience />} />
         <Route path="/avis" element={<Reviews />} />
         <Route path="/blog" element={<BlogPage />} />

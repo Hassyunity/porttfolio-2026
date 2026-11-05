@@ -20,8 +20,8 @@
 }
 
 .job.is-current {
-  border-color: rgba(240, 68, 75, 0.35);
-  background: radial-gradient(ellipse at 100% 0%, rgba(240, 68, 75, 0.12), transparent 60%), var(--bg-elevated);
+  border-color: rgba(255, 7, 58, 0.35);
+  background: radial-gradient(ellipse at 100% 0%, rgba(255, 7, 58, 0.12), transparent 60%), var(--bg-elevated);
 }
 
 .job-meta {
