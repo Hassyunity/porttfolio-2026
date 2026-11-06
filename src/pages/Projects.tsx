@@ -23,7 +23,7 @@ const Projects: React.FC = () => {
                 className={`projects-item ${i === current ? 'is-active' : ''}`}
                 aria-pressed={i === current}
                 onClick={() => setCurrent(i)}
-                onMouseEnter={() => setCurrent(i)}
+                onFocus={() => setCurrent(i)}
               >
                 <span className="projects-num">{String(i + 1).padStart(2, '0')}</span>
                 <span className="projects-name">{item.title}</span>
