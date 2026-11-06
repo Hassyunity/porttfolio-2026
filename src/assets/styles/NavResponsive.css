@@ -1,0 +1,388 @@
+/* =========================================================
+   Navbar — responsive premium discret (≤ 1024px)
+   À importer APRÈS NavMenus.css et NavAttract.css.
+
+   Burger fin aligné à droite, tiroir sobre en verre sombre.
+   Seule « Mes services » garde sa signature (liseré orbital),
+   en version calme. Le reste se contente de s'éclairer.
+   ========================================================= */
+
+.mnav-burger,
+.mnav-root {
+  --mn-ease: cubic-bezier(.22, 1, .36, 1);
+  --mn-ink: #f4fff6;
+  --mn-dim: rgba(244, 255, 246, .62);
+  --mn-green: #38ff7a;
+}
+
+/* Hors tablette/mobile : rien ne s'affiche, le conteneur d'actions n'altère pas la mise en page */
+.mnav-burger,
+.mnav-root { display: none; }
+.topbar-actions { display: contents; }
+
+@media (max-width: 1024px) {
+
+  .topbar .nav-desktop-links { display: none; }
+
+  /* CV + burger groupés et alignés à droite de la barre */
+  .topbar .topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    margin-left: auto;
+  }
+
+  /* ---------- Burger : un anneau fin, deux traits ---------- */
+  .mnav-burger {
+    display: inline-grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    color: var(--mn-ink);
+    cursor: pointer;
+    background: transparent;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.12);
+    -webkit-tap-highlight-color: transparent;
+    transition: background .35s ease, box-shadow .35s ease, transform .4s var(--mn-ease);
+  }
+  .mnav-burger:hover,
+  .mnav-burger:focus-visible {
+    background: rgba(255,255,255,.05);
+    box-shadow: inset 0 0 0 1px rgba(56,255,122,.38);
+  }
+  .mnav-burger:active { transform: scale(.94); }
+  .mnav-burger:focus-visible { outline: 2px solid var(--mn-green); outline-offset: 3px; }
+
+  /* Deux traits asymétriques, alignés à droite ; le court s'allonge au survol */
+  .mnav-bars { position: relative; width: 16px; height: 8px; }
+  .mnav-bars i {
+    position: absolute;
+    right: 0;
+    height: 1.25px;
+    border-radius: 2px;
+    background: currentColor;
+    transition: width .45s var(--mn-ease);
+  }
+  .mnav-bars i:first-child { top: 0; width: 16px; }
+  .mnav-bars i:last-child  { bottom: 0; width: 10px; }
+  .mnav-burger:hover .mnav-bars i:last-child,
+  .mnav-burger:focus-visible .mnav-bars i:last-child { width: 16px; }
+
+  /* ---------- Voile ---------- */
+  .mnav-root { display: block; }
+
+  .mnav-scrim {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(2, 6, 4, .5);
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .5s ease, visibility 0s linear .5s;
+  }
+  .mnav-root[data-open="true"] .mnav-scrim {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity .5s ease, visibility 0s;
+  }
+
+  /* ---------- Tiroir ---------- */
+  .mnav-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    width: min(100%, 22rem);
+    padding:
+      max(.7rem, env(safe-area-inset-top))
+      max(.8rem, env(safe-area-inset-right))
+      max(.8rem, env(safe-area-inset-bottom))
+      .8rem;
+    border-radius: 24px 0 0 24px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
+    background:
+      radial-gradient(110% 40% at 100% 0%, rgba(56,255,122,.07), transparent 65%),
+      linear-gradient(180deg, rgba(13,18,15,.96), rgba(7,10,8,.98));
+    backdrop-filter: blur(18px) saturate(1.3);
+    box-shadow:
+      inset 1px 0 0 rgba(255,255,255,.07),
+      -28px 0 56px -32px rgba(0,0,0,.8);
+    visibility: hidden;
+    transform: translateX(calc(100% + 2rem + var(--drag, 0px)));
+    transition: transform .6s var(--mn-ease), visibility 0s linear .6s;
+  }
+  .mnav-root[data-open="true"] .mnav-panel {
+    visibility: visible;
+    transform: translateX(var(--drag, 0px));
+    transition: transform .6s var(--mn-ease), visibility 0s;
+  }
+  .mnav-panel[data-dragging="true"] { transition: none; }
+
+  /* ---------- En-tête ---------- */
+  .mnav-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: .15rem .15rem .15rem 1.2rem;
+  }
+  .mnav-brand {
+    color: var(--mn-dim);
+    font-size: .95rem;
+    font-weight: 500;
+    letter-spacing: -.005em;
+  }
+  .mnav-close {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    color: var(--mn-ink);
+    cursor: pointer;
+    background: transparent;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.12);
+    -webkit-tap-highlight-color: transparent;
+    transition: background .35s ease, transform .4s var(--mn-ease);
+  }
+  .mnav-close:hover { background: rgba(255,255,255,.05); }
+  .mnav-close:active { transform: scale(.94); }
+  .mnav-close:focus-visible { outline: 2px solid var(--mn-green); outline-offset: 3px; }
+  .mnav-close span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 15px;
+    height: 1.25px;
+    margin: -.6px 0 0 -7.5px;
+    border-radius: 2px;
+    background: currentColor;
+    transition: transform .6s var(--mn-ease) .1s;
+  }
+  .mnav-root[data-open="true"] .mnav-close span:first-child { transform: rotate(45deg); }
+  .mnav-root[data-open="true"] .mnav-close span:last-child  { transform: rotate(-45deg); }
+
+  /* ---------- Liens ---------- */
+  .mnav-links {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: .15rem;
+    padding-block: .8rem;
+  }
+
+  .mnav-links a:not([href$="/services"]),
+  .mnav-links a[href$="/services"] {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    min-height: 50px;
+    padding: .5rem 2.5rem .5rem 1.2rem;
+    font-size: 1.12rem;
+    font-weight: 450;
+    letter-spacing: -.01em;
+    text-decoration: none;
+    border-radius: 14px;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Liens ordinaires : la couleur change, une fine barre verte marque la page active */
+  .mnav-links a:not([href$="/services"]) { color: var(--mn-dim); }
+  .mnav-links a:not([href$="/services"])::before {
+    backdrop-filter: none;
+    transform: scale(.98);
+  }
+  .mnav-links a:not([href$="/services"])::after {
+    left: .5rem;
+    bottom: auto;
+    top: 50%;
+    width: 2px;
+    height: 0;
+    background: linear-gradient(180deg, transparent, var(--mn-green), transparent);
+    transform: translateY(-50%);
+    transition: height .5s var(--mn-ease), opacity .3s ease;
+  }
+  .mnav-links a:not([href$="/services"]):hover,
+  .mnav-links a:not([href$="/services"]):focus-visible,
+  .mnav-links a:not([href$="/services"])[aria-current="page"],
+  .mnav-links a:not([href$="/services"]).active {
+    color: var(--mn-ink);
+    transform: none;
+  }
+  .mnav-links a:not([href$="/services"]):hover::before,
+  .mnav-links a:not([href$="/services"]):focus-visible::before,
+  .mnav-links a:not([href$="/services"])[aria-current="page"]::before,
+  .mnav-links a:not([href$="/services"]).active::before { transform: scale(1); }
+  .mnav-links a:not([href$="/services"]):hover::after,
+  .mnav-links a:not([href$="/services"]):focus-visible::after,
+  .mnav-links a:not([href$="/services"])[aria-current="page"]::after,
+  .mnav-links a:not([href$="/services"]).active::after {
+    width: 2px;
+    height: 40%;
+  }
+  .mnav-links a:not([href$="/services"]):active { transform: scale(.988); }
+
+  /* « Mes services » : la seule touche signature, en version calme */
+  .mnav-links a[href$="/services"] {
+    min-height: 62px;
+    margin-block: .35rem;
+    padding-right: 2.9rem;
+    border-radius: 18px;
+    color: var(--mn-ink);
+    backdrop-filter: none;
+  }
+  .mnav-links a[href$="/services"]::before { animation-duration: 12s; }
+  .mnav-links a[href$="/services"]::after {
+    top: .7rem;
+    right: 1.1rem;
+    font-size: .7rem;
+  }
+  .mnav-links a[href$="/services"]:hover {
+    transform: none;
+    letter-spacing: -.01em;
+  }
+  .mnav-links a[href$="/services"]:active { transform: scale(.988); }
+  .mnav-links a[href$="/services"] small {
+    margin-top: .1rem;
+    color: rgba(244, 255, 246, .5);
+    font-size: .75rem;
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+
+  /* ---------- Pied : actions secondaires, sobres ---------- */
+  .mnav-foot {
+    padding: .9rem .25rem 0;
+    border-top: 1px solid rgba(255,255,255,.06);
+  }
+  .mnav-cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .55rem;
+    min-height: 48px;
+    border-radius: 999px;
+    color: var(--mn-green);
+    font-size: .95rem;
+    font-weight: 500;
+    text-decoration: none;
+    background: rgba(56,255,122,.08);
+    box-shadow: inset 0 0 0 1px rgba(56,255,122,.28);
+    -webkit-tap-highlight-color: transparent;
+    transition: background .35s ease, transform .4s var(--mn-ease);
+  }
+  .mnav-cta:hover { background: rgba(56,255,122,.13); }
+  .mnav-cta:active { transform: scale(.985); }
+  .mnav-cta:focus-visible { outline: 2px solid var(--mn-green); outline-offset: 3px; }
+  .mnav-cv {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    min-height: 40px;
+    margin-top: .35rem;
+    color: var(--mn-dim);
+    font-size: .88rem;
+    text-decoration: none;
+    transition: color .3s ease;
+  }
+  .mnav-cv:hover,
+  .mnav-cv:focus-visible { color: var(--mn-ink); }
+  .mnav-cv:focus-visible { outline: 2px solid var(--mn-green); outline-offset: 2px; border-radius: 8px; }
+  .mnav-mail {
+    display: block;
+    color: rgba(244, 255, 246, .42);
+    font-size: .78rem;
+    text-align: center;
+    text-decoration: none;
+    transition: color .3s ease;
+  }
+  .mnav-mail:hover,
+  .mnav-mail:focus-visible { color: var(--mn-ink); }
+
+  /* ---------- Ouverture : cascade courte et douce ---------- */
+  .mnav-root[data-open="true"] .mnav-head,
+  .mnav-root[data-open="true"] .mnav-item,
+  .mnav-root[data-open="true"] .mnav-foot {
+    animation: mnav-rise .7s var(--mn-ease) calc(var(--i, 0) * 40ms + 100ms) backwards;
+  }
+  .mnav-root[data-open="true"] .mnav-head { --i: 0; }
+}
+
+/* ---------- Mobile : tiroir flottant ---------- */
+@media (max-width: 560px) {
+  .mnav-panel {
+    top: max(.5rem, env(safe-area-inset-top));
+    right: .5rem;
+    bottom: max(.5rem, env(safe-area-inset-bottom));
+    left: .5rem;
+    width: auto;
+    padding: .65rem .65rem .8rem;
+    border-radius: 24px;
+    box-shadow:
+      inset 0 0 0 1px rgba(255,255,255,.07),
+      0 36px 72px -30px rgba(0,0,0,.9);
+    transform: translateX(calc(100% + 1rem + var(--drag, 0px)));
+  }
+  .mnav-root[data-open="true"] .mnav-panel {
+    transform: translateX(var(--drag, 0px));
+  }
+}
+
+/* ---------- Petit mobile ---------- */
+@media (max-width: 380px) {
+  .mnav-links a:not([href$="/services"]),
+  .mnav-links a[href$="/services"] {
+    min-height: 46px;
+    padding-left: 1.05rem;
+    font-size: 1.05rem;
+  }
+  .mnav-links a[href$="/services"] { min-height: 58px; }
+}
+
+/* ---------- Paysage mobile ---------- */
+@media (max-width: 1024px) and (max-height: 520px) {
+  .mnav-links { justify-content: flex-start; gap: .1rem; padding-block: .4rem; }
+  .mnav-links a:not([href$="/services"]),
+  .mnav-links a[href$="/services"] { min-height: 42px; font-size: 1rem; }
+  .mnav-links a[href$="/services"] { min-height: 48px; margin-block: .15rem; }
+  .mnav-links a[href$="/services"] small { display: none; }
+  .mnav-cta { min-height: 44px; }
+}
+
+@keyframes mnav-rise {
+  from { opacity: 0; transform: translateX(14px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ---------- Mouvement réduit : simple fondu ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .mnav-panel,
+  .mnav-root[data-open="true"] .mnav-panel {
+    transform: none;
+    transition: opacity .2s ease, visibility 0s linear .2s;
+    opacity: 0;
+  }
+  .mnav-root[data-open="true"] .mnav-panel {
+    opacity: 1;
+    transition: opacity .2s ease, visibility 0s;
+  }
+  .mnav-root[data-open="true"] .mnav-head,
+  .mnav-root[data-open="true"] .mnav-item,
+  .mnav-root[data-open="true"] .mnav-foot { animation: none; }
+  .mnav-close span,
+  .mnav-burger,
+  .mnav-close,
+  .mnav-cta { transition: none; }
+}

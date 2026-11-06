@@ -1,11 +1,19 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, ArrowDownToLine } from 'lucide-react';
 import '../assets/styles/Layout.css';
+// Styles de la navbar : l'ordre compte, NavResponsive en dernier.
+// Si ces trois fichiers sont déjà importés ailleurs (main.tsx, global.css), supprimez ces lignes.
+import '../assets/styles/NavMenus.css';
+import '../assets/styles/NavAttract.css';
+import '../assets/styles/NavResponsive.css';
 import cvPath from '../assets/fichier/cv_fr.pdf';
 import { PAGES } from '../data/portfolio';
 import ChatWidget from './ChatWidget';
 import WhatsAppButton from './WhatsAppButton';
+import MobileNav from './MobileNav';
+
+const CV_NAME = 'CV_Hassy_Tsihoarana.pdf';
 
 const isTyping = (target: EventTarget | null) =>
   target instanceof HTMLElement && (target.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName));
@@ -13,8 +21,6 @@ const isTyping = (target: EventTarget | null) =>
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
-  const [menuOpen, setMenuOpen] = useState(false);
-  const burgerRef = useRef<HTMLButtonElement>(null);
 
   // /blog/:id appartient à l'écran « Blog »
   const section = '/' + (pathname.split('/')[1] ?? '');
@@ -22,70 +28,50 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const prev = PAGES[index - 1];
   const next = PAGES[index + 1];
 
-  const closeMenu = () => setMenuOpen(false);
-
   useEffect(() => {
     const label = PAGES[index].label;
     document.title = index === 0 ? 'Hassy Tsihoarana — Développeur Full-stack & CTO' : `${label} — Hassy Tsihoarana`;
   }, [index]);
 
   // Flèches ← → : écran précédent / suivant. Les pages qui gèrent elles-mêmes
-  // les flèches (lecteur d'article, album) appellent preventDefault().
+  // les flèches (lecteur d'article, album, tiroir mobile) appellent preventDefault().
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
-      if (event.defaultPrevented || menuOpen || isTyping(event.target) || event.altKey || event.ctrlKey || event.metaKey) return;
+      if (event.defaultPrevented || isTyping(event.target) || event.altKey || event.ctrlKey || event.metaKey) return;
       if (event.key === 'ArrowRight' && next) navigate(next.path);
       if (event.key === 'ArrowLeft' && prev) navigate(prev.path);
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [navigate, prev, next, menuOpen]);
-
-  useEffect(() => {
-    if (!menuOpen) return;
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') { setMenuOpen(false); burgerRef.current?.focus(); }
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [menuOpen]);
+  }, [navigate, prev, next]);
 
   return (
     <div className="shell">
       <a className="skip-link" href="#stage">Aller au contenu</a>
 
-      <header className={`topbar ${menuOpen ? 'menu-open' : ''}`}>
-        <Link to="/" className="brand" onClick={closeMenu} aria-label="Accueil — Hassy Tsihoarana">
+      <header className="topbar">
+        <Link to="/" className="brand" aria-label="Accueil — Hassy Tsihoarana">
           <span className="brand-mark" aria-hidden="true">ht.</span>
           <span className="brand-name">Hassy Tsihoarana</span>
         </Link>
 
-        <nav id="main-navigation" className="menu" aria-label="Navigation principale">
+        {/* Liens horizontaux : masqués sous 1024px, le tiroir MobileNav prend le relais */}
+        <nav id="main-navigation" className="menu nav-desktop-links" aria-label="Navigation principale">
           {PAGES.slice(1).map((page, i) => (
-            <NavLink key={page.path} to={page.path} className="menu-link" onClick={closeMenu}>
+            <NavLink key={page.path} to={page.path} className="menu-link">
               <span className="menu-index" aria-hidden="true">0{i + 1}</span>
               {page.label}
             </NavLink>
           ))}
-          <a href={cvPath} download="CV_Hassy_Tsihoarana.pdf" className="menu-cv-mobile" onClick={closeMenu}>
-            Télécharger le CV <ArrowDownToLine size={15} />
-          </a>
         </nav>
 
-        <a href={cvPath} download="CV_Hassy_Tsihoarana.pdf" className="topbar-cv">
-          CV <ArrowDownToLine size={14} />
-        </a>
-
-        <button
-          ref={burgerRef}
-          className="burger"
-          onClick={() => setMenuOpen(open => !open)}
-          aria-label={menuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
-          aria-expanded={menuOpen}
-          aria-controls="main-navigation"
-        >
-          <span /><span />
-        </button>
+        {/* Groupe aligné à droite : CV + burger */}
+        <div className="topbar-actions">
+          <a href={cvPath} download={CV_NAME} className="topbar-cv">
+            CV <ArrowDownToLine size={14} />
+          </a>
+          <MobileNav cvHref={cvPath} cvName={CV_NAME} />
+        </div>
       </header>
 
       <main id="stage" className="stage">

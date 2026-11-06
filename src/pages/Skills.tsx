@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { ArrowRight, Check, Compass, Mail, MessageCircle, Sparkles, X } from 'lucide-react';
+import { ArrowRight, Check, Compass, Layers, Mail, MessageCircle, RefreshCw, Sparkles, X } from 'lucide-react';
 import '../assets/styles/Skills.css';
 import { EMAIL, SERVICES, WHATSAPP_NUMBER } from '../data/portfolio';
 
@@ -31,9 +31,21 @@ const useCountUp = (target: number, duration = 600) => {
 };
 
 const spotlight = (e: React.MouseEvent<HTMLElement>) => {
-  const r = e.currentTarget.getBoundingClientRect();
-  e.currentTarget.style.setProperty('--mx', `${e.clientX - r.left}px`);
-  e.currentTarget.style.setProperty('--my', `${e.clientY - r.top}px`);
+  const el = e.currentTarget;
+  const r = el.getBoundingClientRect();
+  const x = e.clientX - r.left;
+  const y = e.clientY - r.top;
+  el.style.setProperty('--mx', `${x}px`);
+  el.style.setProperty('--my', `${y}px`);
+  if (el.classList.contains('service-card')) {
+    el.style.setProperty('--rx', `${(y / r.height - 0.5) * -6}deg`);
+    el.style.setProperty('--ry', `${(x / r.width - 0.5) * 8}deg`);
+  }
+};
+
+const resetTilt = (e: React.MouseEvent<HTMLElement>) => {
+  e.currentTarget.style.setProperty('--rx', '0deg');
+  e.currentTarget.style.setProperty('--ry', '0deg');
 };
 
 const pan = (e: React.MouseEvent<HTMLElement>) => {
@@ -43,6 +55,7 @@ const pan = (e: React.MouseEvent<HTMLElement>) => {
 
 const Skills: React.FC = () => {
   const [openName, setOpenName] = useState<string | null>(null);
+  const [offerMode, setOfferMode] = useState<'offres' | 'abonnement'>('offres');
   const [closing, setClosing] = useState(false);
   const [planByOffer, setPlanByOffer] = useState<Record<string, string>>({});
   const [addonsByOffer, setAddonsByOffer] = useState<Record<string, Record<string, boolean>>>({});
@@ -52,20 +65,26 @@ const Skills: React.FC = () => {
   const timerRef = useRef<number | null>(null);
 
   const current = SERVICES.find(s => s.name === openName) ?? SERVICES[0];
+  const visiblePlans =
+    offerMode === 'abonnement'
+      ? current.plans.filter(p => p.subscription)
+      : current.plans.filter(p => !p.subscription);
   const plan =
-    current.plans.find(p => p.name === planByOffer[current.name]) ??
-    current.plans.find(p => p.popular) ??
-    current.plans[0];
-  const selectedAddons = current.addons.filter(addon => !!addonsByOffer[current.name]?.[addon.name]);
+    visiblePlans.find(p => p.name === planByOffer[current.name]) ??
+    visiblePlans.find(p => p.popular) ??
+    visiblePlans[0] ?? current.plans[0];
+  const selectedAddons = offerMode === 'abonnement' ? [] : current.addons.filter(addon => !!addonsByOffer[current.name]?.[addon.name]);
   const total = plan.price + selectedAddons.reduce((sum, addon) => sum + addon.price, 0);
   const animatedTotal = useCountUp(total);
+  const perMonth = plan.subscription ? ' / mois' : '';
 
-  const openOffer = (name: string) => {
+  const openOffer = (name: string, mode: 'offres' | 'abonnement' = 'offres') => {
     triggerRef.current = document.activeElement as HTMLElement;
     if (timerRef.current !== null) {
       window.clearTimeout(timerRef.current);
     }
     setClosing(false);
+    setOfferMode(mode);
     setOpenName(name);
   };
 
@@ -105,7 +124,7 @@ const Skills: React.FC = () => {
     : '';
   const message =
     `Bonjour Hassy, l’offre « ${current.name} » (formule ${plan.name}${selectedLabel}) m’intéresse. ` +
-    `Estimation : ${formatPrice(total)}. Pouvons-nous en discuter ?`;
+    `Estimation : ${plan.priceFrom ? 'à partir de ' : ''}${formatPrice(total)}${perMonth}. Pouvons-nous en discuter ?`;
   const whatsappLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
   const mailLink = `mailto:${EMAIL}?subject=${encodeURIComponent(`Projet ${current.name}`)}&body=${encodeURIComponent(message)}`;
 
@@ -118,31 +137,54 @@ const Skills: React.FC = () => {
       onKeyDown={e => { if (e.key.startsWith('Arrow')) e.stopPropagation(); }}
     >
       <div className="svc-sheet">
+        <div className="svc-aurora" aria-hidden="true" />
+
         <header className="svc-top">
-          <div className="svc-switch" role="tablist" aria-label="Changer d’offre">
-            {SERVICES.map(s => (
+          <div className="svc-top-row">
+            <div className="svc-switch" role="tablist" aria-label="Changer d’offre">
+              {SERVICES.map(s => (
+                <button
+                  key={s.name}
+                  type="button"
+                  role="tab"
+                  aria-selected={s.name === current.name}
+                  className={s.name === current.name ? 'is-active' : ''}
+                  onClick={() => setOpenName(s.name)}
+                >
+                  {s.name}
+                </button>
+              ))}
+            </div>
+
+            <div className="svc-header-actions">
+              <button ref={closeBtnRef} type="button" className="svc-close" onClick={close} aria-label="Fermer">
+                <X size={20} strokeWidth={1.6} />
+              </button>
+            </div>
+          </div>
+
+          <nav className="svc-tabs" role="tablist" aria-label="Choisir une catégorie de formule" data-active={offerMode}>
+            {(['offres', 'abonnement'] as const).map(m => (
               <button
-                key={s.name}
+                key={m}
                 type="button"
                 role="tab"
-                aria-selected={s.name === current.name}
-                className={s.name === current.name ? 'is-active' : ''}
-                onClick={() => setOpenName(s.name)}
+                aria-selected={offerMode === m}
+                className={offerMode === m ? 'is-active' : ''}
+                onClick={() => setOfferMode(m)}
               >
-                <s.Icon size={16} strokeWidth={1.6} /> {s.name}
+                {m === 'offres' ? <Layers size={15} strokeWidth={1.8} /> : <RefreshCw size={15} strokeWidth={1.8} />}
+                {m === 'offres' ? 'Offres' : 'Abonnement'}
               </button>
             ))}
-          </div>
-          <button ref={closeBtnRef} type="button" className="svc-close" onClick={close} aria-label="Fermer">
-            <X size={20} strokeWidth={1.6} />
-          </button>
+            <span className="svc-tabs-glider" aria-hidden="true" />
+          </nav>
         </header>
 
         <div className="svc-main" key={current.name}>
           <aside className="svc-hero">
             <img className="svc-hero-art" src={current.image} alt="" aria-hidden="true" />
             <div className="svc-hero-content">
-              <span className="svc-hero-icon"><current.Icon size={26} strokeWidth={1.4} /></span>
               <p className="svc-kicker">SERVICE {String(SERVICES.indexOf(current) + 1).padStart(2, '0')}</p>
               <h2>{current.name}</h2>
               <p className="svc-hero-tagline">{current.tagline}</p>
@@ -160,8 +202,8 @@ const Skills: React.FC = () => {
           <div className="svc-config">
             <section>
               <p className="svc-step"><span>1</span> Choisissez votre formule</p>
-              <div className="svc-plans" role="radiogroup" aria-label="Formules">
-                {current.plans.map(p => {
+              <div className="svc-plans" key={offerMode} role="radiogroup" aria-label="Formules" style={{ '--cols': Math.min(3, Math.max(2, visiblePlans.length)) } as React.CSSProperties}>
+                {visiblePlans.map(p => {
                   const active = p.name === plan.name;
                   return (
                     <button
@@ -173,83 +215,86 @@ const Skills: React.FC = () => {
                       onClick={() => setPlanByOffer(prev => ({ ...prev, [current.name]: p.name }))}
                       onMouseMove={spotlight}
                     >
-                      {p.popular && <span className="svc-badge">Recommandé</span>}
+                      {(p.badge || p.popular) && <span className={`svc-badge ${p.popular ? '' : 'is-soft'}`}>{p.badge ?? 'Recommandé'}</span>}
                       <span className="svc-plan-check"><Check size={14} strokeWidth={2.6} /></span>
                       <span className="svc-plan-name">{p.name}</span>
-                      <strong>{formatPrice(p.price)}</strong>
+                      <strong className="svc-plan-price">{p.priceFrom && <small>À partir de</small>}<span>{formatPrice(p.price)}</span>{p.subscription && <em>/ mois</em>}</strong>
                       <span className="svc-plan-desc">{p.description}</span>
                       <ul>
                         {p.items.map(item => <li key={item}><Check size={13} strokeWidth={2.2} /> {item}</li>)}
                       </ul>
+                      {p.note && <span className="svc-plan-note">{p.note}</span>}
                     </button>
                   );
                 })}
               </div>
             </section>
 
-            <section>
-              <p className="svc-step"><span>2</span> Ajoutez un service complémentaire <em>(facultatif)</em></p>
-              <div className="svc-addons-list">
-                {current.addons.map(addon => {
-                  const enabled = !!addonsByOffer[current.name]?.[addon.name];
-                  return (
-                    <button
-                      key={addon.name}
-                      type="button"
-                      role="switch"
-                      aria-checked={enabled}
-                      className={`svc-tour ${enabled ? 'is-on' : ''}`}
-                      onClick={() => setAddonsByOffer(prev => {
-                        const currentAddons = prev[current.name] ?? {};
-                        return {
-                          ...prev,
-                          [current.name]: {
-                            ...currentAddons,
-                            [addon.name]: !currentAddons[addon.name],
-                          },
-                        };
-                      })}
-                    >
-                      <span className="svc-tour-icon"><Compass size={22} strokeWidth={1.5} /></span>
-                      <span className="svc-tour-text">
-                        <b>{addon.name}</b>
-                        <span>{addon.description}</span>
-                      </span>
-                      <span className="svc-tour-price">+ {formatPrice(addon.price)}</span>
-                      <span className="svc-switch-ui" aria-hidden="true"><span /></span>
-                    </button>
-                  );
-                })}
-              </div>
-
-              {current.addons.some(addon => addon.name.toLowerCase().includes('visite')) && (
-                <div className={`svc-reveal ${selectedAddons.some(addon => addon.name.toLowerCase().includes('visite')) ? 'is-open' : ''}`}>
-                  <div className="svc-reveal-inner">
-                    <div className="svc-preview" onMouseMove={pan}>
-                      <div className="svc-pano"><div className="svc-pano-inner" /></div>
-                      <span className="svc-preview-badge">360°</span>
-                      <span className="svc-spot" style={{ left: '26%', top: '60%' }} />
-                      <span className="svc-spot" style={{ left: '58%', top: '44%' }} />
-                      <span className="svc-spot" style={{ left: '80%', top: '66%' }} />
-                      <span className="svc-preview-hint">Bougez la souris pour explorer</span>
-                    </div>
-                    <ul className="svc-tour-features">
-                      {current.addons
-                        .filter(addon => addon.name.toLowerCase().includes('visite'))
-                        .flatMap(addon => addon.features)
-                        .map(f => <li key={f}><Check size={14} strokeWidth={2.2} /> {f}</li>)}
-                    </ul>
-                  </div>
+            {offerMode === 'offres' && (
+              <section>
+                <p className="svc-step"><span>2</span> Ajoutez un service complémentaire <em>(facultatif)</em></p>
+                <div className="svc-addons-list">
+                  {current.addons.map(addon => {
+                    const enabled = !!addonsByOffer[current.name]?.[addon.name];
+                    return (
+                      <button
+                        key={addon.name}
+                        type="button"
+                        role="switch"
+                        aria-checked={enabled}
+                        className={`svc-tour ${enabled ? 'is-on' : ''}`}
+                        onClick={() => setAddonsByOffer(prev => {
+                          const currentAddons = prev[current.name] ?? {};
+                          return {
+                            ...prev,
+                            [current.name]: {
+                              ...currentAddons,
+                              [addon.name]: !currentAddons[addon.name],
+                            },
+                          };
+                        })}
+                      >
+                        <span className="svc-tour-icon"><Compass size={22} strokeWidth={1.5} /></span>
+                        <span className="svc-tour-text">
+                          <b>{addon.name}</b>
+                          <span>{addon.description}</span>
+                        </span>
+                        <span className="svc-tour-price">+ {formatPrice(addon.price)}</span>
+                        <span className="svc-switch-ui" aria-hidden="true"><span /></span>
+                      </button>
+                    );
+                  })}
                 </div>
-              )}
-            </section>
+
+                {current.addons.some(addon => addon.name.toLowerCase().includes('visite')) && (
+                  <div className={`svc-reveal ${selectedAddons.some(addon => addon.name.toLowerCase().includes('visite')) ? 'is-open' : ''}`}>
+                    <div className="svc-reveal-inner">
+                      <div className="svc-preview" onMouseMove={pan}>
+                        <div className="svc-pano"><div className="svc-pano-inner" /></div>
+                        <span className="svc-preview-badge">360°</span>
+                        <span className="svc-spot" style={{ left: '26%', top: '60%' }} />
+                        <span className="svc-spot" style={{ left: '58%', top: '44%' }} />
+                        <span className="svc-spot" style={{ left: '80%', top: '66%' }} />
+                        <span className="svc-preview-hint">Bougez la souris pour explorer</span>
+                      </div>
+                      <ul className="svc-tour-features">
+                        {current.addons
+                          .filter(addon => addon.name.toLowerCase().includes('visite'))
+                          .flatMap(addon => addon.features)
+                          .map(f => <li key={f}><Check size={14} strokeWidth={2.2} /> {f}</li>)}
+                      </ul>
+                    </div>
+                  </div>
+                )}
+              </section>
+            )}
           </div>
         </div>
 
         <footer className="svc-bar">
           <div className="svc-total">
             <span>Estimation · {plan.name}{selectedAddons.length ? ` + ${selectedAddons.map(addon => addon.name).join(' + ')}` : ''}</span>
-            <strong>{formatPrice(animatedTotal)}</strong>
+            <strong>{plan.priceFrom && <small>À partir de </small>}{formatPrice(animatedTotal)}{plan.subscription && <small> / mois</small>}</strong>
           </div>
           <div className="svc-cta">
             <a className="svc-btn svc-btn-main" href={whatsappLink} target="_blank" rel="noreferrer">
@@ -277,8 +322,8 @@ const Skills: React.FC = () => {
       </header>
 
       <div className="services-grid">
-        {SERVICES.map(({ Icon, name, tagline, image, plans }, i) => {
-          const from = Math.min(...plans.map(p => p.price));
+        {SERVICES.map(({ name, tagline, image, plans }, i) => {
+          const from = Math.min(...plans.filter(p => !p.subscription).map(p => p.price));
           const isVitrine = name === 'Site vitrine';
           return (
             <button
@@ -289,15 +334,16 @@ const Skills: React.FC = () => {
               style={{ '--d': 1 + i } as React.CSSProperties}
               onClick={() => openOffer(name)}
               onMouseMove={spotlight}
+              onMouseLeave={resetTilt}
             >
               <span className="service-card-frame" aria-hidden="true" />
+              <span className="service-card-shine" aria-hidden="true" />
               <span className="service-card-glow" aria-hidden="true" />
 
               <div className="service-card-layout">
                 <div className="service-card-header">
                   <div className="service-card-label">
                     <span className="service-card-index">0{i + 1}.</span>
-                    <span className="skill-icon"><Icon size={22} strokeWidth={1.8} /></span>
                   </div>
                   <span className={`service-chip ${i === 1 ? 'service-chip-featured' : ''}`}>
                     {i === 0 ? 'Service principal' : 'Recommandé'}

@@ -1,0 +1,78 @@
+/* =========================================================
+   Navbar — autres menus · hover premium
+   « Mes services » est exclu : il garde son style unique
+   (NavAttract.css).
+   ========================================================= */
+
+nav a:not([href$="/services"]) {
+  --nm-ease: cubic-bezier(.22, 1, .36, 1);
+  position: relative;
+  isolation: isolate;
+  padding-inline: 1.05rem;
+  border-radius: 999px;
+  transition: color .3s ease, transform .45s var(--nm-ease);
+}
+
+/* Capsule verre : apparaît en grandissant */
+nav a:not([href$="/services"])::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(255,255,255,.075), rgba(56,255,122,.05));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.1), inset 0 0 0 1px rgba(255,255,255,.05);
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  transform: scale(.86);
+  transition: opacity .35s ease, transform .5s var(--nm-ease);
+  pointer-events: none;
+}
+
+/* Filet vert qui s'étire depuis le centre */
+nav a:not([href$="/services"])::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 3px;
+  width: 0;
+  height: 1px;
+  border-radius: 1px;
+  background: linear-gradient(90deg, transparent, #38ff7a, transparent);
+  transform: translateX(-50%);
+  transition: width .55s var(--nm-ease), opacity .3s ease;
+  opacity: 0;
+  pointer-events: none;
+}
+
+nav a:not([href$="/services"]):hover,
+nav a:not([href$="/services"]):focus-visible {
+  color: #f4fff6;
+  transform: translateY(-1px);
+}
+nav a:not([href$="/services"]):hover::before,
+nav a:not([href$="/services"]):focus-visible::before { opacity: 1; transform: scale(1); }
+nav a:not([href$="/services"]):hover::after,
+nav a:not([href$="/services"]):focus-visible::after { width: 44%; opacity: 1; }
+
+nav a:not([href$="/services"]):active { transform: translateY(0) scale(.97); }
+nav a:not([href$="/services"]):focus-visible { outline: 2px solid #38ff7a; outline-offset: 3px; }
+
+/* Page courante : capsule discrète + filet permanent */
+nav a:not([href$="/services"])[aria-current="page"],
+nav a:not([href$="/services"]).active { color: #f4fff6; }
+nav a:not([href$="/services"])[aria-current="page"]::before,
+nav a:not([href$="/services"]).active::before {
+  opacity: 1;
+  transform: scale(1);
+  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(56,255,122,.09));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.1), inset 0 0 0 1px rgba(56,255,122,.22);
+}
+nav a:not([href$="/services"])[aria-current="page"]::after,
+nav a:not([href$="/services"]).active::after { width: 44%; opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  nav a:not([href$="/services"]),
+  nav a:not([href$="/services"])::before,
+  nav a:not([href$="/services"])::after { transition: none; }
+}
