@@ -1,7 +1,7 @@
 .home {
   display: grid;
   grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
-  grid-template-rows: minmax(0, 1fr) auto;
+  grid-template-rows: auto minmax(0, 1fr);
   gap: 0 clamp(1.5rem, 4vw, 4rem);
   padding-bottom: 0;
   overflow-x: clip;
@@ -145,9 +145,11 @@
 /* --- Ticker --- */
 .home-ticker {
   grid-column: 1 / -1;
+  grid-row: 1;
   margin: 0 calc(var(--gutter) * -1);
   padding: clamp(8px, 1.6vh, 16px) 0;
   border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
   overflow: hidden;
   mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
 }

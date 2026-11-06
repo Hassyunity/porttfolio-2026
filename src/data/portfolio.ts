@@ -3,6 +3,7 @@ import { LayoutTemplate, Server, CloudCog, Workflow, Mail, Linkedin, Github, Pho
 import alteaImg from '../assets/images/altea.jpg';
 import autoImg from '../assets/images/auto.jpg';
 import bazarImg from '../assets/images/leader.jpg';
+import babelImg from '../assets/images/babel.png';
 import hmaxImg from '../assets/images/h-max.png';
 import vitrinImg from '../assets/images/vitrin.png';
 import dynamiqueImg from '../assets/images/dynamique.jpg';
@@ -92,7 +93,7 @@ export const PROJECTS: Project[] = [
     description: 'Gestion centralisée des commandes, clients et statistiques de ventes pour boutiques Facebook.',
     tags: ['React', 'Vite.js', 'Tailwind CSS'],
     link: 'https://babel-goods-fr.onrender.com/',
-    wordmark: 'babel goods',
+    image: babelImg,
   },
   {
     title: 'API RESTful Node/React',

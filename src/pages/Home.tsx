@@ -4,11 +4,17 @@ import { ArrowUpRight, Code2 } from 'lucide-react';
 import '../assets/styles/Home.css';
 import myPhoto from '../assets/images/pdp-cutout.webp';
 
-const STACK = ['Ruby on Rails', 'React', 'TypeScript', 'Node.js', 'Docker', 'PostgreSQL', 'n8n', 'CI/CD', 'Cloud', 'API Stripe', 'Agents IA'];
+const STACK = ['Ruby on Rails', 'React', 'TypeScript', 'Node.js', 'Docker', 'PostgreSQL', 'Supabase', 'Ionos', 'Render', 'n8n', 'CI/CD', 'Cloud', 'API Stripe', 'Agents IA'];
 
 const Home = () => (
   <section className="page home">
     <div className="home-glow" aria-hidden="true" />
+
+    <div className="home-ticker" aria-hidden="true">
+      <div className="ticker-track">
+        {[...STACK, ...STACK].map((item, i) => <span key={i}>{item}<i>✦</i></span>)}
+      </div>
+    </div>
 
     <div className="home-content">
       <p className="home-status rise"><span className="status-dot" /> Disponible pour de nouveaux projets</p>
@@ -38,12 +44,6 @@ const Home = () => (
         <span>XR Technologie · Madagascar</span>
       </figcaption>
     </figure>
-
-    <div className="home-ticker" aria-hidden="true">
-      <div className="ticker-track">
-        {[...STACK, ...STACK].map((item, i) => <span key={i}>{item}<i>✦</i></span>)}
-      </div>
-    </div>
   </section>
 );
 
