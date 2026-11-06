@@ -4,10 +4,11 @@ import { ArrowLeft, ArrowRight, ArrowDownToLine } from 'lucide-react';
 import '../assets/styles/Layout.css';
 // Styles de la navbar : l'ordre compte, NavResponsive en dernier.
 // Si ces trois fichiers sont déjà importés ailleurs (main.tsx, global.css), supprimez ces lignes.
-import '../assets/styles/NavMenus.css';
+import '../assets/styles/Layout.css';
 import '../assets/styles/NavAttract.css';
 import '../assets/styles/NavResponsive.css';
 import cvPath from '../assets/fichier/cv_fr.pdf';
+import logo from '../assets/images/logo.png';
 import { PAGES } from '../data/portfolio';
 import ChatWidget from './ChatWidget';
 import WhatsAppButton from './WhatsAppButton';
@@ -51,7 +52,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
       <header className="topbar">
         <Link to="/" className="brand" aria-label="Accueil — Hassy Tsihoarana">
-          <span className="brand-mark" aria-hidden="true">ht.</span>
+          <img className="brand-logo" src={logo} alt="" aria-hidden="true" decoding="async" draggable={false} />
           <span className="brand-name">Hassy Tsihoarana</span>
         </Link>
 
