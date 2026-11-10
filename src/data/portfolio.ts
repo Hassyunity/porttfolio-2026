@@ -28,7 +28,7 @@ export const PAGES = [
   { path: '/contact', label: 'Contact' },
 ];
 
-export const EMAIL = 'hassy.tsihoarana@gmail.com';
+export const EMAIL = 'hassy.kafecode-360.com';
 export const WHATSAPP_NUMBER = '261385841524';
 
 export interface Project {
