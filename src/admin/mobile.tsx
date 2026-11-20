@@ -1,16 +1,30 @@
-// Point d'entrée de l'application Android : uniquement l'espace d'administration, sans le site.
+
+// Point d'entrée Android : espace d'administration uniquement.
 import '../assets/styles/global.css';
 import './AdminMobile.css';
+
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { HashRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { App } from '@capacitor/app';
+
 import AdminApp from './AdminApp';
 
-// Bouton retour Android : revient en arrière dans l'app, la quitte depuis la liste des articles.
+// Gestion du bouton Retour Android.
 App.addListener('backButton', () => {
-  if (/^#?\/admin\/?$/.test(window.location.hash)) App.exitApp();
-  else window.history.back();
+  const currentPath = window.location.hash
+    .replace(/^#/, '')
+    .split('?')[0]
+    .replace(/\/+$/, '') || '/';
+
+  // À la racine de l'administration : quitter l'application.
+  if (currentPath === '/admin') {
+    App.exitApp();
+    return;
+  }
+
+  // Sinon, revenir à l'écran précédent.
+  window.history.back();
 });
 
 createRoot(document.getElementById('root')!).render(
@@ -18,7 +32,12 @@ createRoot(document.getElementById('root')!).render(
     <HashRouter>
       <Routes>
         <Route path="/admin/*" element={<AdminApp />} />
-        <Route path="*" element={<Navigate to="/admin" replace />} />
+
+        {/* Toute autre route redirige vers l'administration. */}
+        <Route
+          path="*"
+          element={<Navigate to="/admin" replace />}
+        />
       </Routes>
     </HashRouter>
   </StrictMode>,
