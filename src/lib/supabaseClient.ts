@@ -1,11 +1,20 @@
+
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL?.trim();
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY?.trim();
 
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.error('Variables VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY manquantes.');
+  console.error(
+    '[Supabase] Configuration manquante.',
+    {
+      urlConfigured: Boolean(supabaseUrl),
+      keyConfigured: Boolean(supabaseAnonKey),
+    }
+  );
 }
 
-// null si la configuration manque : le blog reste lisible, seuls les commentaires sont désactivés
-export const supabase = supabaseUrl && supabaseAnonKey ? createClient(supabaseUrl, supabaseAnonKey) : null;
+export const supabase =
+  supabaseUrl && supabaseAnonKey
+    ? createClient(supabaseUrl, supabaseAnonKey)
+    : null;

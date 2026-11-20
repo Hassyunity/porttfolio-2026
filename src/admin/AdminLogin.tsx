@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { ArrowRight, Lock } from 'lucide-react';
 import { supabase } from '../lib/supabaseClient';
@@ -10,45 +11,118 @@ const AdminLogin: React.FC = () => {
 
   const submit = async (event: React.FormEvent) => {
     event.preventDefault();
-    if (!supabase) return;
+
+    if (!supabase) {
+      setError('La connexion à Supabase est indisponible. Vérifiez la configuration.');
+      return;
+    }
+
     setLoading(true);
     setError(null);
-    const { error: authError } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
-    if (authError) {
-      if (authError.status === 400) {
-        setError('Email ou mot de passe incorrect.');
-        setPassword('');
-      } else if (/fetch|network/i.test(authError.message)) {
-        // Le serveur n'a pas été joint : le mot de passe n'a pas été vérifié, on le garde.
-        setError('Impossible de joindre Supabase : vérifiez VITE_SUPABASE_URL dans .env.local, que le projet n\'est pas en pause, puis relancez « npm run dev ».');
-      } else {
-        setError(authError.message);
+
+    try {
+      const { data, error: authError } =
+        await supabase.auth.signInWithPassword({
+          email: email.trim(),
+          password,
+        });
+
+      if (authError) {
+        console.error('Supabase Auth Error:', {
+          message: authError.message,
+          status: authError.status,
+          code: authError.code,
+        });
+
+        const message = authError.message.toLowerCase();
+
+        if (
+          message.includes('invalid login credentials') ||
+          message.includes('invalid_credentials')
+        ) {
+          setError('Email ou mot de passe incorrect.');
+          setPassword('');
+        } else if (message.includes('email not confirmed')) {
+          setError('Votre adresse email n’est pas encore confirmée.');
+        } else if (
+          message.includes('network') ||
+          message.includes('fetch')
+        ) {
+          setError('Impossible de joindre Supabase. Vérifiez votre connexion.');
+        } else {
+          setError(authError.message);
+        }
+
+        return;
       }
+
+      if (data.user) {
+        console.log('Authentification réussie:', data.user.id);
+      }
+
+      // AdminApp détecte la session via onAuthStateChange.
+
+    } catch (err) {
+      console.error('Erreur inattendue:', err);
+      setError('Une erreur inattendue est survenue.');
+    } finally {
       setLoading(false);
     }
-    // En cas de succès, onAuthStateChange (AdminApp) prend le relais.
   };
 
   return (
     <div className="admin-gate">
       <form className="admin-card admin-login" onSubmit={submit}>
-        <span className="admin-login-icon"><Lock size={18} /></span>
+        <span className="admin-login-icon">
+          <Lock size={18} />
+        </span>
+
         <h1>Espace d'administration</h1>
-        <p>Connectez-vous pour retrouver vos articles sur tous vos appareils.</p>
+        <p>
+          Connectez-vous pour retrouver vos articles sur tous vos appareils.
+        </p>
 
         <label className="admin-field">
           <span>Email</span>
-          <input type="email" autoComplete="username" value={email} onChange={e => setEmail(e.target.value)} required autoFocus />
+          <input
+            type="email"
+            autoComplete="username"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            required
+            autoFocus
+          />
         </label>
+
         <label className="admin-field">
           <span>Mot de passe</span>
-          <input type="password" autoComplete="current-password" value={password} onChange={e => setPassword(e.target.value)} required />
+          <input
+            type="password"
+            autoComplete="current-password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            required
+          />
         </label>
 
-        {error && <p className="admin-error" role="alert">{error}</p>}
+        {error && (
+          <p className="admin-error" role="alert">
+            {error}
+          </p>
+        )}
 
-        <button type="submit" className="btn btn-primary" disabled={loading}>
-          {loading ? 'Connexion…' : <>Se connecter <ArrowRight size={16} /></>}
+        <button
+          type="submit"
+          className="btn btn-primary"
+          disabled={loading}
+        >
+          {loading ? (
+            'Connexion…'
+          ) : (
+            <>
+              Se connecter <ArrowRight size={16} />
+            </>
+          )}
         </button>
       </form>
     </div>
