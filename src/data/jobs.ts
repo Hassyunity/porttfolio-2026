@@ -31,7 +31,7 @@ export const JOBS: Job[] = [
       'Conception et développement de solutions numériques sur mesure pour les entreprises',
       'Développement de sites web, applications métier et plateformes digitales',
       'Intégration de l’intelligence artificielle et automatisation des processus métier',
-      'Gestion des infrastructures, solutions d’hébergement et environnements DevOps',
+      'Gestion des infrastructures, solutions d’hébergement VPS et environnements DevOps',
       'Accompagnement des clients dans leur transformation numérique',
     ],
     stack: [
@@ -39,7 +39,8 @@ export const JOBS: Job[] = [
       'Ruby on Rails',
       'React',
       'DevOps',
-      'Artificial Intelligence',
+      'Setup VPS',
+      'Intelligence Artificielle',
       'Automation',
       'Digital Transformation',
     ],
