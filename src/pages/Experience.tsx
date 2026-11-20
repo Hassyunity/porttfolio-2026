@@ -1,6 +1,6 @@
 import React from 'react';
 import '../assets/styles/Experience.css';
-import { JOBS } from '../data/portfolio';
+import { JOBS } from '../data/jobs';
 
 const Experience: React.FC = () => (
   <section className="page experience">
@@ -36,7 +36,7 @@ const Experience: React.FC = () => (
                 <strong>{branch.name}</strong>
                 <span>{branch.note}</span>
               </span>
-              <span className="job-branch-tag">En poste</span>
+              <span className="job-branch-tag">Septembre - octobre</span>
             </div>
           ))}
           <ul className="job-bullets">{job.bullets.map(bullet => <li key={bullet}>{bullet}</li>)}</ul>

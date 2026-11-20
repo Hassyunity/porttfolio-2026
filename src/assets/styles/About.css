@@ -1,93 +1,616 @@
+
+/* =========================================================
+   ABOUT — KAFE CODE 360
+   Edition PREMIUM — ESPRESSO / DARK / ACCENT RED
+   Desktop · Tablet · Mobile
+   ========================================================= */
+
+/* =========================================================
+   01. LAYOUT PRINCIPAL
+   ========================================================= */
+
 .about {
   display: grid;
   grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.4fr);
   gap: clamp(1.5rem, 4vw, 4.5rem);
   align-items: stretch;
+  min-width: 0;
 }
+
+/* =========================================================
+   02. VISUEL / PHOTOGRAPHIE
+   ========================================================= */
 
 .about-visual {
   position: relative;
+  min-width: 0;
   min-height: 0;
+
   border-radius: var(--radius);
   overflow: hidden;
   border: 1px solid var(--line);
+
+  background: var(--bg-elevated);
+  isolation: isolate;
+}
+
+.about-visual::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(8, 8, 10, 0.02) 35%,
+      rgba(8, 8, 10, 0.2) 65%,
+      rgba(8, 8, 10, 0.82) 100%
+    );
+
+  pointer-events: none;
 }
 
 .about-visual img {
+  display: block;
   width: 100%;
   height: 100%;
+
   object-fit: cover;
+  object-position: center 35%;
+
   filter: grayscale(1);
-  transition: filter 0.8s, transform 1.2s var(--ease);
+
+  transition:
+    filter 0.8s ease,
+    transform 1.2s var(--ease);
 }
-.about-visual:hover img { filter: grayscale(0); transform: scale(1.03); }
+
+.about-visual:hover img {
+  filter: grayscale(0);
+  transform: scale(1.035);
+}
+
+/* Légende photo */
 
 .about-visual figcaption {
   position: absolute;
+  z-index: 2;
+
   left: 1rem;
   bottom: 1rem;
-  padding: 0.45rem 0.9rem;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+
+  padding: 0.55rem 0.95rem;
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 999px;
-  background: rgba(8, 8, 10, 0.8);
-  backdrop-filter: blur(8px);
+
+  background: rgba(8, 8, 10, 0.76);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
   font-size: 0.74rem;
+  letter-spacing: 0.02em;
+  color: #fff;
 }
-.about-visual figcaption span { color: var(--text-faint); margin-right: 0.3rem; }
+
+.about-visual figcaption span {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* =========================================================
+   03. CONTENU PRINCIPAL
+   ========================================================= */
 
 .about-body {
+  min-width: 0;
   min-height: 0;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
+
   gap: clamp(12px, 2.6vh, 28px);
 }
 
-.about-text { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-.about-text p { color: var(--text-muted); font-size: var(--fs-body); line-height: 1.75; }
-.about-text strong { color: var(--text); font-weight: 500; }
+.about-body > header {
+  max-width: 760px;
+}
+
+.about-body .page-title {
+  max-width: 18ch;
+}
+
+/* =========================================================
+   04. PRÉSENTATION
+   ========================================================= */
+
+.about-text {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: clamp(1rem, 2vw, 1.5rem);
+}
+
+.about-text p {
+  color: var(--text-muted);
+  font-size: var(--fs-body);
+  line-height: 1.75;
+  min-width: 0;
+}
+
+.about-text strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* =========================================================
+   05. CITATION
+   ========================================================= */
 
 .about-quote {
-  padding-left: 1.1rem;
+  position: relative;
+
+  padding: 0.25rem 0 0.25rem 1.25rem;
+
   border-left: 2px solid var(--accent);
+
   font-family: var(--font-serif);
   font-style: italic;
   font-size: clamp(1.1rem, min(1.8vw, 3vh), 1.6rem);
-  line-height: 1.3;
+  line-height: 1.4;
+
+  color: var(--text);
 }
+
+.about-quote::after {
+  content: "";
+  position: absolute;
+
+  left: -2px;
+  top: 0;
+
+  width: 2px;
+  height: 35%;
+
+  background: var(--accent);
+  box-shadow: 0 0 12px rgba(255, 7, 58, 0.5);
+}
+
+/* =========================================================
+   06. PILIERS / EXPERTISES
+   ========================================================= */
 
 .about-pillars {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
+
   gap: 0.75rem;
+  min-width: 0;
 }
 
 .about-pillar {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+
+  min-width: 0;
+
   padding: clamp(12px, 2.2vh, 22px) 1.1rem;
+
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: 14px;
+
   background: var(--bg-elevated);
-  transition: border-color 0.3s;
+
+  transition:
+    border-color 0.3s ease,
+    transform 0.35s var(--ease),
+    background 0.3s ease,
+    box-shadow 0.3s ease;
 }
-.about-pillar:hover { border-color: rgba(255, 7, 58, 0.4); }
-.about-pillar span { font-size: 0.62rem; color: var(--accent); }
-.about-pillar h2 { margin: 0.2rem 0 0.35rem; font-size: 1.05rem; font-weight: 500; letter-spacing: -0.03em; }
-.about-pillar p { font-size: 0.78rem; line-height: 1.55; color: var(--text-muted); }
+
+.about-pillar::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  z-index: -1;
+
+  background: radial-gradient(
+    ellipse at 0% 0%,
+    rgba(255, 7, 58, 0.09),
+    transparent 65%
+  );
+
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.about-pillar:hover {
+  border-color: rgba(255, 7, 58, 0.4);
+  transform: translateY(-3px);
+
+  box-shadow: 0 12px 28px -22px rgba(255, 7, 58, 0.45);
+}
+
+.about-pillar:hover::before {
+  opacity: 1;
+}
+
+/* Numéro */
+
+.about-pillar > span {
+  display: inline-block;
+
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+
+  color: var(--accent);
+}
+
+/* Titre */
+
+.about-pillar h2 {
+  margin: 0.35rem 0 0.45rem;
+
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+
+  color: var(--text);
+}
+
+/* Description */
+
+.about-pillar p {
+  font-size: 0.78rem;
+  line-height: 1.6;
+
+  color: var(--text-muted);
+}
+
+/* =========================================================
+   07. TABLETTES
+   ========================================================= */
 
 @media (max-width: 1100px) {
-  .about-text { grid-template-columns: 1fr; }
-  .about-text p + p { display: none; }
+
+  .about {
+    grid-template-columns: minmax(0, 0.65fr) minmax(0, 1.35fr);
+    gap: 1.75rem;
+  }
+
+  .about-text {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+
+  .about-text p + p {
+    display: block;
+  }
+
+  .about-pillars {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .about-pillar:last-child {
+    grid-column: 1 / -1;
+  }
 }
+
+/* =========================================================
+   08. MOBILE PREMIUM
+   ========================================================= */
 
 @media (max-width: 860px) {
-  .about { grid-template-columns: minmax(0, 1fr); }
-  .about-visual { display: none; }
-  .about-pillars { grid-template-columns: minmax(0, 1fr); gap: 0.5rem; }
-  .about-pillar { display: grid; grid-template-columns: auto 1fr; gap: 0 0.75rem; align-items: baseline; padding: 0.6rem 0.9rem; }
-  .about-pillar h2 { margin: 0; font-size: 0.95rem; }
-  .about-pillar p { grid-column: 1 / -1; font-size: 0.74rem; }
+
+  /* ---------- LAYOUT ---------- */
+
+  .about {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+    min-width: 0;
+    height: auto;
+
+    gap: 1.15rem;
+  }
+
+  /* ---------- PHOTO ---------- */
+
+  .about-visual {
+    display: block;
+
+    width: 100%;
+    height: auto;
+    min-height: 0;
+
+    aspect-ratio: 16 / 7;
+
+    border-radius: 20px;
+  }
+
+  .about-visual img {
+    object-position: center 35%;
+    filter: grayscale(0.2);
+  }
+
+  .about-visual figcaption {
+    left: 0.8rem;
+    bottom: 0.8rem;
+
+    padding: 0.42rem 0.8rem;
+
+    font-size: 0.7rem;
+  }
+
+  /* ---------- CONTENU ---------- */
+
+  .about-body {
+    width: 100%;
+    min-height: auto;
+
+    gap: 1rem;
+  }
+
+  .about-body > header {
+    width: 100%;
+  }
+
+  .about-body .page-title {
+    max-width: 100%;
+
+    font-size: clamp(1.85rem, 7.2vw, 2.6rem);
+    line-height: 1.08;
+
+    letter-spacing: -0.055em;
+  }
+
+  /* ---------- TEXTE ---------- */
+
+  .about-text {
+    display: flex;
+    flex-direction: column;
+
+    gap: 0.75rem;
+  }
+
+  .about-text p {
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+
+  .about-text p + p {
+    display: block;
+  }
+
+  /* ---------- CITATION ---------- */
+
+  .about-quote {
+    display: block;
+
+    padding: 0.35rem 0 0.35rem 1rem;
+
+    font-size: clamp(1.05rem, 4.5vw, 1.3rem);
+    line-height: 1.45;
+  }
+
+  /* ---------- PILIERS ---------- */
+
+  .about-pillars {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 0.65rem;
+  }
+
+  .about-pillar {
+    display: flex;
+    flex-direction: column;
+
+    min-width: 0;
+
+    padding: 0.95rem;
+
+    border-radius: 15px;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.045),
+        rgba(255, 255, 255, 0.012)
+      ),
+      var(--bg-elevated);
+
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.045);
+  }
+
+  .about-pillar:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .about-pillar > span {
+    font-size: 0.61rem;
+    letter-spacing: 0.16em;
+  }
+
+  .about-pillar h2 {
+    margin: 0.4rem 0 0.45rem;
+
+    font-size: 0.98rem;
+    line-height: 1.25;
+  }
+
+  .about-pillar p {
+    display: block;
+
+    font-size: 0.77rem;
+    line-height: 1.55;
+
+    color: var(--text-muted);
+  }
+
+  .about-pillar:hover {
+    transform: none;
+  }
 }
 
-@media (max-width: 860px) and (max-height: 760px) {
-  .about-quote { display: none; }
-  .about-pillar p { display: none; }
+/* =========================================================
+   09. PETITS MOBILES
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+  .about {
+    gap: 0.95rem;
+  }
+
+  .about-visual {
+    aspect-ratio: 16 / 8.5;
+    border-radius: 17px;
+  }
+
+  .about-body {
+    gap: 0.9rem;
+  }
+
+  .about-body .page-title {
+    font-size: clamp(1.75rem, 8vw, 2.2rem);
+  }
+
+  .about-text {
+    gap: 0.65rem;
+  }
+
+  .about-text p {
+    font-size: 0.85rem;
+    line-height: 1.65;
+  }
+
+  .about-quote {
+    font-size: 1.05rem;
+  }
+
+  .about-pillars {
+    gap: 0.55rem;
+  }
+
+  .about-pillar {
+    padding: 0.8rem;
+    border-radius: 13px;
+  }
+
+  .about-pillar h2 {
+    font-size: 0.91rem;
+  }
+
+  .about-pillar p {
+    font-size: 0.73rem;
+    line-height: 1.5;
+  }
+}
+
+/* =========================================================
+   10. TRÈS PETITS ÉCRANS
+   ========================================================= */
+
+@media (max-width: 360px) {
+
+  .about-visual {
+    aspect-ratio: 16 / 9;
+  }
+
+  .about-body .page-title {
+    font-size: 1.75rem;
+  }
+
+  .about-text p {
+    font-size: 0.82rem;
+  }
+
+  .about-pillars {
+    grid-template-columns: 1fr;
+  }
+
+  .about-pillar:last-child {
+    grid-column: auto;
+  }
+
+  .about-pillar {
+    padding: 0.85rem 0.95rem;
+  }
+}
+
+/* =========================================================
+   11. PAYSAGE MOBILE
+   ========================================================= */
+
+@media (max-width: 860px) and (max-height: 520px) {
+
+  .about {
+    gap: 0.8rem;
+  }
+
+  .about-visual {
+    aspect-ratio: 21 / 6;
+  }
+
+  .about-body {
+    gap: 0.8rem;
+  }
+
+  .about-body .page-title {
+    font-size: 1.7rem;
+  }
+
+  .about-text {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .about-text p {
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
+
+  .about-quote {
+    display: block;
+    font-size: 1rem;
+  }
+
+  .about-pillars {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .about-pillar:last-child {
+    grid-column: auto;
+  }
+}
+
+/* =========================================================
+   12. ACCESSIBILITÉ
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .about-visual img,
+  .about-pillar,
+  .about-pillar::before {
+    transition: none;
+  }
+
+  .about-pillar:hover {
+    transform: none;
+  }
 }

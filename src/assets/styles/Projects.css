@@ -1,3 +1,8 @@
+
+/* =========================================================
+   PROJECTS — DESKTOP
+   ========================================================= */
+
 .projects-body {
   flex: 1;
   min-height: 0;
@@ -9,19 +14,26 @@
 
 .projects-list {
   --projects-row-height: 5.9rem;
+
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+
   min-height: 0;
   max-height: calc(var(--projects-row-height) * 4 + 1px);
   height: calc(var(--projects-row-height) * 4 + 1px);
+
   overflow-y: auto;
   overflow-x: hidden;
+
   overscroll-behavior: contain;
   scroll-behavior: smooth;
   scrollbar-gutter: stable;
+
   border-top: 1px solid var(--line);
   padding-right: 0.35rem;
+
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
 }
@@ -35,35 +47,57 @@
 }
 
 .projects-list::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0.04));
-  border: 1px solid rgba(255,255,255,0.06);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.16),
+    rgba(255, 255, 255, 0.04)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 999px;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
 }
 
 .projects-list::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, rgba(255,255,255,0.22), rgba(255,255,255,0.08));
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.22),
+    rgba(255, 255, 255, 0.08)
+  );
 }
 
-.projects-list li { flex: 0 0 auto; display: flex; min-height: 0; }
+.projects-list li {
+  flex: 0 0 auto;
+  display: flex;
+  min-height: 0;
+}
 
 .projects-item {
   width: 100%;
   min-height: var(--projects-row-height);
   flex: 1;
+
   display: grid;
   grid-template-columns: 2rem minmax(0, 1fr);
   grid-template-rows: auto auto;
   align-content: center;
+
   column-gap: 0.5rem;
   text-align: left;
+
   padding: 0 0.75rem;
+
   border: 0;
   border-bottom: 1px solid var(--line);
+
   background: transparent;
   color: inherit;
+
   cursor: pointer;
-  transition: background 0.28s ease, transform 0.28s ease, border-color 0.28s ease;
+
+  transition:
+    background 0.28s ease,
+    transform 0.28s ease,
+    border-color 0.28s ease;
 }
 
 .projects-item:focus-visible {
@@ -71,52 +105,114 @@
   outline-offset: -2px;
 }
 
-.projects-num { grid-row: 1 / 3; align-self: center; font-size: 0.64rem; color: var(--text-faint); font-variant-numeric: tabular-nums; }
+/* Vignette réservée au mobile */
+.projects-thumb {
+  display: none;
+}
+
+.projects-num {
+  grid-row: 1 / 3;
+  align-self: center;
+
+  font-size: 0.64rem;
+  color: var(--text-faint);
+  font-variant-numeric: tabular-nums;
+}
 
 .projects-name {
   font-size: clamp(0.9rem, min(1.5vw, 2.4vh), 1.25rem);
   font-weight: 500;
   letter-spacing: -0.03em;
   line-height: 1.2;
+
   color: var(--text-muted);
-  transition: color 0.3s ease, transform 0.4s var(--ease);
+
+  transition:
+    color 0.3s ease,
+    transform 0.4s var(--ease);
 }
 
-.projects-cat { font-size: 0.66rem; color: var(--text-faint); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.projects-cat {
+  font-size: 0.66rem;
+  color: var(--text-faint);
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 .projects-item:hover .projects-name,
-.projects-item:focus-visible .projects-name { color: var(--text); }
-.projects-item.is-active { background: linear-gradient(90deg, var(--accent-soft), transparent); }
-.projects-item.is-active .projects-name { color: var(--text); transform: translateX(4px); }
-.projects-item.is-active .projects-num { color: var(--accent); }
+.projects-item:focus-visible .projects-name {
+  color: var(--text);
+}
 
-/* --- Détail --- */
+.projects-item.is-active {
+  background: linear-gradient(
+    90deg,
+    var(--accent-soft),
+    transparent
+  );
+}
+
+.projects-item.is-active .projects-name {
+  color: var(--text);
+  transform: translateX(4px);
+}
+
+.projects-item.is-active .projects-num {
+  color: var(--accent);
+}
+
+/* =========================================================
+   PROJECT DETAIL
+   ========================================================= */
+
 .project-detail {
   height: 100%;
   min-height: 0;
+
   display: grid;
   grid-template-rows: minmax(0, 1fr) auto;
+
   gap: clamp(12px, 2.4vh, 24px);
+
   animation: rise 0.6s var(--ease) both;
 }
 
 .project-cover {
   position: relative;
   min-height: 0;
+
   border: 1px solid var(--line);
   border-radius: var(--radius);
+
   overflow: hidden;
   background: var(--bg-elevated);
 }
 
-.project-cover img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.project-cover img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: top;
+}
 
 .project-cover.is-generated {
   display: grid;
   place-items: center;
+
   background:
-    radial-gradient(ellipse at 20% 0%, rgba(255, 7, 58, 0.22), transparent 60%),
-    radial-gradient(ellipse at 100% 100%, rgba(255, 255, 255, 0.06), transparent 50%),
+    radial-gradient(
+      ellipse at 20% 0%,
+      rgba(255, 7, 58, 0.22),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse at 100% 100%,
+      rgba(255, 255, 255, 0.06),
+      transparent 50%
+    ),
     var(--bg-elevated);
 }
 
@@ -124,71 +220,566 @@
   font-family: var(--font-serif);
   font-style: italic;
   font-weight: 400;
+
   font-size: clamp(2.5rem, min(7vw, 11vh), 6rem);
   letter-spacing: -0.03em;
 }
 
 .project-info {
   display: grid;
+
   grid-template-columns: minmax(0, 1fr) auto;
-  grid-template-areas: 'meta open' 'title open' 'desc desc' 'tags tags';
+  grid-template-areas:
+    'meta open'
+    'title open'
+    'desc desc'
+    'tags tags';
+
   gap: 0.4rem 1.5rem;
   align-items: center;
 }
 
-.project-meta { grid-area: meta; display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; font-size: 0.64rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-faint); }
-.project-impact { color: var(--accent); }
+.project-meta {
+  grid-area: meta;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+
+  font-size: 0.64rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+
+  color: var(--text-faint);
+}
+
+.project-impact {
+  color: var(--accent);
+}
 
 .project-info h2 {
   grid-area: title;
+
   font-size: clamp(1.4rem, min(2.8vw, 4.4vh), 2.4rem);
   font-weight: 600;
   letter-spacing: -0.05em;
   line-height: 1.05;
 }
 
-.project-info p { grid-area: desc; max-width: 60ch; color: var(--text-muted); font-size: var(--fs-body); line-height: 1.65; }
-.project-info .tags { grid-area: tags; }
-.project-open, .project-private { grid-area: open; }
+.project-info p {
+  grid-area: desc;
+
+  max-width: 60ch;
+
+  color: var(--text-muted);
+  font-size: var(--fs-body);
+  line-height: 1.65;
+}
+
+.project-info .tags {
+  grid-area: tags;
+}
+
+.project-open,
+.project-private {
+  grid-area: open;
+}
 
 .project-private {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
+
   font-size: 0.7rem;
   color: var(--text-faint);
 }
 
+/* =========================================================
+   MOBILE — CARROUSEL HORIZONTAL
+   ========================================================= */
+
 @media (max-width: 860px) {
-  .projects-body { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); }
+
+  .projects-body {
+    display: flex;
+    flex-direction: column;
+
+    flex: none;
+    min-height: auto;
+
+    gap: 1.1rem;
+  }
+
+  /* ---------- CARROUSEL ---------- */
 
   .projects-list {
     flex-direction: row;
-    gap: 0.4rem;
+    align-items: stretch;
+    gap: 0.7rem;
+
+    width: calc(100% + var(--gutter) * 2);
+    height: auto;
     max-height: none;
+    min-height: 0;
+
+    margin-inline: calc(var(--gutter) * -1);
+
+    padding: 0.5rem var(--gutter) 0.8rem;
+
+    border-top: 0;
+
     overflow-x: auto;
     overflow-y: hidden;
+
     scrollbar-width: none;
-    padding-right: 0;
-    scroll-snap-type: x proximity;
+    scrollbar-gutter: auto;
+
+    /* Défilement et centrage */
+    scroll-snap-type: x mandatory;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+    scroll-padding-inline: var(--gutter);
+
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+
+    overscroll-behavior-x: contain;
+    touch-action: pan-x pan-y;
   }
-  .projects-list::-webkit-scrollbar { display: none; }
-  .projects-list li { flex: none; }
+
+  .projects-list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .projects-list li {
+    flex: 0 0 min(64vw, 15.5rem);
+    min-width: 0;
+
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+  }
+
+  /* ---------- CARTE ---------- */
 
   .projects-item {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
+    gap: 0.2rem;
+
+    width: 100%;
+    height: 8.8rem;
+    min-height: 0;
+
+    padding: 0.95rem 1rem 0.9rem;
+
+    border: 1px solid transparent;
+    border-radius: 22px;
+
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.05),
+        rgba(255, 255, 255, 0.015)
+      ) padding-box,
+      linear-gradient(
+        155deg,
+        rgba(255, 255, 255, 0.16),
+        rgba(255, 255, 255, 0.04) 40%,
+        rgba(255, 255, 255, 0.03)
+      ) border-box;
+
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.06),
+      0 14px 26px -20px rgba(0, 0, 0, 0.9);
+
+    opacity: 0.6;
+    transform: scale(0.94);
+
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+
+    touch-action: pan-x pan-y;
+
+    transition:
+      transform 0.5s var(--ease),
+      opacity 0.4s ease,
+      box-shadow 0.45s ease;
+  }
+
+  .projects-item:active {
+    transform: scale(0.91);
+  }
+
+  /* ---------- VIGNETTE ---------- */
+
+  .projects-thumb {
     display: block;
-    padding: 0.45rem 0.85rem;
+
+    position: absolute;
+    inset: 0;
+
+    z-index: -2;
+
+    background:
+      radial-gradient(
+        ellipse at 20% 0%,
+        rgba(255, 7, 58, 0.24),
+        transparent 62%
+      ),
+      var(--bg-elevated);
+  }
+
+  .projects-thumb img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    object-position: top;
+
+    opacity: 0.55;
+
+    transition:
+      opacity 0.45s ease,
+      transform 0.9s var(--ease);
+  }
+
+  .projects-thumb b {
+    position: absolute;
+    top: 0.2rem;
+    right: 0.7rem;
+
+    max-width: 90%;
+    overflow: hidden;
+
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+
+    font-size: 3.4rem;
+    line-height: 1;
+    letter-spacing: -0.04em;
+
+    white-space: nowrap;
+    color: rgba(255, 255, 255, 0.09);
+  }
+
+  /* Voile sombre */
+  .projects-item::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    z-index: -1;
+
+    background: linear-gradient(
+      180deg,
+      rgba(8, 8, 10, 0.05) 0%,
+      rgba(8, 8, 10, 0.9) 100%
+    );
+
+    pointer-events: none;
+  }
+
+  /* ---------- NUMÉRO ---------- */
+
+  .projects-num {
+    position: absolute;
+    top: 0.85rem;
+    left: 1rem;
+
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  /* ---------- TITRE ---------- */
+
+  .projects-name {
+    display: -webkit-box;
+
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
+
+    font-size: 1.02rem;
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    line-height: 1.15;
+
+    white-space: normal;
+    color: var(--text);
+  }
+
+  .projects-cat {
+    font-size: 0.64rem;
+    letter-spacing: 0.04em;
+
+    color: rgba(244, 244, 246, 0.62);
+  }
+
+  /* ---------- CARTE ACTIVE ---------- */
+
+  .projects-item.is-active {
+    opacity: 1;
+    transform: scale(1);
+
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.05),
+        rgba(255, 255, 255, 0.015)
+      ) padding-box,
+      linear-gradient(
+        155deg,
+        var(--accent),
+        rgba(255, 255, 255, 0.12) 45%,
+        rgba(255, 255, 255, 0.04)
+      ) border-box;
+
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.12),
+      0 20px 36px -20px rgba(255, 7, 58, 0.5);
+  }
+
+  .projects-item.is-active .projects-name {
+    transform: none;
+    color: #fff;
+  }
+
+  .projects-item.is-active .projects-num {
+    color: #fff;
+  }
+
+  .projects-item.is-active .projects-thumb img {
+    opacity: 0.85;
+    transform: scale(1.06);
+  }
+
+  .projects-item.is-active .projects-num::after {
+    content: "";
+
+    display: inline-block;
+
+    width: 5px;
+    height: 5px;
+
+    margin-left: 0.5rem;
+
+    border-radius: 50%;
+
+    background: var(--accent);
+
+    box-shadow:
+      0 0 0 3px rgba(255, 7, 58, 0.16),
+      0 0 8px rgba(255, 7, 58, 0.6);
+
+    vertical-align: middle;
+    transform: translateY(-1px);
+  }
+
+  /* =====================================================
+     FICHE DÉTAILLÉE
+     ===================================================== */
+
+  .project-detail {
+    height: auto;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 1rem;
+  }
+
+  .project-cover {
+    flex: none;
+
+    aspect-ratio: 16 / 10;
+
+    border-radius: 22px;
+
+    box-shadow: 0 26px 48px -30px rgba(0, 0, 0, 0.95);
+  }
+
+  .project-cover::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    border-radius: inherit;
+
+    background: linear-gradient(
+      180deg,
+      transparent 60%,
+      rgba(8, 8, 10, 0.35)
+    );
+
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+
+    pointer-events: none;
+  }
+
+  /* ---------- INFORMATIONS ---------- */
+
+  .project-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    gap: 0.75rem;
+
+    padding: 0.1rem 0.15rem 0;
+  }
+
+  .project-meta {
+    gap: 0.4rem;
+  }
+
+  .project-meta span {
+    padding: 0.28rem 0.65rem;
+
     border: 1px solid var(--line);
     border-radius: 999px;
-    min-height: auto;
-    scroll-snap-align: start;
-  }
-  .projects-num, .projects-cat { display: none; }
-  .projects-name { font-size: 0.78rem; white-space: nowrap; }
-  .projects-item.is-active { background: var(--accent); border-color: var(--accent); }
-  .projects-item.is-active .projects-name { transform: none; color: #fff; }
 
-  .project-info { grid-template-areas: 'meta' 'title' 'desc' 'tags' 'open'; grid-template-columns: minmax(0, 1fr); }
-  .project-info p { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-  .project-open { justify-self: start; }
+    background: rgba(255, 255, 255, 0.03);
+
+    letter-spacing: 0.1em;
+  }
+
+  .project-meta .project-impact {
+    border-color: rgba(255, 7, 58, 0.35);
+    background: var(--accent-soft);
+  }
+
+  .project-info h2 {
+    font-size: clamp(1.55rem, 7.4vw, 2rem);
+    line-height: 1.05;
+  }
+
+  .project-info p {
+    max-width: none;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
+
+    line-height: 1.6;
+  }
+
+  /* ---------- TAGS ---------- */
+
+  .project-info .tags {
+    display: flex;
+    flex-wrap: nowrap;
+
+    gap: 0.4rem;
+
+    width: 100%;
+
+    overflow-x: auto;
+
+    scrollbar-width: none;
+
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      #000 86%,
+      transparent
+    );
+
+    mask-image: linear-gradient(
+      90deg,
+      #000 86%,
+      transparent
+    );
+  }
+
+  .project-info .tags::-webkit-scrollbar {
+    display: none;
+  }
+
+  .project-info .tags .tag {
+    flex: none;
+  }
+
+  /* ---------- ACTION ---------- */
+
+  .project-open {
+    align-self: stretch;
+    justify-content: center;
+
+    min-height: 50px;
+    margin-top: 0.3rem;
+
+    border-radius: 999px;
+  }
+
+  .project-private {
+    align-self: stretch;
+    justify-content: center;
+
+    min-height: 46px;
+    margin-top: 0.3rem;
+
+    border: 1px dashed var(--line-strong);
+    border-radius: 999px;
+  }
+}
+
+/* =========================================================
+   PETITS MOBILES
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+  .projects-list li {
+    flex-basis: 72vw;
+  }
+
+  .projects-item {
+    height: 8.2rem;
+  }
+}
+
+/* =========================================================
+   PAYSAGE MOBILE
+   ========================================================= */
+
+@media (max-width: 860px) and (max-height: 520px) {
+
+  .projects-item {
+    height: 6.6rem;
+  }
+
+  .project-cover {
+    aspect-ratio: 21 / 9;
+  }
+}
+
+/* =========================================================
+   ACCESSIBILITÉ — MOTION RÉDUIT
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .projects-list {
+    scroll-behavior: auto;
+    scroll-snap-type: x proximity;
+  }
+
+  .projects-item,
+  .projects-thumb img {
+    transition: none;
+  }
 }

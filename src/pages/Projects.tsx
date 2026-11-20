@@ -1,11 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ArrowUpRight, Lock } from 'lucide-react';
 import '../assets/styles/Projects.css';
 import { PROJECTS } from '../data/portfolio';
 
 const Projects: React.FC = () => {
   const [current, setCurrent] = useState(0);
+  const listRef = useRef<HTMLOListElement>(null);
   const project = PROJECTS[current];
+
+  // Mobile : centre la carte active dans le carrousel (sans effet sur la liste verticale du bureau)
+  useEffect(() => {
+    const list = listRef.current;
+    const card = list?.children[current] as HTMLElement | undefined;
+    if (!list || !card || list.scrollWidth <= list.clientWidth) return;
+    list.scrollTo({
+      left: card.offsetLeft - (list.clientWidth - card.offsetWidth) / 2,
+      behavior: 'smooth',
+    });
+  }, [current]);
 
   return (
     <section className="page projects">
@@ -15,7 +27,7 @@ const Projects: React.FC = () => {
       </header>
 
       <div className="projects-body">
-        <ol className="projects-list rise" style={{ '--d': 1 } as React.CSSProperties} aria-label="Liste des projets">
+        <ol ref={listRef} className="projects-list rise" style={{ '--d': 1 } as React.CSSProperties} aria-label="Liste des projets">
           {PROJECTS.map((item, i) => (
             <li key={item.title}>
               <button
@@ -25,6 +37,12 @@ const Projects: React.FC = () => {
                 onClick={() => setCurrent(i)}
                 onFocus={() => setCurrent(i)}
               >
+                {/* Vignette : visible uniquement en version mobile */}
+                <span className="projects-thumb" aria-hidden="true">
+                  {item.image
+                    ? <img src={item.image} alt="" loading="lazy" decoding="async" draggable={false} />
+                    : <b>{item.wordmark}</b>}
+                </span>
                 <span className="projects-num">{String(i + 1).padStart(2, '0')}</span>
                 <span className="projects-name">{item.title}</span>
                 <span className="projects-cat">{item.category}</span>

@@ -517,3 +517,560 @@
   .mnav-close,
   .mnav-cta { transition: none; }
 }
+
+/* =========================================================
+   Navbar — responsive très premium (≤ 1024px)
+   À importer APRÈS NavMenus.css et NavAttract.css.
+   Aucun changement requis dans MobileNav.tsx / Layout.tsx.
+
+   Matière : verre sombre, liseré dégradé d'un pixel, lueur
+   verte contenue. Un seul moment animé : l'ouverture.
+   « Mes services » reste la pièce signature.
+   ========================================================= */
+
+.mnav-burger,
+.mnav-root {
+  --mn-ease: cubic-bezier(.22, 1, .36, 1);
+  --mn-ease-out: cubic-bezier(.16, 1, .3, 1);
+  --mn-ink: #f4fff6;
+  --mn-dim: rgba(244, 255, 246, .62);
+  --mn-green: #38ff7a;
+  --mn-hair: linear-gradient(155deg, rgba(56,255,122,.3), rgba(255,255,255,.09) 28%, rgba(255,255,255,.04) 68%, rgba(56,255,122,.14));
+}
+
+.mnav-burger,
+.mnav-root { display: none; }
+.topbar-actions { display: contents; }
+
+/* Logo de la marque (remplace l'ancien « ht. ») : valable sur tous les écrans */
+.brand-logo {
+  display: block;
+  flex-shrink: 0;
+  height: 42px;
+  width: auto;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+@media (max-width: 380px) { .brand-logo { height: 38px; } }
+
+/* Nom « Hassy Tsihoarana » : texte en dégradé métal clair vers vert pâle,
+   avec un reflet lent qui passe de temps en temps (comme « Mes services »). */
+.brand .brand-name,
+.mnav-brand {
+  font-weight: 600;
+  letter-spacing: .015em;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  background:
+    linear-gradient(105deg, transparent 42%, rgba(255,255,255,.95) 50%, transparent 58%) 140% 0 / 250% 100% no-repeat,
+    linear-gradient(100deg, #e6f2ea 0%, #ffffff 34%, #c4ffd6 68%, #86ffaf 100%) 0 0 / 100% 100% no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+.brand .brand-name { animation: brand-sheen 9s ease-in-out 2.5s infinite; }
+
+@keyframes brand-sheen {
+  0%, 62%   { background-position: 140% 0, 0 0; }
+  92%, 100% { background-position: -40% 0, 0 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .brand .brand-name { animation: none; }
+}
+
+@media (max-width: 1024px) {
+
+  .topbar .nav-desktop-links { display: none !important; }
+
+  /* Barre : jamais plus large que l'écran.
+     On force un flex simple pour ignorer une grille éventuelle de Layout.css. */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .75rem;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    padding-inline: max(1rem, env(safe-area-inset-left)) max(1rem, env(safe-area-inset-right));
+  }
+
+  /* Marque : peut rétrécir, le nom est tronqué avec « … » */
+  .topbar .brand {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    flex: 0 1 auto;
+    min-width: 0;
+    overflow: hidden;
+  }
+  .topbar .brand .brand-name {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Actions : collées à droite, ne rétrécissent jamais.
+     Le CV est déjà dans le tiroir, donc on le retire de la barre. */
+  .topbar .topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: .65rem;
+    margin-left: auto;
+    order: 99;
+    flex: 0 0 auto;
+  }
+  .topbar .topbar-actions > :not(.mnav-burger) { display: none !important; }
+
+  /* Si le burger est un enfant direct de la barre (sans le groupe) */
+  .topbar > .mnav-burger {
+    margin-left: auto;
+    order: 99;
+  }
+
+  /* ---------- Burger : anneau en verre, liseré dégradé ---------- */
+  .mnav-burger,
+  .mnav-close {
+    position: relative;
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: 50%;
+    color: var(--mn-ink);
+    cursor: pointer;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.02)) padding-box,
+      var(--mn-hair) border-box;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.1),
+      0 10px 22px -14px rgba(0,0,0,.8);
+    -webkit-tap-highlight-color: transparent;
+    transition: box-shadow .45s ease, transform .45s var(--mn-ease);
+  }
+  .mnav-burger {
+    display: inline-grid !important;
+    place-items: center;
+    flex: 0 0 42px;
+    z-index: 5;
+    backdrop-filter: blur(10px) saturate(1.3);
+  }
+  .mnav-burger:hover,
+  .mnav-burger:focus-visible,
+  .mnav-close:hover {
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.14),
+      0 0 0 4px rgba(56,255,122,.05),
+      0 10px 22px -14px rgba(0,0,0,.8);
+  }
+  .mnav-burger:active,
+  .mnav-close:active { transform: scale(.93); }
+  .mnav-burger:focus-visible,
+  .mnav-close:focus-visible { outline: 2px solid var(--mn-green); outline-offset: 3px; }
+
+  /* Deux traits asymétriques alignés à droite ; le court s'allonge au survol */
+  .mnav-bars { position: relative; width: 16px; height: 8px; }
+  .mnav-bars i {
+    position: absolute;
+    right: 0;
+    height: 1.25px;
+    border-radius: 2px;
+    background: currentColor;
+    transition: width .5s var(--mn-ease);
+  }
+  .mnav-bars i:first-child { top: 0; width: 16px; }
+  .mnav-bars i:last-child  { bottom: 0; width: 10px; }
+  .mnav-burger:hover .mnav-bars i:last-child,
+  .mnav-burger:focus-visible .mnav-bars i:last-child { width: 16px; }
+
+  /* ---------- Voile : léger flou + vignette ---------- */
+  .mnav-root { display: block; }
+
+  .mnav-scrim {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background:
+      radial-gradient(90% 70% at 100% 40%, rgba(2,8,5,.35), rgba(2,6,4,.62));
+    backdrop-filter: blur(5px) saturate(1.1);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .6s ease, visibility 0s linear .6s;
+  }
+  .mnav-root[data-open="true"] .mnav-scrim {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity .6s ease, visibility 0s;
+  }
+
+  /* ---------- Tiroir : verre sombre, liseré dégradé, lueur contenue ---------- */
+  .mnav-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    width: min(100%, 23rem);
+    padding:
+      max(.75rem, env(safe-area-inset-top))
+      max(.85rem, env(safe-area-inset-right))
+      max(.85rem, env(safe-area-inset-bottom))
+      .85rem;
+    border: 1px solid transparent;
+    border-radius: 28px 0 0 28px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
+    background:
+      radial-gradient(100% 38% at 100% 0%, rgba(56,255,122,.085), transparent 70%) padding-box,
+      radial-gradient(80% 30% at 0% 100%, rgba(56,255,122,.035), transparent 70%) padding-box,
+      linear-gradient(180deg, rgba(14,20,16,.95), rgba(6,9,7,.985)) padding-box,
+      var(--mn-hair) border-box;
+    backdrop-filter: blur(22px) saturate(1.4);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.08),
+      -32px 0 64px -34px rgba(0,0,0,.85);
+    visibility: hidden;
+    transform: translateX(calc(100% + 2rem + var(--drag, 0px)));
+    transition: transform .7s var(--mn-ease-out), visibility 0s linear .7s;
+  }
+  .mnav-root[data-open="true"] .mnav-panel {
+    visibility: visible;
+    transform: translateX(var(--drag, 0px));
+    transition: transform .7s var(--mn-ease-out), visibility 0s;
+  }
+  .mnav-panel[data-dragging="true"] { transition: none; }
+
+  /* ---------- En-tête ---------- */
+  .mnav-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: .1rem .1rem .1rem 1.25rem;
+  }
+  .mnav-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: .6rem;
+    font-size: 1rem;
+  }
+  .mnav-brand::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--mn-green);
+    box-shadow: 0 0 0 3px rgba(56,255,122,.08), 0 0 8px rgba(56,255,122,.4);
+  }
+  .mnav-close span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 15px;
+    height: 1.25px;
+    margin: -.6px 0 0 -7.5px;
+    border-radius: 2px;
+    background: currentColor;
+    transition: transform .7s var(--mn-ease) .1s;
+  }
+  .mnav-root[data-open="true"] .mnav-close span:first-child { transform: rotate(45deg); }
+  .mnav-root[data-open="true"] .mnav-close span:last-child  { transform: rotate(-45deg); }
+
+  /* ---------- Liens ---------- */
+  .mnav-links {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: .2rem;
+    padding-block: .9rem;
+  }
+
+  .mnav-links a:not([href$="/services"]),
+  .mnav-links a[href$="/services"] {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    min-height: 52px;
+    padding: .5rem 2.6rem .5rem 1.3rem;
+    font-size: 1.18rem;
+    font-weight: 400;
+    letter-spacing: -.015em;
+    text-decoration: none;
+    border-radius: 16px;
+    -webkit-tap-highlight-color: transparent;
+  }
+  /* Le texte glisse de 4px vers la droite : réponse au toucher/survol */
+  .mnav-links a > span { transition: transform .55s var(--mn-ease); }
+  .mnav-links a:hover > span,
+  .mnav-links a:focus-visible > span { transform: translateX(4px); }
+
+  /* Page courante : point lumineux après le libellé */
+  .mnav-links a[aria-current="page"] > span::after {
+    content: "";
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    margin-left: .65rem;
+    border-radius: 50%;
+    background: var(--mn-green);
+    box-shadow: 0 0 0 3px rgba(56,255,122,.08), 0 0 8px rgba(56,255,122,.45);
+    vertical-align: middle;
+    transform: translateY(-1px);
+  }
+
+  /* Liens ordinaires */
+  .mnav-links a:not([href$="/services"]) { color: var(--mn-dim); }
+  .mnav-links a:not([href$="/services"])::before {
+    backdrop-filter: none;
+    transform: scale(.98);
+    background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(56,255,122,.04));
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.08), inset 0 0 0 1px rgba(255,255,255,.05);
+  }
+  .mnav-links a:not([href$="/services"])[aria-current="page"]::before,
+  .mnav-links a:not([href$="/services"]).active::before {
+    background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(56,255,122,.075));
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.1), inset 0 0 0 1px rgba(56,255,122,.2);
+  }
+  .mnav-links a:not([href$="/services"])::after {
+    left: .5rem;
+    bottom: auto;
+    top: 50%;
+    width: 2px;
+    height: 0;
+    background: linear-gradient(180deg, transparent, rgba(56,255,122,.8), transparent);
+    transform: translateY(-50%);
+    transition: height .55s var(--mn-ease), opacity .3s ease;
+  }
+  .mnav-links a:not([href$="/services"]):hover,
+  .mnav-links a:not([href$="/services"]):focus-visible,
+  .mnav-links a:not([href$="/services"])[aria-current="page"],
+  .mnav-links a:not([href$="/services"]).active {
+    color: var(--mn-ink);
+    transform: none;
+  }
+  .mnav-links a:not([href$="/services"]):hover::before,
+  .mnav-links a:not([href$="/services"]):focus-visible::before,
+  .mnav-links a:not([href$="/services"])[aria-current="page"]::before,
+  .mnav-links a:not([href$="/services"]).active::before { transform: scale(1); }
+  .mnav-links a:not([href$="/services"]):hover::after,
+  .mnav-links a:not([href$="/services"]):focus-visible::after,
+  .mnav-links a:not([href$="/services"])[aria-current="page"]::after,
+  .mnav-links a:not([href$="/services"]).active::after {
+    width: 2px;
+    height: 40%;
+  }
+  .mnav-links a:not([href$="/services"]):active { transform: scale(.988); }
+
+  /* « Mes services » : carte signature, liseré orbital + reflet */
+  .mnav-links a[href$="/services"] {
+    min-height: 68px;
+    margin-block: .45rem;
+    padding-right: 3rem;
+    border-radius: 20px;
+    color: var(--mn-ink);
+    backdrop-filter: none;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.14),
+      inset 0 0 0 1px rgba(255,255,255,.04),
+      inset 0 -18px 28px -22px rgba(56,255,122,.14),
+      0 14px 26px -16px rgba(0,0,0,.85);
+  }
+  .mnav-links a[href$="/services"]::before { animation-duration: 10s; }
+  .mnav-links a[href$="/services"]::after {
+    top: .75rem;
+    right: 1.15rem;
+    font-size: .75rem;
+  }
+  .mnav-links a[href$="/services"]:hover {
+    transform: none;
+    letter-spacing: -.015em;
+  }
+  .mnav-links a[href$="/services"]:active { transform: scale(.988); }
+  .mnav-links a[href$="/services"] small {
+    margin-top: .12rem;
+    color: rgba(244, 255, 246, .5);
+    font-size: .76rem;
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+
+  /* ---------- Pied : trait dégradé, actions sobres ---------- */
+  .mnav-foot {
+    position: relative;
+    padding: 1rem .25rem 0;
+  }
+  .mnav-foot::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: .25rem;
+    right: .25rem;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.12), rgba(56,255,122,.24), rgba(255,255,255,.12), transparent);
+  }
+  .mnav-cta {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .55rem;
+    min-height: 50px;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    color: #c9ffdb;
+    font-size: .95rem;
+    font-weight: 500;
+    text-decoration: none;
+    background:
+      linear-gradient(180deg, rgba(56,255,122,.11), rgba(56,255,122,.04)) padding-box,
+      linear-gradient(160deg, rgba(56,255,122,.42), rgba(56,255,122,.12)) border-box;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.1),
+      0 14px 28px -18px rgba(56,255,122,.35);
+    -webkit-tap-highlight-color: transparent;
+    transition: transform .45s var(--mn-ease), box-shadow .4s ease;
+  }
+  /* Un reflet unique passe sur le bouton à la fin de la cascade d'ouverture */
+  .mnav-cta::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(105deg, transparent 40%, rgba(220,255,232,.16) 50%, transparent 60%);
+    transform: translateX(-120%);
+    pointer-events: none;
+  }
+  .mnav-root[data-open="true"] .mnav-cta::after { animation: mnav-shine 1.3s ease 1s 1 forwards; }
+  .mnav-cta:hover { box-shadow: inset 0 1px 0 rgba(255,255,255,.16), 0 16px 30px -16px rgba(56,255,122,.45); }
+  .mnav-cta:active { transform: scale(.985); }
+  .mnav-cta:focus-visible { outline: 2px solid var(--mn-green); outline-offset: 3px; }
+
+  .mnav-cv {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    min-height: 42px;
+    margin-top: .3rem;
+    color: var(--mn-dim);
+    font-size: .88rem;
+    text-decoration: none;
+    transition: color .3s ease;
+  }
+  .mnav-cv:hover,
+  .mnav-cv:focus-visible { color: var(--mn-ink); }
+  .mnav-cv:focus-visible { outline: 2px solid var(--mn-green); outline-offset: 2px; border-radius: 8px; }
+  .mnav-mail {
+    display: block;
+    color: rgba(244, 255, 246, .42);
+    font-size: .78rem;
+    text-align: center;
+    text-decoration: none;
+    transition: color .3s ease;
+  }
+  .mnav-mail:hover,
+  .mnav-mail:focus-visible { color: var(--mn-ink); }
+
+  /* ---------- Ouverture : cascade douce, un seul moment animé ---------- */
+  .mnav-root[data-open="true"] .mnav-head,
+  .mnav-root[data-open="true"] .mnav-item,
+  .mnav-root[data-open="true"] .mnav-foot {
+    animation: mnav-rise .8s var(--mn-ease-out) calc(var(--i, 0) * 45ms + 120ms) backwards;
+  }
+  .mnav-root[data-open="true"] .mnav-head { --i: 0; }
+}
+
+/* ---------- Navigateurs sans backdrop-filter : fond plus opaque ---------- */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .mnav-panel { background:
+    linear-gradient(180deg, rgba(14,20,16,1), rgba(6,9,7,1)) padding-box,
+    var(--mn-hair) border-box; }
+}
+
+/* ---------- Mobile : tiroir flottant ---------- */
+@media (max-width: 560px) {
+  .mnav-panel {
+    top: max(.5rem, env(safe-area-inset-top));
+    right: .5rem;
+    bottom: max(.5rem, env(safe-area-inset-bottom));
+    left: .5rem;
+    width: auto;
+    padding: .7rem .7rem .85rem;
+    border-radius: 28px;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.08),
+      0 40px 80px -30px rgba(0,0,0,.92);
+    transform: translateX(calc(100% + 1rem + var(--drag, 0px)));
+  }
+  .mnav-root[data-open="true"] .mnav-panel {
+    transform: translateX(var(--drag, 0px));
+  }
+}
+
+/* ---------- Petit mobile ---------- */
+@media (max-width: 380px) {
+  .mnav-links a:not([href$="/services"]),
+  .mnav-links a[href$="/services"] {
+    min-height: 48px;
+    padding-left: 1.1rem;
+    font-size: 1.08rem;
+  }
+  .mnav-links a[href$="/services"] { min-height: 62px; }
+}
+
+/* ---------- Barre : nom de marque réduit puis masqué sur petits écrans ---------- */
+@media (max-width: 480px) {
+  .topbar .brand .brand-name { font-size: .95rem; }
+}
+@media (max-width: 340px) {
+  .topbar .brand .brand-name { display: none; }
+}
+
+/* ---------- Paysage mobile : compact et défilant ---------- */
+@media (max-width: 1024px) and (max-height: 520px) {
+  .mnav-links { justify-content: flex-start; gap: .1rem; padding-block: .4rem; }
+  .mnav-links a:not([href$="/services"]),
+  .mnav-links a[href$="/services"] { min-height: 42px; font-size: 1rem; }
+  .mnav-links a[href$="/services"] { min-height: 48px; margin-block: .15rem; }
+  .mnav-links a[href$="/services"] small { display: none; }
+  .mnav-cta { min-height: 44px; }
+}
+
+@keyframes mnav-rise {
+  from { opacity: 0; transform: translateX(18px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes mnav-shine {
+  to { transform: translateX(120%); }
+}
+
+/* ---------- Mouvement réduit : simple fondu ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .mnav-panel,
+  .mnav-root[data-open="true"] .mnav-panel {
+    transform: none;
+    transition: opacity .2s ease, visibility 0s linear .2s;
+    opacity: 0;
+  }
+  .mnav-root[data-open="true"] .mnav-panel {
+    opacity: 1;
+    transition: opacity .2s ease, visibility 0s;
+  }
+  .mnav-root[data-open="true"] .mnav-head,
+  .mnav-root[data-open="true"] .mnav-item,
+  .mnav-root[data-open="true"] .mnav-foot,
+  .mnav-root[data-open="true"] .mnav-cta::after { animation: none; }
+  .mnav-links a > span,
+  .mnav-close span,
+  .mnav-burger,
+  .mnav-close,
+  .mnav-cta { transition: none; }
+}

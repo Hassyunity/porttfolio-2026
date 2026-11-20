@@ -11,9 +11,6 @@ import frontendArt from '../assets/images/skills/frontend.svg';
 import backendArt from '../assets/images/skills/backend.svg';
 import devopsArt from '../assets/images/skills/devops.svg';
 import automationArt from '../assets/images/skills/automation.svg';
-import xrLogo from '../assets/images/logos/xr-technologie.webp';
-import ingedataLogo from '../assets/images/logos/ingedata.png';
-import urbanViewLogo from '../assets/images/logos/urban-view.webp';
 
 // Ordre des écrans : sert au menu, à la barre « précédent / suivant » et aux raccourcis clavier.
 export const PAGES = [
@@ -247,50 +244,6 @@ export const SERVICES: ServiceOffer[] = [
 ];
 
 export const TOOLS = ['VS Code', 'Postman', 'Figma', 'GitHub', 'Jira', 'ClickUp', 'Trello'];
-
-export interface Job {
-  title: string;
-  company: string;
-  location: string;
-  period: string;
-  current?: boolean;
-  logo: string;
-  /** Filiales / branches rattachées au poste */
-  branches?: { name: string; logo: string; note: string }[];
-  bullets: string[];
-  stack: string[];
-}
-
-export const JOBS: Job[] = [
-  {
-    title: 'Fullstack Developer, DevOps & CTO',
-    company: 'XR Technologie',
-    location: 'Madagascar',
-    period: "Aujourd'hui",
-    current: true,
-    logo: xrLogo,
-    branches: [{ name: 'Urban View 360 XR', logo: urbanViewLogo, note: "Branche d'XR Technologie" }],
-    bullets: [
-      'Pilotage technique et architecture globale des produits',
-      'Développement full-stack avec Ruby on Rails et React',
-      'Déploiements, infrastructure et automatisation (DevOps)',
-      "Gestion de projets transverses et coordination d'équipe",
-    ],
-    stack: ['Ruby on Rails', 'React', 'Docker', 'CI/CD', 'n8n'],
-  },
-  {
-    title: 'Développeur Full-stack',
-    company: 'Pulse by Ingedata',
-    location: 'Madagascar',
-    period: 'Précédemment',
-    logo: ingedataLogo,
-    bullets: [
-      'Développement de microservices RH (Recrutement, Talent, Candidat)',
-      'Mise en place de tests automatisés avec RSpec et Cypress',
-    ],
-    stack: ['Ruby on Rails', 'PostgreSQL', 'AppScript', 'RSpec', 'Cypress', 'Docker'],
-  },
-];
 
 export const CONTACT_METHODS = [
   { label: 'Email', value: EMAIL, link: `mailto:${EMAIL}`, Icon: Mail },
