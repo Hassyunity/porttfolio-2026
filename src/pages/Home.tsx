@@ -4,7 +4,7 @@ import { ArrowUpRight, Code2 } from 'lucide-react';
 import '../assets/styles/Home.css';
 import myPhoto from '../assets/images/pdp-cutout.webp';
 
-const STACK = ['Ruby on Rails', 'React', 'TypeScript', 'Node.js', 'Docker', 'PostgreSQL', 'Supabase', 'Ionos', 'Render', 'n8n', 'CI/CD', 'Cloud', 'API Stripe', 'Agents IA'];
+const STACK = ['Ruby on Rails', 'React', 'TypeScript', 'Node.js', 'Docker', 'PostgreSQL', 'Supabase', 'Ionos', 'Render', 'n8n', 'CI/CD', 'Cloud', 'API Stripe', 'Agents IA', 'VPS server',];
 
 const Home = () => (
   <section className="page home">

@@ -3,6 +3,8 @@ import { LayoutTemplate, Server, CloudCog, Workflow, Mail, Linkedin, Github, Pho
 import alteaImg from '../assets/images/altea.jpg';
 import autoImg from '../assets/images/auto.jpg';
 import bazarImg from '../assets/images/leader.jpg';
+import kafeImg from '../assets/images/kafehub.png';
+import sitekafe from '../assets/images/sitekafe.png';
 import babelImg from '../assets/images/babel.png';
 import hmaxImg from '../assets/images/h-max.png';
 import vitrinImg from '../assets/images/vitrin.png';
@@ -41,6 +43,26 @@ export interface Project {
 }
 
 export const PROJECTS: Project[] = [
+  {
+    title: 'HUB.Kafecode-360',
+    category: 'SaaS · Agents IA · VPS',
+    year: '2026',
+    description: "KAFE CODE 360 — L'ingénierie numérique au service de vos ambitions. Nous concevons des solutions web, mobiles et SaaS, automatisons vos processus métier et intégrons l'intelligence artificielle pour transformer vos idées en outils performants et évolutifs.",
+    impact: 'SaaS en production',
+    tags: ['n8n', 'Ruby on Rails', 'React', 'PostgreSQL', 'VPS server'],
+    link: 'https://hub.kafecode-360.com/',
+    image: kafeImg,
+  },
+  {
+    title: 'Site web de Kafecode-360',
+    category: 'site web produit',
+    year: '2026',
+    description: "Nous réunissons stratégie, créativité et technologie pour accompagner les entreprises dans leur évolution numérique..",
+    impact: 'Site Web en production',
+    tags: ['React', 'render'],
+    link: 'https://kafecode-360.com/',
+    image: sitekafe,
+  },
   {
     title: 'Altea Flow',
     category: 'SaaS · Agents IA',

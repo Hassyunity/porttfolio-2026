@@ -5,13 +5,19 @@ import alteaImg from '../assets/images/altea.jpg';
 import leader from '../assets/images/leader.jpg';
 import hmax from '../assets/images/h-max.png';
 import auto from '../assets/images/auto.jpg';
+import kafehub from '../assets/images/kafehub.png';
+import sitekafe from '../assets/images/sitekafe.png';
+import make from '../assets/images/make.png';
 import n8n from '../assets/images/n8n.png';
 import Bmray from '../assets/images/b-mray.jpg';
 
 const PHOTOS = [
   { url: alteaImg, title: 'Altea Flow', caption: 'Tableau de bord SaaS' },
   { url: auto, title: 'Auto | DECISIONS', caption: 'Workflows n8n' },
+  { url: kafehub, title: 'Kafehub', caption: 'Plateforme interne de Kafecode' },
+  { url: sitekafe, tiitle: 'Site web Kafecode 360', caption: 'site web produit de Kafe code 360' },
   { url: Bmray, title: 'B-Mray', caption: 'Plateforme multi-écrans' },
+  { url: make, title: 'scenario make', caption: ' Ajout devis pj sur les cards envoyés' },
   { url: leader, title: 'Bazar Naka', caption: 'Supermarché en ligne' },
   { url: hmax, title: 'H-Max', caption: 'Assistant virtuel' },
   { url: n8n, title: 'n8n', caption: 'Automatisation' },
